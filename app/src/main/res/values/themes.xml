@@ -1,0 +1,13 @@
+<resources xmlns:tools="http://schemas.android.com/tools">
+    <!-- Base application theme. -->
+    <style name="Theme.Relive" parent="Theme.Material3.Light">
+
+    </style>
+
+    <style name="Theme.Relive.NoActionBar">
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+    </style>
+
+    <style name="Theme.Relive.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
+</resources>
