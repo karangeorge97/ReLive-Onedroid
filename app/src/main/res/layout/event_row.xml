@@ -7,10 +7,9 @@
 
 
     <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
-        android:id="@+id/graduation"
+
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="@dimen/text_margin"
-        app:icon="@drawable/ic_date_23_icon" />
+        android:layout_margin="@dimen/text_margin" />
 
 </androidx.appcompat.widget.LinearLayoutCompat>

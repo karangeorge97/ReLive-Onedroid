@@ -39,8 +39,8 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:layout_weight="3"
-            android:text="Graudation"
-            app:icon="@drawable/ic_date_16_icon" />
+            android:text="Graduation"
+            app:icon="@drawable/ic_date_12_icon" />
 
         <com.google.android.material.floatingactionbutton.FloatingActionButton
             android:id="@+id/accept"
@@ -74,7 +74,7 @@
                 android:layout_gravity="center"
                 android:layout_weight="3"
                 android:text="Birthday"
-                app:icon="@drawable/ic_date_23_icon" />
+                app:icon="@drawable/ic_date_14_icon" />
 
             <com.google.android.material.floatingactionbutton.FloatingActionButton
                 android:id="@+id/accept2"
@@ -140,7 +140,7 @@
                 android:layout_gravity="center"
                 android:layout_weight="3"
                 android:text="Lakers Game"
-                app:icon="@drawable/ic_date_16_icon" />
+                app:icon="@drawable/ic_date_23_icon" />
 
             <com.google.android.material.floatingactionbutton.FloatingActionButton
                 android:id="@+id/accept4"
