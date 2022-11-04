@@ -9,6 +9,7 @@ import android.content.ServiceConnection;
 import android.os.Bundle;
 import android.os.IBinder;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.Toast;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -48,8 +49,9 @@ public class JoinEvent extends AppCompatActivity implements ServiceConnection{
                 String eventName = input.getText().toString().trim();
 
                 try {
-                    mService.addEvent(new Event(eventName, "23/10/2022", "23/10/2022"));
-                    finish();
+                    mService.addEvent(new Event(eventName, "12/10/2022", "12/10/2022"));
+                    ((ViewGroup)view.getParent().getParent()).removeView((ViewGroup)view.getParent());
+                    Toast.makeText(JoinEvent.this,"Successfully Joined "+ eventName, Toast.LENGTH_LONG).show();
                 } catch (Exception e) {
                     Toast.makeText(JoinEvent.this, e.getMessage(), Toast.LENGTH_LONG).show();
                 }
@@ -69,7 +71,8 @@ public class JoinEvent extends AppCompatActivity implements ServiceConnection{
 
                 try {
                     mService.addEvent(new Event(eventName, "16/10/2022", "16/10/2022"));
-                    finish();
+                    ((ViewGroup)view.getParent().getParent()).removeView((ViewGroup)view.getParent());
+                    Toast.makeText(JoinEvent.this,"Successfully Joined "+ eventName, Toast.LENGTH_LONG).show();
                 } catch (Exception e) {
                     Toast.makeText(JoinEvent.this, e.getMessage(), Toast.LENGTH_LONG).show();
                 }
@@ -88,8 +91,9 @@ public class JoinEvent extends AppCompatActivity implements ServiceConnection{
                 String eventName = input.getText().toString().trim();
 
                 try {
-                    mService.addEvent(new Event(eventName, "31/10/2022", "31/10/2022"));
-                    finish();
+                    mService.addEvent(new Event(eventName, "14/10/2022", "14/10/2022"));
+                    ((ViewGroup)view.getParent().getParent()).removeView((ViewGroup)view.getParent());
+                    Toast.makeText(JoinEvent.this,"Successfully Joined "+ eventName, Toast.LENGTH_LONG).show();
                 } catch (Exception e) {
                     Toast.makeText(JoinEvent.this, e.getMessage(), Toast.LENGTH_LONG).show();
                 }
@@ -108,8 +112,9 @@ public class JoinEvent extends AppCompatActivity implements ServiceConnection{
                 String eventName = input.getText().toString().trim();
 
                 try {
-                    mService.addEvent(new Event(eventName, "20/10/2022", "20/10/2022"));
-                    finish();
+                    mService.addEvent(new Event(eventName, "23/10/2022", "23/10/2022"));
+                    ((ViewGroup)view.getParent().getParent()).removeView((ViewGroup)view.getParent());
+                    Toast.makeText(JoinEvent.this,"Successfully Joined "+ eventName, Toast.LENGTH_LONG).show();
                 } catch (Exception e) {
                     Toast.makeText(JoinEvent.this, e.getMessage(), Toast.LENGTH_LONG).show();
                 }
