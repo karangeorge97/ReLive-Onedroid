@@ -22,7 +22,7 @@ import com.onedroid.relive.databinding.ActivityImageGridBinding;
 import com.onedroid.relive.databinding.ActivityMainBinding;
 import com.onedroid.relive.service.AccountService;
 
-public class ImageGridActivity extends AppCompatActivity {
+public class ImageGridBirActivity extends AppCompatActivity {
 
     private ActivityImageGridBinding binding;
     AccountService mService;
@@ -30,13 +30,13 @@ public class ImageGridActivity extends AppCompatActivity {
 
     GridView gridView;
 
-//    String[] names = {"image1","image2","image3","image4","image5","image6","image7", "image8",
+    //    String[] names = {"image1","image2","image3","image4","image5","image6","image7", "image8",
 //                        "image9", "image10", "image11", "image12"};
-    int[] images_grad = {R.drawable.m1_grad,R.drawable.m2_grad,R.drawable.m3_grad,R.drawable.m4_grad,
-            R.drawable.m5_grad,R.drawable.m6_grad,R.drawable.m7_grad, R.drawable.m8_grad,
-            R.drawable.m9_grad, R.drawable.m10_grad, R.drawable.m11_grad, R.drawable.m12_grad,
-            R.drawable.m13_grad, R.drawable.m14_grad, R.drawable.m15_grad, R.drawable.m16_grad,
-        R.drawable.m17_grad, R.drawable.m18_grad, R.drawable.m19_grad, R.drawable.m20_grad, R.drawable.m21_grad};
+    int[] images_bir = {R.drawable.m1_bir, R.drawable.m2_bir, R.drawable.m3_bir, R.drawable.m4_bir,
+            R.drawable.m5_bir, R.drawable.m6_bir, R.drawable.m7_bir, R.drawable.m8_bir, R.drawable.m9_bir,
+            R.drawable.m10_bir, R.drawable.m11_bir, R.drawable.m12_bir, R.drawable.m13_bir, R.drawable.m14_bir,
+            R.drawable.m15_bir, R.drawable.m16_bir, R.drawable.m17_bir, R.drawable.m18_bir, R.drawable.m19_bir,
+            R.drawable.m20_bir, R.drawable.m21_bir};
 
 
     @Override
@@ -52,15 +52,15 @@ public class ImageGridActivity extends AppCompatActivity {
 
         gridView = findViewById(R.id.gridView);
 
-        CustomAdapter customAdapter = new CustomAdapter(images_grad, this);//graduation
+        CustomAdapter customAdapter = new CustomAdapter(images_bir, this);//graduation
         gridView.setAdapter(customAdapter);
 
         gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                int selectedImage = images_grad[i];
+                int selectedImage = images_bir[i];
 
-                startActivity(new Intent(ImageGridActivity.this,ClickedItemActivity.class).putExtra("image",selectedImage));
+                startActivity(new Intent(ImageGridBirActivity.this,ClickedItemActivity.class).putExtra("image",selectedImage));
             }
         });
     }
@@ -139,8 +139,8 @@ public class ImageGridActivity extends AppCompatActivity {
 
     private void  generateInitialView()
     {
-         TextView topLabel = (TextView) findViewById(R.id.eventName);
-         topLabel.setText(getIntent().getStringExtra("eventName"));
+        TextView topLabel = (TextView) findViewById(R.id.eventName);
+        topLabel.setText(getIntent().getStringExtra("eventName"));
 
     }
 

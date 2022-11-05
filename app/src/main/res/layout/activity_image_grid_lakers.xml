@@ -61,7 +61,7 @@
         <ImageView
             android:layout_width="150dp"
             android:layout_height="100dp"
-            android:src="@drawable/m4_grad"
+            android:src="@drawable/m13_lal"
             android:layout_gravity="center"
             android:layout_weight="1"
             android:layout_marginLeft="-100dp"
@@ -70,7 +70,7 @@
         <ImageView
             android:layout_width="150dp"
             android:layout_height="100dp"
-            android:src="@drawable/m9_grad"
+            android:src="@drawable/m16_lal"
             android:layout_gravity="center"
             android:layout_weight="1"
             android:layout_marginLeft="4dp"
