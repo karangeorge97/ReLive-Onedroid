@@ -134,28 +134,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             eventButton.setOnClickListener(new View.OnClickListener() {
                                                @Override
                                                public void onClick(View view) {
-                                                   int id = view.getId();
-                                                   if (id == R.id.graduation) {
                                                        Intent intent = new Intent(MainActivity.this, ImageGridActivity.class);
                                                        intent.putExtra("eventName", event.getName());
                                                        intent.putExtra("userName", getIntent().getStringExtra("username"));
                                                        startActivity(intent);
-                                                   } else if (id == R.id.birthday) {
-                                                       Intent intent = new Intent(MainActivity.this, ImageGridBirActivity.class);
-                                                       intent.putExtra("eventName", event.getName());
-                                                       intent.putExtra("userName", getIntent().getStringExtra("username"));
-                                                       startActivity(intent);
-                                                   } else if (id == R.id.halloween) {
-                                                       Intent intent = new Intent(MainActivity.this, ImageGridHalActivity.class);
-                                                       intent.putExtra("eventName", event.getName());
-                                                       intent.putExtra("userName", getIntent().getStringExtra("username"));
-                                                       startActivity(intent);
-                                                   } else if (id == R.id.nba) {
-                                                       Intent intent = new Intent(MainActivity.this, ImageGridLakersActivity.class);
-                                                       intent.putExtra("eventName", event.getName());
-                                                       intent.putExtra("userName", getIntent().getStringExtra("username"));
-                                                       startActivity(intent);
-                                                   }
                                                }
                                            });
             newEventList.addView(view);

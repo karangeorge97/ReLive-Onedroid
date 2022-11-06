@@ -19,6 +19,7 @@ public class Database extends SQLiteOpenHelper {
     public static final String KEY_USERNAME = "username";
     public static final String KEY_PASSWORD = "password";
     public static final String KEY_EVENTS = "events";
+    public static final String KEY_INVITES = "invites";
 
     /**
      * Private constructor.
@@ -51,6 +52,7 @@ public class Database extends SQLiteOpenHelper {
                         KEY_USERNAME + " TEXT primary key," +
                         KEY_PASSWORD + " TEXT," +
                         KEY_EVENTS + " TEXT" +
+                        KEY_INVITES + "TEXT" +
                     ")"
         );
     }
