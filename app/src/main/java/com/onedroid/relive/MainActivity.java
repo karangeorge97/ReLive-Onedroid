@@ -17,6 +17,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.Switch;
+import android.util.Log;
 
 import androidx.appcompat.widget.LinearLayoutCompat;
 
@@ -50,7 +51,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         createEvent.setOnClickListener(this);
         joinEvent.setOnClickListener(this);
-
 
     }
 
@@ -126,7 +126,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
 //    Iterate through the list of Event for the user
         for (Event event : mService.getEvents()) {
-
             LinearLayoutCompat view = (LinearLayoutCompat) getLayoutInflater().inflate(R.layout.event_row, null);
             ExtendedFloatingActionButton eventButton = (ExtendedFloatingActionButton) view.getChildAt(0);
             eventButton.setText(event.getName());
@@ -135,14 +134,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             eventButton.setOnClickListener(new View.OnClickListener() {
                                                @Override
                                                public void onClick(View view) {
-                                                   Intent intent = new Intent(getApplicationContext(), ImageGridActivity.class);
-                                                   intent.putExtra("eventName", event.getName());
-                                                   intent.putExtra("userName" ,getIntent().getStringExtra("username") );
-                                                   startActivity(intent);
-
+                                                       Intent intent = new Intent(MainActivity.this, ImageGridActivity.class);
+                                                       intent.putExtra("eventName", event.getName());
+                                                       intent.putExtra("userName", getIntent().getStringExtra("username"));
+                                                       startActivity(intent);
                                                }
                                            });
-
             newEventList.addView(view);
         }
 //      Replace Existing list of events with updated list of events
