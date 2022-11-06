@@ -14,6 +14,7 @@ import com.onedroid.relive.model.Event;
 
 import java.lang.reflect.Type;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 
@@ -26,6 +27,7 @@ public class AccountService extends Service {
 
     private String username;
     private Set<Event> events = new HashSet<>();
+    private Set<Event> invites = new HashSet<>();
     private Database db;
 
     /**
@@ -53,29 +55,46 @@ public class AccountService extends Service {
 
 
     /**
-     * retrieves cities that were added to user's account
+     * retrieves Events that were added to user's account
      * @return set
      */
     public Set<Event> getEvents() {
         return this.events;
     }
 
+
     /**
-     * Add a city to user.
+     * retrieves Events that were added to user's account
+     * @return set
+     */
+    public Set<Event> getInvites() {
+        return this.invites;
+    }
+    /**
+     * Add a Event to user.
      * @param event Event object.
      * @throws Exception Exception thrown when city exists.
      */
     public void addEvent(Event event) throws Exception {
         if(events.contains(event)) throw new Exception("Event already in list");
         events.add(event);
-        updateDB();
+        updateEventDB();
     }
 
-
+    public void addInvite(Event invite) throws Exception {
+        if(invites.contains(invite)) throw new Exception("User already Invited");
+        invites.add(invite);
+        updateInvitesDB();
+    }
+    public void removeInvite(Event invite) throws Exception {
+        if(!(invites.contains(invite))) throw new Exception("User has not been invited to event");
+        invites.remove(invite);
+        updateInvitesDB();
+    }
     /**
-     * Utility to update cities of User.
+     * Utility to update Events  of User.
      */
-    private void updateDB() {
+    private void updateEventDB() {
         Gson gson = new Gson();
         String jsonString = gson.toJson(this.events);
 
@@ -85,15 +104,32 @@ public class AccountService extends Service {
     }
 
     /**
-     * Utility to Read cities of a user.
+     * Utility to update Invites  of User.
+     */
+    private void updateInvitesDB() {
+        Gson gson = new Gson();
+        String jsonString = gson.toJson(this.invites);
+
+        ContentValues content = new ContentValues();
+        content.put("invites", jsonString);
+        db.updateData(content, "Test");
+    }
+
+    /**
+     * Utility to Read Events and Invites of a user.
      */
     private void readDB() {
         Cursor cursor = db.readData(this.username);
         cursor.moveToFirst();
-        String jsonString = cursor.getString(2);
 
+        String eventString = cursor.getString(2);
         Gson gson = new Gson();
         Type setType = new TypeToken<HashSet<Event>>(){}.getType();
-        this.events = gson.fromJson(jsonString, setType);
+        this.events = gson.fromJson(eventString, setType);
+
+        String inviteString = cursor.getString(3);
+        gson = new Gson();
+        setType = new TypeToken<HashSet<Event>>(){}.getType();
+        this.invites = gson.fromJson(inviteString, setType);
     }
 }
