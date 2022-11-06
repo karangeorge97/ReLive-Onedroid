@@ -11,8 +11,8 @@ import android.database.sqlite.SQLiteOpenHelper;
  * This singleton class initializes db and also methods for insert, delete, update data.
  */
 public class Database extends SQLiteOpenHelper {
-    private static final String DBNAME = "CS465.db";
-    private static final int DATABASE_VERSION = 1;
+    private static final String DBNAME = "newdb";
+    private static final int DATABASE_VERSION = 5;
     private static Database instance = null;
 
     public static final String TABLE = "users";
@@ -51,8 +51,8 @@ public class Database extends SQLiteOpenHelper {
                     "(" +
                         KEY_USERNAME + " TEXT primary key," +
                         KEY_PASSWORD + " TEXT," +
-                        KEY_EVENTS + " TEXT" +
-                        KEY_INVITES + "TEXT" +
+                        KEY_EVENTS + " TEXT," +
+                        KEY_INVITES + " TEXT" +
                     ")"
         );
     }
@@ -88,6 +88,11 @@ public class Database extends SQLiteOpenHelper {
      * @return Cursor object.
      */
     public Cursor readData(String selection) {
+        SQLiteDatabase db = getInstance(null).getWritableDatabase();
+        return db.query(TABLE, null, KEY_USERNAME + "=?", new String[]{selection}, null, null, null);
+    }
+
+    public Cursor readInvites(String selection) {
         SQLiteDatabase db = getInstance(null).getWritableDatabase();
         return db.query(TABLE, null, KEY_USERNAME + "=?", new String[]{selection}, null, null, null);
     }

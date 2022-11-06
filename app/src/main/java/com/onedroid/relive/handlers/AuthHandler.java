@@ -7,6 +7,7 @@ import android.database.Cursor;
 
 import com.google.gson.Gson;
 import com.onedroid.relive.data.Database;
+import com.onedroid.relive.model.Event;
 
 import java.util.HashSet;
 
@@ -45,6 +46,7 @@ public class AuthHandler {
         user.put(Database.KEY_USERNAME, username);
         user.put(Database.KEY_PASSWORD, password);
         user.put(Database.KEY_EVENTS, getEmptyEvents());
+        user.put(Database.KEY_INVITES, getEventInvites());
         boolean created = db.insertData(user);
 
         if(!created) {
@@ -74,12 +76,23 @@ public class AuthHandler {
 
 
     /**
-     * Build empty cities json.
-     * @return String object of empty cities json.
+     * Build empty  Events json.
+     * @return String object of  Events json.
      */
     private String getEmptyEvents() {
         Gson gson = new Gson();
         return gson.toJson(new HashSet<>());
+    }
+
+    private String getEventInvites() {
+        Gson gson = new Gson();
+        HashSet<Event> invites = new HashSet<>();
+        invites.add(new Event("Graduation","22/11/2022","21/11/2022"));
+        invites.add(new Event("Halloween","22/11/2022","21/11/2022"));
+        invites.add(new Event("Birthday","22/11/2022","21/11/2022"));
+        invites.add(new Event("Lakers Game","22/11/2022","21/11/2022"));
+
+        return gson.toJson(invites);
     }
 
 }
