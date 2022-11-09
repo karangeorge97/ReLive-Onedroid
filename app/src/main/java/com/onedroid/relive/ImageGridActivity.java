@@ -39,7 +39,7 @@ public class ImageGridActivity extends AppCompatActivity {
             R.drawable.m5_grad,R.drawable.m6_grad,R.drawable.m7_grad, R.drawable.m8_grad,
             R.drawable.m9_grad, R.drawable.m10_grad, R.drawable.m11_grad, R.drawable.m12_grad,
             R.drawable.m13_grad, R.drawable.m14_grad, R.drawable.m15_grad, R.drawable.m16_grad,
-        R.drawable.m17_grad, R.drawable.m18_grad, R.drawable.m19_grad, R.drawable.m20_grad, R.drawable.m21_grad};
+            R.drawable.m17_grad, R.drawable.m18_grad, R.drawable.m19_grad, R.drawable.m20_grad, R.drawable.m21_grad};
 
     int[] images_bir = {R.drawable.m1_bir, R.drawable.m2_bir, R.drawable.m3_bir, R.drawable.m4_bir,
             R.drawable.m5_bir, R.drawable.m6_bir, R.drawable.m7_bir, R.drawable.m8_bir, R.drawable.m9_bir,
@@ -76,19 +76,18 @@ public class ImageGridActivity extends AppCompatActivity {
         switch(getIntent().getStringExtra("eventName"))
         {
             case "Graduation":images_selected = images_grad;
-            break;
+                break;
             case "Halloween":images_selected = images_hal;
                 break;
             case "Birthday":images_selected = images_bir;
                 break;
             case "Lakers Game":images_selected = images_lal;
                 break;
-            default: images_selected = images_grad;
         }
         ImageView topPhotoOne = findViewById(R.id.topPhoto1);
-        topPhotoOne.setImageResource(images_selected[1]);
+        topPhotoOne.setImageResource(images_selected[0]);
         ImageView topPhotoTwo = findViewById(R.id.topPhoto2);
-        topPhotoTwo.setImageResource(images_selected[2]);
+        topPhotoTwo.setImageResource(images_selected[1]);
         customAdapter = new CustomAdapter(images_selected, this);
         gridView.setAdapter(customAdapter);
 
@@ -96,7 +95,6 @@ public class ImageGridActivity extends AppCompatActivity {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                 int selectedImage = images_selected[i];
-
                 startActivity(new Intent(ImageGridActivity.this,ClickedItemActivity.class).putExtra("image",selectedImage));
             }
         });
@@ -187,11 +185,10 @@ public class ImageGridActivity extends AppCompatActivity {
 
     private void  generateInitialView()
     {
-         TextView topLabel = (TextView) findViewById(R.id.eventName);
-         topLabel.setText(getIntent().getStringExtra("eventName"));
+        TextView topLabel = (TextView) findViewById(R.id.eventName);
+        topLabel.setText(getIntent().getStringExtra("eventName"));
 
     }
 
 
 }
-
