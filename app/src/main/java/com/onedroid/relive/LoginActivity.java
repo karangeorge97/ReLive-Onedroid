@@ -35,6 +35,7 @@ public class LoginActivity extends AppCompatActivity {
 
         try {
             authHandler.createUser("Test", "Test");
+            authHandler.createUser("test", "test");
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -55,7 +56,7 @@ public class LoginActivity extends AppCompatActivity {
             /**
              * Override onClick.
              * Authenticate user based on username and password and start activity
-             * @param view
+             * @param view The view to go to after the user enters the information
              */
             @Override
             public void onClick(View view) {
