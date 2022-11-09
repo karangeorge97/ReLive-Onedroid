@@ -98,17 +98,7 @@
             android:src="@drawable/ic_up_down_arrows_icon"
             android:layout_margin="@dimen/fab_margin"/>
 
-        <com.google.android.material.floatingactionbutton.FloatingActionButton
-            android:id="@+id/sort"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerHorizontal="true"
-            android:layout_margin="@dimen/fab_margin"
-            android:layout_marginStart="@dimen/fab_margin"
-            android:layout_marginTop="@dimen/fab_margin"
-            android:layout_marginEnd="@dimen/fab_margin"
-            android:layout_marginBottom="@dimen/fab_margin"
-            android:src="@drawable/ic_baseline_add_24" />
+
 
 
         <com.google.android.material.floatingactionbutton.FloatingActionButton
@@ -118,32 +108,33 @@
             android:layout_alignParentRight="true"
             android:src="@drawable/ic_filter_off_icon"
             android:layout_margin="@dimen/fab_margin"/>
-
-
-    </LinearLayout>
+    </RelativeLayout>
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/addNew"
-        android:visibility="visible"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_margin="20dp"
-        android:layout_alignBottom="@id/gridView"
-        app:maxImageSize="67.5dp"
-        android:backgroundTint="@android:color/holo_blue_light"
-        android:alpha="0.8"
-        app:shapeAppearanceOverlay="@style/fab_3_rounded"
-        android:src="@drawable/ic_baseline_add_circle_outline_24"/>
-    <GridView
-        android:id="@+id/gridView"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:gravity="center"
-        android:horizontalSpacing="4dp"
-        android:numColumns="3"
-        android:verticalSpacing="4dp">
-    </GridView>
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/addNew"
+            android:visibility="visible"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="20dp"
+            android:layout_alignBottom="@id/gridView"
+            app:maxImageSize="67.5dp"
+            android:alpha="0.8"
+            app:shapeAppearanceOverlay="@style/fab_3_rounded"
+            android:src="@drawable/ic_baseline_add_24"/>
+
+        <GridView
+            android:id="@+id/gridView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:horizontalSpacing="4dp"
+            android:numColumns="3"
+            android:verticalSpacing="4dp"></GridView>
     </RelativeLayout>
-</LinearLayout>
+
+
+    </LinearLayout>
+
+

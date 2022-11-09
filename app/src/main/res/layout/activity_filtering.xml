@@ -4,13 +4,13 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    tools:context=".LoginActivity"
+    tools:context=".FilteringActivity"
     android:noHistory="true"
     android:layout_margin="@dimen/text_margin"
     android:background="@drawable/customborder"
     android:layout_gravity="center">
 
-<!--    TODO: Atharv - Style this -->
+    <!--    TODO: Atharv - Style this -->
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -45,7 +45,7 @@
                 android:orientation="horizontal"
                 android:layout_marginTop="20dp">
 
-<!--                TODO: Atharv - Make users clickable -->
+                <!--                TODO: Atharv - Make users clickable -->
 
                 <LinearLayout
                     android:layout_width="wrap_content"
@@ -91,53 +91,53 @@
 
         </LinearLayout>
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:background="@drawable/customborder"
-        android:layout_marginTop="40dp"
-        android:layout_marginRight="10dp"
-        android:layout_marginLeft="10dp">
-
-        <Switch
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:text="Time" />
-
-<!--        TODO: Atharv - Pick up start and end dates from the event -->
-
-        <com.google.android.material.slider.RangeSlider
-            android:id="@+id/range_slider"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:contentDescription="@string/slider_content_description"
-            app:values="@array/slider_initial_range_values"
-            android:valueFrom="0.0"
-            android:valueTo="100.0" />
-
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal">
+            android:orientation="vertical"
+            android:background="@drawable/customborder"
+            android:layout_marginTop="40dp"
+            android:layout_marginRight="10dp"
+            android:layout_marginLeft="10dp">
 
-            <TextView
-                android:layout_width="wrap_content"
+            <Switch
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:text="Time" />
+
+            <!--        TODO: Atharv - Pick up start and end dates from the event -->
+
+            <com.google.android.material.slider.RangeSlider
+                android:id="@+id/range_slider"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="10/23/2022"/>
+                android:contentDescription="@string/slider_content_description"
+                app:values="@array/slider_initial_range_values"
+                android:valueFrom="0.0"
+                android:valueTo="100.0" />
 
-            <Space
-                android:layout_width="0dp"
-                android:layout_height="0dp"
-                android:layout_weight="1" />
-
-            <TextView
-                android:layout_width="wrap_content"
+            <LinearLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="10/24/2022"/>
+                android:orientation="horizontal">
 
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="10/23/2022"/>
+
+                <Space
+                    android:layout_width="0dp"
+                    android:layout_height="0dp"
+                    android:layout_weight="1" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="10/24/2022"/>
+
+            </LinearLayout>
         </LinearLayout>
-    </LinearLayout>
 
         <Button
             android:id="@+id/containedButton"

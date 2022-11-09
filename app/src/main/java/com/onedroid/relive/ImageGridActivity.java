@@ -85,6 +85,9 @@ public class ImageGridActivity extends AppCompatActivity {
             case "Lakers Game":images_selected = images_lal;
                 break;
         }
+
+
+
         ImageView topPhotoOne = findViewById(R.id.topPhoto1);
         topPhotoOne.setImageResource(images_selected[0]);
         ImageView topPhotoTwo = findViewById(R.id.topPhoto2);
@@ -105,8 +108,7 @@ public class ImageGridActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 filter.setImageResource(R.drawable.ic_filter_filtering_icon);
-                //TODO : Atharv - add the filter activity here
-                //startActivity(new Intent(ImageGridActivity.this,ClickedItemActivity.class).putExtra("eventName",getIntent().getStringExtra("eventName")));
+                startActivity(new Intent(ImageGridActivity.this,FilteringActivity.class).putExtra("eventName",getIntent().getStringExtra("eventName")));
 
             }
         });
