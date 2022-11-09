@@ -106,7 +106,7 @@ public class ImageGridActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 filter.setImageResource(R.drawable.ic_filter_filtering_icon);
-                //TODO : add the filter activity here
+                //TODO : Atharv - add the filter activity here
                 //startActivity(new Intent(ImageGridActivity.this,ClickedItemActivity.class).putExtra("eventName",getIntent().getStringExtra("eventName")));
 
             }

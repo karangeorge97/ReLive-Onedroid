@@ -35,6 +35,7 @@ public class LoginActivity extends AppCompatActivity {
 
         try {
             authHandler.createUser("Test", "Test");
+            authHandler.createUser("test", "test");
         } catch (Exception e) {
             e.printStackTrace();
         }
