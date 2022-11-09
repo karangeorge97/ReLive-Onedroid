@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <style name="fab_3_rounded">
+        <item name="cornerFamily">rounded</item>
+        <item name="cornerSize">100%</item>
+        <item name="cornerSizeTopLeft">90dp</item>
+        <item name="cornerSizeTopRight">90dp</item>
+        <item name="cornerSizeBottomLeft">90dp</item>
+        <item name="cornerSizeBottomRight">90dp</item>
+    </style>
+</resources>
