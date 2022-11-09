@@ -1,28 +1,35 @@
 package com.onedroid.relive.design;
 
 import android.content.Context;
+import android.graphics.drawable.Drawable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.ImageView;
 import android.widget.TextView;
+
+import androidx.appcompat.app.AppCompatActivity;
 
 import com.onedroid.relive.R;
 import com.onedroid.relive.model.Event;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 public class CustomAdapter extends BaseAdapter {
     private final Context context;
-    private ArrayList<Event> eventList;
+    private Set<Event> eventList;
 
-    public CustomAdapter(Context context, int i, ArrayList<Event> eventList) {
+    public CustomAdapter(Context context, int i, Set<Event> eventList) {
         this.context = context;
         this.eventList = eventList;
     }
 
-    public void setFilteredList(ArrayList<Event> filteredList){
+
+
+    public void setFilteredList(Set<Event> filteredList){
         this.eventList = filteredList;
         notifyDataSetChanged();
     }
@@ -34,7 +41,8 @@ public class CustomAdapter extends BaseAdapter {
 
     @Override
     public Object getItem(int i) {
-        return eventList.get(i);
+        List<Event> arrList = new ArrayList<>(eventList);
+        return arrList.get(i);
     }
 
     @Override
@@ -57,24 +65,48 @@ public class CustomAdapter extends BaseAdapter {
         else {
             holderView = (HolderView) convertView.getTag();
         }
-
-        Event list = eventList.get(position);
+        List<Event> arrList = new ArrayList<>(eventList);
+        Event list = arrList.get(position);
         holderView.eventName.setText(list.getName());
         holderView.fromDate.setText(list.getFromDate());
         holderView.toDate.setText(list.getToDate());
+        holderView.image.setImageDrawable(getDrawable(list.getName()));
 
         return convertView;
+
     }
+
+
+    private Drawable getDrawable(String eventName)
+    {
+
+        switch (eventName)
+        {
+            case "Graduation": return  context.getResources().getDrawable( R.drawable.ic_date_12_icon );
+            case "Birthday": return  context.getResources().getDrawable( R.drawable.ic_date_14_icon );
+            case "Halloween": return  context.getResources().getDrawable( R.drawable.ic_date_16_icon );
+            case "Lakers Game": return  context.getResources().getDrawable( R.drawable.ic_date_23_icon );
+            default: return context.getResources().getDrawable( R.drawable.ic_date_23_icon );
+
+        }
+
+    }
+
+
 
     private static  class HolderView{
         private final TextView eventName;
         private final TextView fromDate;
         private final TextView toDate;
+        private final ImageView image;
 
         public HolderView(View view){
             eventName = view.findViewById(R.id.eventName);
             fromDate = view.findViewById(R.id.fromDate);
             toDate = view.findViewById(R.id.toDate);
+            image = view.findViewById(R.id.eventDisplay);
         }
     }
+
+
 }

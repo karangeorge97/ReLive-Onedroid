@@ -20,6 +20,9 @@ import android.widget.ListView;
 import android.widget.SearchView;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.onedroid.relive.databinding.ActivityMainBinding;
+import com.onedroid.relive.databinding.ActivitySearchEventBinding;
 import com.onedroid.relive.design.CustomAdapter;
 import com.onedroid.relive.model.Event;
 import com.onedroid.relive.service.AccountService;
@@ -27,12 +30,16 @@ import com.onedroid.relive.service.AccountService;
 
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 public class SearchEvent extends AppCompatActivity implements AdapterView.OnItemClickListener,ServiceConnection {
     AccountService mService;
     boolean mBound = false;
-    private ArrayList<Event> eventList;
+    private Set<Event> eventList;
     private SearchView searchView;
+    private ActivitySearchEventBinding binding;
 
     private TextView fromDate;
     private TextView toDate;
@@ -46,30 +53,20 @@ public class SearchEvent extends AppCompatActivity implements AdapterView.OnItem
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+
+        binding = ActivitySearchEventBinding.inflate(getLayoutInflater());
         setContentView(R.layout.activity_search_event);
         Intent intent = new Intent(this, AccountService.class);
+        intent.putExtra("username", getIntent().getStringExtra("username"));
         bindService(intent, connection, Context.BIND_AUTO_CREATE);
+        setContentView(binding.getRoot());
 
-        eventList = setEventDetails();
-        CustomAdapter customAdapter = new
-                CustomAdapter(SearchEvent.this, 0, eventList);
 
         // Search By Event
         searchView = findViewById(R.id.eventListSearchView);
         searchView.clearFocus();
 
-        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
-            @Override
-            public boolean onQueryTextSubmit(String s) {
-                return false;
-            }
 
-            @Override
-            public boolean onQueryTextChange(String newText) {
-                filterList(newText,customAdapter);
-                return false;
-            }
-        });
 
         //Search By Date
         fromDate = (TextView) findViewById(R.id.tvFromDate);
@@ -136,15 +133,17 @@ public class SearchEvent extends AppCompatActivity implements AdapterView.OnItem
 
 
 
-        // Event List View
-        ListView listView = findViewById(R.id.eventListView);
-        listView.setAdapter(customAdapter);
-        listView.setOnItemClickListener(this);
+    }
 
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if(mBound) generateEvents();
     }
 
     private void filterList(String text, CustomAdapter customAdapter) {
-        ArrayList<Event> filteredEvents = new ArrayList<Event>();
+        Set<Event> filteredEvents = new HashSet<>();
         for(Event event: eventList){
             if(event.getName().toLowerCase().contains(text.toLowerCase())){
                 filteredEvents.add(event);
@@ -161,23 +160,46 @@ public class SearchEvent extends AppCompatActivity implements AdapterView.OnItem
 
     }
 
-    private ArrayList<Event> setEventDetails() {
-        eventList = new ArrayList<>();
-        eventList.add(new Event("Bob's Birthday", "10-22-2022","10-22-2022"));
-        eventList.add(new Event("Alice's Birthday", "10-22-2022","10-22-2022"));
-        eventList.add(new Event("Ree's Wedding", "10-22-2022","10-29-2022"));
-        eventList.add(new Event("NYC Trip", "12-22-2022","12-31-2022"));
-        eventList.add(new Event("Halloween", "10-31-2022","10-31-2022"));
-        return eventList;
-    }
+
 
     @Override
     public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-        Event list = eventList.get(i);
-        Toast.makeText(SearchEvent.this, "Event Name : "
-                        + list.getName(),
-                Toast.LENGTH_SHORT).show();
+        List<Event> events = new ArrayList<>(eventList);
+        Event selectedEvent = events.get(i);
+
+        Intent intent = new Intent(SearchEvent.this, ImageGridActivity.class);
+        intent.putExtra("eventName", selectedEvent.getName());
+        intent.putExtra("userName", getIntent().getStringExtra("username"));
+        startActivity(intent);
     }
+
+    private void generateEvents()
+    {
+        eventList = mService.getEvents();
+        CustomAdapter customAdapter = new CustomAdapter(SearchEvent.this, 0, eventList);
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String s) {
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                eventList = mService.getEvents();
+                filterList(newText,customAdapter);
+                return false;
+            }
+        });
+
+        ListView listView = findViewById(R.id.eventListView);
+        listView.setAdapter(customAdapter);
+        listView.setOnItemClickListener(this);
+    }
+
+
+
+
+
 
     /**
      * Initialize ServiceConnection.
@@ -194,6 +216,7 @@ public class SearchEvent extends AppCompatActivity implements AdapterView.OnItem
             AccountService.AccountBinder binder = (AccountService.AccountBinder) service;
             mService = binder.getService();
             mBound = true;
+            generateEvents();
         }
 
         /**

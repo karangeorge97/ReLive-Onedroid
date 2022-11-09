@@ -6,18 +6,25 @@ import android.content.Intent;
 import android.content.ServiceConnection;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+
+import com.google.android.material.card.MaterialCardView;
 import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton;
 import androidx.appcompat.app.AppCompatActivity;
 import android.os.IBinder;
 import android.view.View;
+
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.onedroid.relive.databinding.ActivityMainBinding;
 import com.onedroid.relive.model.Event;
 import com.onedroid.relive.service.AccountService;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.Switch;
 import android.util.Log;
+import android.widget.TextView;
 
 import androidx.appcompat.widget.LinearLayoutCompat;
 
@@ -46,7 +53,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         Button createEvent = findViewById(R.id.createEvent);
         Button joinEvent = findViewById(R.id.joinevent);
-        Button searchEvent = findViewById(R.id.searchevent);
+        FloatingActionButton searchEvent = findViewById(R.id.searchevent);
 
 
         createEvent.setOnClickListener(this);
@@ -72,6 +79,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
             case R.id.searchevent:
                 Intent searchEventActivity = new Intent(getApplicationContext(), SearchEvent.class);
+                searchEventActivity.putExtra("userName", getIntent().getStringExtra("username"));
                 startActivity(searchEventActivity);
                 break;
         }
@@ -132,12 +140,21 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
 //    Iterate through the list of Event for the user
         for (Event event : mService.getEvents()) {
-            LinearLayoutCompat view = (LinearLayoutCompat) getLayoutInflater().inflate(R.layout.event_row, null);
-            ExtendedFloatingActionButton eventButton = (ExtendedFloatingActionButton) view.getChildAt(0);
-            eventButton.setText(event.getName());
+            MaterialCardView  view = (MaterialCardView) getLayoutInflater().inflate(R.layout.custom_event_list_card_view, null);
+            TextView eventName = (TextView) view.findViewById(R.id.eventName);
+            TextView fromDate = (TextView) view.findViewById(R.id.fromDate);
+            TextView toDate = (TextView) view.findViewById(R.id.toDate);
+            ImageView image = (ImageView) view.findViewById(R.id.eventDisplay) ;
+
+
+            eventName.setText(event.getName());
             Drawable icon = getDrawable(event.getName());
-            eventButton.setIcon(icon);
-            eventButton.setOnClickListener(new View.OnClickListener() {
+            image.setImageDrawable(icon);
+            fromDate.setText(event.getFromDate());
+            toDate.setText(event.getToDate());
+
+
+            view.setOnClickListener(new View.OnClickListener() {
                                                @Override
                                                public void onClick(View view) {
                                                        Intent intent = new Intent(MainActivity.this, ImageGridActivity.class);
@@ -167,6 +184,21 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         }
 
+    }
+
+
+    private static  class HolderView{
+        private final TextView eventName;
+        private final TextView fromDate;
+        private final TextView toDate;
+        private final ImageView image;
+
+        public HolderView(View view){
+            eventName = view.findViewById(R.id.eventName);
+            fromDate = view.findViewById(R.id.fromDate);
+            toDate = view.findViewById(R.id.toDate);
+            image = view.findViewById(R.id.eventDisplay);
+        }
     }
 
 }

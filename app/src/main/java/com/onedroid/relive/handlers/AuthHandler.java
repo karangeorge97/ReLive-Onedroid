@@ -87,10 +87,9 @@ public class AuthHandler {
     private String getEventInvites() {
         Gson gson = new Gson();
         HashSet<Event> invites = new HashSet<>();
-        invites.add(new Event("Graduation","22/11/2022","21/11/2022"));
-        invites.add(new Event("Halloween","22/11/2022","21/11/2022"));
-        invites.add(new Event("Birthday","22/11/2022","21/11/2022"));
-        invites.add(new Event("Lakers Game","22/11/2022","21/11/2022"));
+        invites.add(new Event("Graduation","12/11/2022","21/11/2022"));
+        invites.add(new Event("Halloween","16/11/2022","21/11/2022"));
+        invites.add(new Event("Birthday","14/11/2022","21/11/2022"));
 
         return gson.toJson(invites);
     }

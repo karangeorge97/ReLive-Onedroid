@@ -15,18 +15,34 @@
         android:orientation="vertical"
         android:layout_margin="@dimen/text_margin"
         android:background="@drawable/customborder">
-
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:fontFamily="sans-serif"
+            android:layout_centerVertical="true"
             android:text="Recent Events"
             android:textAppearance="@style/TextAppearance.AppCompat.Medium"
             android:textIsSelectable="false"
             android:textSize="25sp"
             android:typeface="serif" />
 
+            <com.google.android.material.floatingactionbutton.FloatingActionButton
+                android:id="@+id/searchevent"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:src="@drawable/ic_baseline_search_24"
+                android:layout_margin="@dimen/fab_margin"/>
+        </RelativeLayout>
+
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
         <LinearLayout
             android:id="@+id/eventRows"
             android:layout_width="match_parent"
@@ -35,9 +51,8 @@
 
 
         </LinearLayout>
+        </ScrollView>
     </LinearLayout>
-
-
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -65,21 +80,8 @@
 
 
     </LinearLayout>
-    <LinearLayout
-        android:id="@+id/searchEventLL"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:layout_margin="@dimen/text_margin"
-        android:background="@drawable/customborder">
 
-    <Button
-        android:id="@+id/searchevent"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:layout_margin="@dimen/fab_margin"
-        android:layout_weight="1"
-        android:text="Search Event" />
-    </LinearLayout>
+
+
+
 </androidx.appcompat.widget.LinearLayoutCompat>
