@@ -1,6 +1,5 @@
 package com.onedroid.relive.model;
 
-import java.util.Objects;
 
 /**
  * Data model for Event.
