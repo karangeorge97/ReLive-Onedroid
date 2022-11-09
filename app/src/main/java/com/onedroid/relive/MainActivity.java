@@ -33,7 +33,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     boolean mBound = false;
 
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -47,10 +46,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         Button createEvent = findViewById(R.id.createEvent);
         Button joinEvent = findViewById(R.id.joinevent);
+        Button searchEvent = findViewById(R.id.searchevent);
 
 
         createEvent.setOnClickListener(this);
         joinEvent.setOnClickListener(this);
+        searchEvent.setOnClickListener(this);
 
     }
 
@@ -67,6 +68,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             case R.id.joinevent:
                 Intent joinEventActivity = new Intent(getApplicationContext(), JoinEvent.class);
                 startActivity(joinEventActivity);
+                break;
+
+            case R.id.searchevent:
+                Intent searchEventActivity = new Intent(getApplicationContext(), SearchEvent.class);
+                startActivity(searchEventActivity);
                 break;
         }
 

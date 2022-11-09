@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".MainActivity">
+    >
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_margin="@dimen/text_margin"
+        android:background="@drawable/customborder">
+
+<!--       <TextView-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:fontFamily="sans-serif"-->
+<!--            android:text="Search"-->
+<!--            android:textAppearance="@style/TextAppearance.AppCompat.Medium"-->
+<!--            android:textIsSelectable="false"-->
+<!--            android:textSize="25sp"-->
+<!--            android:typeface="serif" />-->
+
+        <SearchView
+            android:id="@+id/eventListSearchView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="8dp"
+            android:iconifiedByDefault="false"
+            app:layout_constraintBottom_toBottomOf = "parent"
+            app:layout_constraintEnd_toEndOf = "parent"
+            app:layout_constraintHorizontal_bias = "0.5"
+            app:layout_constraintStart_toStartOf = "parent"
+            app:layout_constraintTop_toTopOf = "parent"
+            android:queryHint="By Event Name">
+
+        </SearchView>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:hint="From:"
+                android:id="@+id/tvFrom"
+                android:layout_marginTop="12dp"
+                android:layout_marginLeft="12dp"
+                android:paddingLeft="40dp"
+                android:layout_centerHorizontal = "true"
+                android:layout_weight="1"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:hint="To:"
+                android:id="@+id/tvTo"
+                android:layout_marginTop="12dp"
+                android:layout_marginRight="12dp"
+                android:paddingLeft="45dp"
+                android:layout_weight="1"/>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:hint="mm/dd/yyyy"
+                android:id="@+id/tvFromDate"
+                android:layout_marginTop="12dp"
+                android:layout_marginLeft="12dp"
+                android:paddingLeft="40dp"
+                android:layout_centerHorizontal = "true"
+                android:layout_weight="1"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:hint="mm/dd/yyyy"
+                android:id="@+id/tvToDate"
+                android:layout_marginTop="12dp"
+                android:layout_marginRight="12dp"
+                android:paddingLeft="45dp"
+                android:layout_weight="1"/>
+        </LinearLayout>
+        <ListView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:id="@+id/eventListView"/>
+
+
+    </LinearLayout>
+
+</LinearLayout>
