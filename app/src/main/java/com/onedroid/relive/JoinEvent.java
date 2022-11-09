@@ -39,9 +39,6 @@ public class JoinEvent extends AppCompatActivity implements ServiceConnection{
 
 
 
-
-
-
     @Override
     protected void onResume() {
         super.onResume();

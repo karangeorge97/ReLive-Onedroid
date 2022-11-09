@@ -11,14 +11,16 @@
         android:layout_width="380dp"
         android:layout_height="400dp"
         android:layout_centerInParent="true"
-        android:layout_centerVertical="true"
         android:scaleType="fitXY"
         android:src="@mipmap/ic_launcher" />
-    <!--    <TextView-->
-    <!--        android:layout_width="wrap_content"-->
-    <!--        android:layout_height="wrap_content"-->
-    <!--        android:textSize="16sp"-->
-    <!--        android:layout_below="@id/imageView"-->
-    <!--        android:layout_centerHorizontal="true"-->
-    <!--        android:id="@+id/tvName"/>-->
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:layout_marginTop="10dp"
+        android:id="@+id/decline3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:fabCustomSize="80dp"
+        app:maxImageSize="36dp"
+        android:layout_below="@+id/imageView"
+        android:layout_centerHorizontal="true"
+        android:src="@drawable/ic_heart_thin_icon" />
 </RelativeLayout>
