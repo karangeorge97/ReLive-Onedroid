@@ -21,6 +21,7 @@ import android.widget.TextView;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.onedroid.relive.databinding.ActivityImageGridBinding;
 import com.onedroid.relive.databinding.ActivityMainBinding;
+import com.onedroid.relive.model.Event;
 import com.onedroid.relive.service.AccountService;
 
 import java.util.Random;
