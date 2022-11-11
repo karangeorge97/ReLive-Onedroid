@@ -33,6 +33,14 @@ public class ImageGridActivity extends AppCompatActivity {
     CustomAdapter customAdapter;
 
     GridView gridView;
+    boolean filterApplied = false;
+    private final int FILTER_ACTIVITY_CODE = 1;
+    boolean contributorSwitchIsChecked = false;
+    boolean timeSwitchIsChecked = false;
+    float leftThumbPosition = 0.0f;
+    float rightThumbPosition = 100.0f;
+    boolean[] selectedUsers = new boolean[5];
+
     List<Integer> images_selected = new ArrayList<>();
 
     List<Integer>images_grad = new ArrayList<>();
@@ -99,12 +107,22 @@ public class ImageGridActivity extends AppCompatActivity {
         });
 
         FloatingActionButton filter = findViewById(R.id.filter);
+        if (filterApplied) {
+            filter.setImageResource(R.drawable.ic_filter_filtering_icon);
+        } else {
+            filter.setImageResource(R.drawable.ic_filter_off_icon);
+        }
         filter.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                filter.setImageResource(R.drawable.ic_filter_filtering_icon);
-                startActivity(new Intent(ImageGridActivity.this,FilteringActivity.class).putExtra("eventName",getIntent().getStringExtra("eventName")));
-
+                Intent filterActivityIntent = new Intent(ImageGridActivity.this,FilteringActivity.class);
+                filterActivityIntent.putExtra("eventName",getIntent().getStringExtra("eventName"));
+                filterActivityIntent.putExtra("contributorSwitchIsChecked", contributorSwitchIsChecked);
+                filterActivityIntent.putExtra("timeSwitchIsChecked", timeSwitchIsChecked);
+                filterActivityIntent.putExtra("leftThumbPosition",leftThumbPosition);
+                filterActivityIntent.putExtra("rightThumbPosition",rightThumbPosition);
+                filterActivityIntent.putExtra("selectedUsers",selectedUsers);
+                startActivityForResult(filterActivityIntent,FILTER_ACTIVITY_CODE);
             }
         });
 
@@ -134,21 +152,45 @@ public class ImageGridActivity extends AppCompatActivity {
         startActivityForResult(Intent.createChooser(i, "Select Picture"), 200);
     }
 
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+    public void onActivityResult (int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-
-        switch(getIntent().getStringExtra("eventName"))
-        {
-            case "Graduation":images_selected.add(R.drawable.m3_grad);
-                break;
-            case "Halloween":images_selected.add(R.drawable.m3_hal);
-                break;
-            case "Birthday":images_selected.add(R.drawable.m3_bir);
-                break;
-            case "Lakers Game":images_selected.add(R.drawable.m3_lal);
-                break;
+        List<Integer> new_images_selected = images_selected;
+        if (requestCode == FILTER_ACTIVITY_CODE) {
+            filterApplied = data.getBooleanExtra("filterApplied", false);
+            contributorSwitchIsChecked = data.getBooleanExtra("contributorSwitchIsChecked", false);
+            timeSwitchIsChecked = data.getBooleanExtra("timeSwitchIsChecked", false);
+            int numberOfImagesToShow = data.getIntExtra("numberOfImagesToShow", images_selected.size());
+            leftThumbPosition = data.getFloatExtra("leftThumbPosition", 0.0f);
+            rightThumbPosition = data.getFloatExtra("rightThumbPosition", 100.0f);
+            selectedUsers = data.getBooleanArrayExtra("selectedUsers");
+            new_images_selected = images_selected.subList(0, numberOfImagesToShow);
+            TextView filteredNumberOfPhotosText = (TextView) findViewById(R.id.filteredNumberOfPhotosText);
+            if (filterApplied) {
+                filteredNumberOfPhotosText.setText(numberOfImagesToShow + "/18");
+            } else {
+                filteredNumberOfPhotosText.setText("");
+            }
         }
+        else if (requestCode==200) {
+            switch (getIntent().getStringExtra("eventName")) {
+                case "Graduation":
+                    new_images_selected.add(R.drawable.m3_grad);
+                    break;
+                case "Halloween":
+                    new_images_selected.add(R.drawable.m3_hal);
+                    break;
+                case "Birthday":
+                    new_images_selected.add(R.drawable.m3_bir);
+                    break;
+                case "Lakers Game":
+                    new_images_selected.add(R.drawable.m3_lal);
+                    break;
+            }
+        }
+        customAdapter = new CustomAdapter(new_images_selected, this);
+        gridView.setAdapter(customAdapter);
         customAdapter.notifyDataSetChanged();
+        generateInitialView();
     }
 
 
@@ -221,6 +263,18 @@ public class ImageGridActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
+        if (mBound) generateInitialView();
     }
 
+    private void generateInitialView() {
+        TextView topLabel = (TextView) findViewById(R.id.eventName);
+        topLabel.setText(getIntent().getStringExtra("eventName"));
+        FloatingActionButton filter = findViewById(R.id.filter);
+        if (filterApplied) {
+            filter.setImageResource(R.drawable.ic_filter_filtering_icon);
+        }
+        else {
+            filter.setImageResource(R.drawable.ic_filter_off_icon);
+        }
+    }
 }
