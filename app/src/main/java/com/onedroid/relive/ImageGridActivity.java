@@ -188,10 +188,10 @@ public class ImageGridActivity extends AppCompatActivity {
                     break;
             }
         }
-            customAdapter = new CustomAdapter(new_images_selected, this);
-            gridView.setAdapter(customAdapter);
-            customAdapter.notifyDataSetChanged();
-            generateInitialView();
+        customAdapter = new CustomAdapter(new_images_selected, this);
+        gridView.setAdapter(customAdapter);
+        customAdapter.notifyDataSetChanged();
+        generateInitialView();
     }
 
 
@@ -267,18 +267,15 @@ public class ImageGridActivity extends AppCompatActivity {
         if (mBound) generateInitialView();
     }
 
-        private void generateInitialView() {
-            TextView topLabel = (TextView) findViewById(R.id.eventName);
-            topLabel.setText(getIntent().getStringExtra("eventName"));
-            FloatingActionButton filter = findViewById(R.id.filter);
-            if (filterApplied) {
-                filter.setImageResource(R.drawable.ic_filter_filtering_icon);
-            }
-            else {
-                filter.setImageResource(R.drawable.ic_filter_off_icon);
-            }
+    private void generateInitialView() {
+        TextView topLabel = (TextView) findViewById(R.id.eventName);
+        topLabel.setText(getIntent().getStringExtra("eventName"));
+        FloatingActionButton filter = findViewById(R.id.filter);
+        if (filterApplied) {
+            filter.setImageResource(R.drawable.ic_filter_filtering_icon);
+        }
+        else {
+            filter.setImageResource(R.drawable.ic_filter_off_icon);
         }
     }
-
-
 }
