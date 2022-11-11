@@ -153,11 +153,10 @@ public class ImageGridActivity extends AppCompatActivity {
         startActivityForResult(Intent.createChooser(i, "Select Picture"), 200);
     }
 
-    @Override
     public void onActivityResult (int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         List<Integer> new_images_selected = images_selected;
-        if (resultCode == Activity.RESULT_OK && requestCode == FILTER_ACTIVITY_CODE) {
+        if (requestCode == FILTER_ACTIVITY_CODE) {
             filterApplied = data.getBooleanExtra("filterApplied", false);
             contributorSwitchIsChecked = data.getBooleanExtra("contributorSwitchIsChecked", false);
             timeSwitchIsChecked = data.getBooleanExtra("timeSwitchIsChecked", false);
@@ -249,7 +248,6 @@ public class ImageGridActivity extends AppCompatActivity {
             AccountService.AccountBinder binder = (AccountService.AccountBinder) service;
             mService = binder.getService();
             mBound = true;
-            generateInitialView();
         }
 
         /**
@@ -281,3 +279,6 @@ public class ImageGridActivity extends AppCompatActivity {
             }
         }
     }
+
+
+}
