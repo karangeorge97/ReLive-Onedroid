@@ -1,6 +1,75 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".ShareEvent"
+    android:layout_margin="@dimen/fab_margin">
 
-</LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_margin="@dimen/text_margin">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Add Guests"
+            android:textIsSelectable="false"
+            android:textSize="30dp" />
+    </LinearLayout>
+
+<!-- text box to add user with add button -->
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_margin="@dimen/text_margin"
+        android:background="@drawable/customborder">
+
+        <EditText
+            android:id="@+id/add_user_input"
+            android:text="Username"
+            android:layout_height="wrap_content"
+            android:layout_width="0dp"
+            android:layout_weight="0.7"
+            android:inputType="text"/>
+
+        <Button
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.3"
+            android:layout_marginHorizontal="10dp"
+            android:layout_alignParentRight="true"
+            android:text="Add"
+            android:layout_toEndOf="@+id/add_user_input"
+    </LinearLayout>
+
+<!-- List of currently added guests -->
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_margin="@dimen/text_margin"
+        android:background="@drawable/customborder">
+
+        <Button
+            android:id="@+id/button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_margin="10dp"
+            android:layout_weight="1"
+            android:onClick=""
+            android:text="Done" />
+<!--        on click go back to create_event screen -->
+<!--        will share screen be accessible once the event already exists
+or only while being created?-->
+
+    </LinearLayout>

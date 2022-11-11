@@ -98,6 +98,7 @@
             android:text="[widget value]"
             android:layout_marginHorizontal="25dp"
             />
+<!--        text should be the date from the start_datepicker widget-->
         <Button
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
