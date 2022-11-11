@@ -117,12 +117,16 @@ public class ImageGridActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Intent filterActivityIntent = new Intent(ImageGridActivity.this,FilteringActivity.class);
+                String fromDate = mService.getEvent(getIntent().getStringExtra("eventName")).getFromDate();
+                String toDate = mService.getEvent(getIntent().getStringExtra("eventName")).getToDate();
                 filterActivityIntent.putExtra("eventName",getIntent().getStringExtra("eventName"));
                 filterActivityIntent.putExtra("contributorSwitchIsChecked", contributorSwitchIsChecked);
                 filterActivityIntent.putExtra("timeSwitchIsChecked", timeSwitchIsChecked);
                 filterActivityIntent.putExtra("leftThumbPosition",leftThumbPosition);
                 filterActivityIntent.putExtra("rightThumbPosition",rightThumbPosition);
                 filterActivityIntent.putExtra("selectedUsers",selectedUsers);
+                filterActivityIntent.putExtra("fromDate",fromDate);
+                filterActivityIntent.putExtra("toDate",toDate);
                 startActivityForResult(filterActivityIntent,FILTER_ACTIVITY_CODE);
             }
         });

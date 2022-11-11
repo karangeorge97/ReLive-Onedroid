@@ -53,6 +53,10 @@ public class FilteringActivity extends AppCompatActivity {
         SwitchMaterial contributorSwitch = (SwitchMaterial) findViewById(R.id.contributorSwitch);
         SwitchMaterial timeSwitch = (SwitchMaterial) findViewById(R.id.timeSwitch);
         RangeSlider timeRangeSlider = (RangeSlider) findViewById(R.id.timeRangeSlider);
+        TextView fromDate = findViewById(R.id.fromDate);
+        fromDate.setText(getIntent().getStringExtra("fromDate"));
+        TextView toDate = findViewById(R.id.toDate);
+        toDate.setText(getIntent().getStringExtra("toDate"));
         AvatarView atharvAvatar = (AvatarView) findViewById(R.id.atharv);
         AvatarView jaiminAvatar = (AvatarView) findViewById(R.id.jaimin);
         AvatarView yadnikiAvatar = (AvatarView) findViewById(R.id.yadniki);

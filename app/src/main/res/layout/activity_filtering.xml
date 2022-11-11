@@ -207,6 +207,7 @@
                 android:id="@+id/timeDatesLinearLayout">
 
                 <TextView
+                    android:id="@+id/fromDate"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="10/23/2022"/>
@@ -217,6 +218,7 @@
                     android:layout_weight="1" />
 
                 <TextView
+                    android:id="@+id/toDate"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="10/24/2022"/>

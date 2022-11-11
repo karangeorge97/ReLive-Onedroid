@@ -62,6 +62,14 @@ public class AccountService extends Service {
         return this.events;
     }
 
+    public Event getEvent(String eventName) throws IllegalArgumentException{
+        for(Event e : this.events)
+        {
+            if(eventName.equals(e.getName()))
+                return e;
+        }
+        throw new IllegalArgumentException("No such event");
+    }
 
     /**
      * retrieves Events that were added to user's account
