@@ -45,11 +45,11 @@ public class ImageGridActivity extends AppCompatActivity {
 
     List<Integer>images_grad = new ArrayList<>();
 
-    List<Integer> images_bir= new ArrayList<>();;
+    List<Integer> images_bir= new ArrayList<>();
 
-    List<Integer>images_hal= new ArrayList<>();;
+    List<Integer>images_hal= new ArrayList<>();
 
-    List<Integer>images_lal= new ArrayList<>();;
+    List<Integer>images_lal= new ArrayList<>();
 
 
 
