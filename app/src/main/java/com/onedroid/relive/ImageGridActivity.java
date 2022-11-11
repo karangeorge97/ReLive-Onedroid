@@ -39,7 +39,7 @@ public class ImageGridActivity extends AppCompatActivity {
     boolean contributorSwitchIsChecked = false;
     boolean timeSwitchIsChecked = false;
     float leftThumbPosition = 0.0f;
-    float rightThumbPosition = 100.0f;
+    float rightThumbPosition = 24.0f;
     boolean[] selectedUsers = new boolean[5];
 
     List<Integer> images_selected = new ArrayList<>();
@@ -162,7 +162,7 @@ public class ImageGridActivity extends AppCompatActivity {
             timeSwitchIsChecked = data.getBooleanExtra("timeSwitchIsChecked", false);
             int numberOfImagesToShow = data.getIntExtra("numberOfImagesToShow", images_selected.size());
             leftThumbPosition = data.getFloatExtra("leftThumbPosition", 0.0f);
-            rightThumbPosition = data.getFloatExtra("rightThumbPosition", 100.0f);
+            rightThumbPosition = data.getFloatExtra("rightThumbPosition", 24.0f);
             selectedUsers = data.getBooleanArrayExtra("selectedUsers");
             new_images_selected = images_selected.subList(0, numberOfImagesToShow);
             TextView filteredNumberOfPhotosText = (TextView) findViewById(R.id.filteredNumberOfPhotosText);

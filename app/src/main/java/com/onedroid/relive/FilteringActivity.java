@@ -28,7 +28,6 @@ import io.getstream.avatarview.AvatarView;
 
 public class FilteringActivity extends AppCompatActivity {
 
-    // Filter thumb range should make sense
     // Pick up start and end dates from event
     // Style everything
     // Dynamically render users with names
@@ -47,7 +46,7 @@ public class FilteringActivity extends AppCompatActivity {
         isContributorSwitchChecked = getIntent().getBooleanExtra("contributorSwitchIsChecked",false);
         isTimeSwitchChecked = getIntent().getBooleanExtra("timeSwitchIsChecked",false);
         leftThumbPosition = getIntent().getFloatExtra("leftThumbPosition",0);
-        rightThumbPosition = getIntent().getFloatExtra("rightThumbPosition",100);
+        rightThumbPosition = getIntent().getFloatExtra("rightThumbPosition",24);
         selectedUsers = getIntent().getBooleanArrayExtra("selectedUsers")!=null?getIntent().getBooleanArrayExtra("selectedUsers"):new boolean[5];
 
         Button applyButton = findViewById(R.id.applyButton);

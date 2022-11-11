@@ -196,7 +196,8 @@
                 android:contentDescription="@string/slider_content_description"
                 app:values="@array/slider_initial_range_values"
                 android:valueFrom="0"
-                android:valueTo="100"
+                android:valueTo="24"
+                android:stepSize="1.0"
                 />
 
             <LinearLayout
