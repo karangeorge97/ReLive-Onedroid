@@ -2,6 +2,7 @@ package com.onedroid.relive;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.Activity;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
@@ -155,7 +156,7 @@ public class ImageGridActivity extends AppCompatActivity {
     public void onActivityResult (int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         List<Integer> new_images_selected = images_selected;
-        if (requestCode == FILTER_ACTIVITY_CODE) {
+        if (resultCode==Activity.RESULT_OK && requestCode == FILTER_ACTIVITY_CODE) {
             filterApplied = data.getBooleanExtra("filterApplied", false);
             contributorSwitchIsChecked = data.getBooleanExtra("contributorSwitchIsChecked", false);
             timeSwitchIsChecked = data.getBooleanExtra("timeSwitchIsChecked", false);
