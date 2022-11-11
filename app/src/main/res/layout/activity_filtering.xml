@@ -8,15 +8,16 @@
     android:noHistory="true"
     android:layout_margin="@dimen/text_margin"
     android:background="@drawable/customborder"
-    android:layout_gravity="center">
-
-    <!--    TODO: Atharv - Style this -->
+    android:layout_gravity="center"
+    android:id="@+id/mainLayout"
+    >
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:gravity="center">
+        android:gravity="center"
+       >
 
         <TextView
             android:layout_width="wrap_content"
@@ -34,18 +35,19 @@
             android:layout_marginRight="10dp"
             android:layout_marginLeft="10dp">
 
-            <Switch
+            <com.google.android.material.switchmaterial.SwitchMaterial
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:text="Contributor"/>
+                android:text="Contributor"
+                android:id="@+id/contributorSwitch"/>
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
-                android:layout_marginTop="20dp">
-
-                <!--                TODO: Atharv - Make users clickable -->
+                android:layout_marginTop="20dp"
+                android:enabled="false"
+                android:id="@+id/contributorsLinearLayout">
 
                 <LinearLayout
                     android:layout_width="wrap_content"
@@ -54,16 +56,20 @@
                     android:layout_marginRight="5dp"
                     android:gravity="center">
 
-                    <ImageButton
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="right"
-                        android:src="@drawable/ic_filter_off_icon" />
+                    <io.getstream.avatarview.AvatarView
+                        android:layout_width="50dp"
+                        android:layout_height="50dp"
+                        app:avatarViewBorderWidth="0dp"
+                        app:avatarViewShape="circle"
+                        android:src="@drawable/atharv"
+                        app:avatarViewBorderColor="#800080"
+                        android:id="@+id/atharv"
+                        />
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Name"/>
+                        android:text="Atharv"/>
 
                 </LinearLayout>
 
@@ -74,16 +80,92 @@
                     android:layout_marginRight="5dp"
                     android:gravity="center">
 
-                    <ImageButton
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="right"
-                        android:src="@drawable/ic_filter_off_icon" />
+                    <io.getstream.avatarview.AvatarView
+                        android:layout_width="50dp"
+                        android:layout_height="50dp"
+                        app:avatarViewBorderWidth="0dp"
+                        app:avatarViewShape="circle"
+                        app:avatarViewBorderColor="#800080"
+                        android:src="@drawable/jaimin"
+                        android:id="@+id/jaimin"
+                        />
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Name"/>
+                        android:text="Jaimin"/>
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:layout_marginRight="5dp"
+                    android:gravity="center">
+
+                    <io.getstream.avatarview.AvatarView
+                        android:layout_width="50dp"
+                        android:layout_height="50dp"
+                        app:avatarViewBorderWidth="0dp"
+                        app:avatarViewShape="circle"
+                        app:avatarViewBorderColor="#800080"
+                        android:src="@drawable/yadniki"
+                        android:id="@+id/yadniki"
+                        />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Yadniki"/>
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:layout_marginRight="5dp"
+                    android:gravity="center">
+
+                    <io.getstream.avatarview.AvatarView
+                        android:layout_width="50dp"
+                        android:layout_height="50dp"
+                        app:avatarViewBorderWidth="0dp"
+                        app:avatarViewShape="circle"
+                        app:avatarViewBorderColor="#800080"
+                        android:src="@drawable/tony"
+                        android:id="@+id/tony"
+                        />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Tony"/>
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:layout_marginRight="5dp"
+                    android:gravity="center">
+
+                    <io.getstream.avatarview.AvatarView
+                        android:layout_width="50dp"
+                        android:layout_height="50dp"
+                        app:avatarViewBorderWidth="0dp"
+                        app:avatarViewShape="circle"
+                        app:avatarViewBorderColor="#800080"
+                        android:src="@drawable/karan"
+                        android:id="@+id/karan"
+                        />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Karan"/>
 
                 </LinearLayout>
 
@@ -98,28 +180,30 @@
             android:background="@drawable/customborder"
             android:layout_marginTop="40dp"
             android:layout_marginRight="10dp"
-            android:layout_marginLeft="10dp">
+            android:layout_marginLeft="10dp"
+            android:id="@+id/timeLinearLayout">
 
-            <Switch
+            <com.google.android.material.switchmaterial.SwitchMaterial
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:text="Time" />
-
-            <!--        TODO: Atharv - Pick up start and end dates from the event -->
+                android:text="Time"
+                android:id="@+id/timeSwitch"/>
 
             <com.google.android.material.slider.RangeSlider
-                android:id="@+id/range_slider"
+                android:id="@+id/timeRangeSlider"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:contentDescription="@string/slider_content_description"
                 app:values="@array/slider_initial_range_values"
-                android:valueFrom="0.0"
-                android:valueTo="100.0" />
+                android:valueFrom="0"
+                android:valueTo="100"
+                />
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal">
+                android:orientation="horizontal"
+                android:id="@+id/timeDatesLinearLayout">
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -140,7 +224,7 @@
         </LinearLayout>
 
         <Button
-            android:id="@+id/containedButton"
+            android:id="@+id/applyButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Apply"
