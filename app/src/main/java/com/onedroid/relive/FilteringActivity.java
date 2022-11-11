@@ -32,7 +32,6 @@ public class FilteringActivity extends AppCompatActivity {
     // Pick up start and end dates from event
     // Style everything
     // Dynamically render users with names
-    // Horizontal Scrollable Images
 
     boolean isContributorSwitchChecked;
     boolean isTimeSwitchChecked;
