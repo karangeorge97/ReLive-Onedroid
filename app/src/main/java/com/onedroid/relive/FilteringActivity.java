@@ -8,20 +8,37 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.view.View;
+import android.view.animation.LinearInterpolator;
 import android.widget.Button;
 import android.widget.CompoundButton;
+import android.widget.DatePicker;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.Switch;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.google.android.material.datepicker.CalendarConstraints;
+import com.google.android.material.datepicker.CompositeDateValidator;
+import com.google.android.material.datepicker.DateValidatorPointBackward;
+import com.google.android.material.datepicker.DateValidatorPointForward;
+import com.google.android.material.datepicker.MaterialDatePicker;
+import com.google.android.material.datepicker.MaterialPickerOnPositiveButtonClickListener;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.slider.RangeSlider;
 import com.google.android.material.switchmaterial.SwitchMaterial;
+import com.google.android.material.timepicker.MaterialTimePicker;
+import com.google.android.material.timepicker.TimeFormat;
 import com.onedroid.relive.service.AccountService;
 
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 import io.getstream.avatarview.AvatarView;
 
@@ -34,9 +51,17 @@ public class FilteringActivity extends AppCompatActivity {
 
     boolean isContributorSwitchChecked;
     boolean isTimeSwitchChecked;
-    float leftThumbPosition;
-    float rightThumbPosition;
     boolean[] selectedUsers;
+    String fromDate;
+    String toDate;
+    long initialDateInMillis;
+    long finalDateInMillis;
+    long fromDateInMillis;
+    long toDateInMillis;
+    int fromTimeHours = 0;
+    int fromTimeMinutes = 0;
+    int toTimeHours = 23;
+    int toTimeMinutes = 59;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,25 +70,153 @@ public class FilteringActivity extends AppCompatActivity {
 
         isContributorSwitchChecked = getIntent().getBooleanExtra("contributorSwitchIsChecked",false);
         isTimeSwitchChecked = getIntent().getBooleanExtra("timeSwitchIsChecked",false);
-        leftThumbPosition = getIntent().getFloatExtra("leftThumbPosition",0);
-        rightThumbPosition = getIntent().getFloatExtra("rightThumbPosition",24);
         selectedUsers = getIntent().getBooleanArrayExtra("selectedUsers")!=null?getIntent().getBooleanArrayExtra("selectedUsers"):new boolean[5];
 
         Button applyButton = findViewById(R.id.applyButton);
         SwitchMaterial contributorSwitch = (SwitchMaterial) findViewById(R.id.contributorSwitch);
         SwitchMaterial timeSwitch = (SwitchMaterial) findViewById(R.id.timeSwitch);
-        RangeSlider timeRangeSlider = (RangeSlider) findViewById(R.id.timeRangeSlider);
-        TextView fromDate = findViewById(R.id.fromDate);
-        fromDate.setText(getIntent().getStringExtra("fromDate"));
-        TextView toDate = findViewById(R.id.toDate);
-        toDate.setText(getIntent().getStringExtra("toDate"));
+        fromDateInMillis = getIntent().getLongExtra("fromDateInMillis",0);
+        initialDateInMillis = getIntent().getLongExtra("initialDateInMillis",0);
+        toDateInMillis = getIntent().getLongExtra("toDateInMillis",0);
+        finalDateInMillis = getIntent().getLongExtra("finalDateInMillis",0);
+        fromTimeHours = getIntent().getIntExtra("fromTimeHours",0);
+        fromTimeMinutes = getIntent().getIntExtra("fromTimeMinutes",0);
+        toTimeHours = getIntent().getIntExtra("toTimeHours",23);
+        toTimeMinutes = getIntent().getIntExtra("toTimeMinutes",59);
+        DateFormat df = new SimpleDateFormat("MMM dd, yyyy");
+        fromDate = df.format(new Date(fromDateInMillis));
+        toDate = df.format(new Date(toDateInMillis));
+
         AvatarView atharvAvatar = (AvatarView) findViewById(R.id.atharv);
         AvatarView jaiminAvatar = (AvatarView) findViewById(R.id.jaimin);
         AvatarView yadnikiAvatar = (AvatarView) findViewById(R.id.yadniki);
         AvatarView tonyAvatar = (AvatarView) findViewById(R.id.tony);
         AvatarView karanAvatar = (AvatarView) findViewById(R.id.karan);
 
+        Button fromDateButton = (Button) findViewById(R.id.fromDateButton);
+        Button toDateButton = (Button) findViewById(R.id.toDateButton);
+        Button fromTimeButton = (Button) findViewById(R.id.fromTimeButton);
+        Button toTimeButton = (Button) findViewById(R.id.toTimeButton);
+
+        MaterialDatePicker.Builder materialDateBuilder = MaterialDatePicker.Builder.datePicker();
+
         generateView();
+
+        fromDateButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(isTimeSwitchChecked) {
+                    CalendarConstraints.Builder calendarConstraintsBuilder = new CalendarConstraints.Builder();
+                    CalendarConstraints.DateValidator dateValidatorMin = DateValidatorPointForward.from(initialDateInMillis-86400000);
+                    CalendarConstraints.DateValidator dateValidatorMax = DateValidatorPointBackward.before(finalDateInMillis);
+                    ArrayList<CalendarConstraints.DateValidator> listValidators = new ArrayList<>();
+                    listValidators.add(dateValidatorMin);
+                    listValidators.add(dateValidatorMax);
+                    CalendarConstraints.DateValidator validators = CompositeDateValidator.allOf(listValidators);
+                    CalendarConstraints calendarConstraints = calendarConstraintsBuilder
+                            .setValidator(validators)
+                            .build();
+
+                    MaterialDatePicker fromMaterialDatePicker = materialDateBuilder
+                            .setTitleText("Select a from date")
+                            .setCalendarConstraints(calendarConstraints)
+                            .setSelection(fromDateInMillis)
+                            .build();
+                    fromMaterialDatePicker.show(getSupportFragmentManager(), "FROM_MATERIAL_DATE_PICKER");
+
+                    fromMaterialDatePicker.addOnPositiveButtonClickListener(new MaterialPickerOnPositiveButtonClickListener() {
+                        @Override
+                        public void onPositiveButtonClick(Object selection) {
+                            fromDate = fromMaterialDatePicker.getHeaderText();
+                            fromDateInMillis = getMillisFromDate(fromDate);
+                            generateView();
+                        }
+                    });
+                }
+            }
+        });
+
+        toDateButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(isTimeSwitchChecked) {
+                    CalendarConstraints.Builder calendarConstraintsBuilder = new CalendarConstraints.Builder();
+                    CalendarConstraints.DateValidator dateValidatorMin = DateValidatorPointForward.from(initialDateInMillis - 86400000);
+                    CalendarConstraints.DateValidator dateValidatorMax = DateValidatorPointBackward.before(finalDateInMillis);
+                    ArrayList<CalendarConstraints.DateValidator> listValidators = new ArrayList<>();
+                    listValidators.add(dateValidatorMin);
+                    listValidators.add(dateValidatorMax);
+                    CalendarConstraints.DateValidator validators = CompositeDateValidator.allOf(listValidators);
+                    CalendarConstraints calendarConstraints = calendarConstraintsBuilder
+                            .setValidator(validators)
+                            .build();
+
+                    MaterialDatePicker toMaterialDatePicker = materialDateBuilder
+                            .setTitleText("Select a to date")
+                            .setCalendarConstraints(calendarConstraints)
+                            .setSelection(toDateInMillis)
+                            .build();
+                    toMaterialDatePicker.show(getSupportFragmentManager(), "TO_MATERIAL_DATE_PICKER");
+
+                    toMaterialDatePicker.addOnPositiveButtonClickListener(new MaterialPickerOnPositiveButtonClickListener() {
+                        @Override
+                        public void onPositiveButtonClick(Object selection) {
+                            toDate = toMaterialDatePicker.getHeaderText();
+                            toDateInMillis = getMillisFromDate(toDate);
+                            generateView();
+                        }
+                    });
+                }
+            }
+        });
+
+        fromTimeButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(isTimeSwitchChecked) {
+                    MaterialTimePicker fromMaterialTimePicker = new MaterialTimePicker.Builder()
+                            .setTimeFormat(TimeFormat.CLOCK_12H)
+                            .setHour(fromTimeHours)
+                            .setMinute(fromTimeMinutes)
+                            .setTitleText("Select a from time")
+                            .build();
+                    fromMaterialTimePicker.show(getSupportFragmentManager(), "FROM_MATERIAL_TIME_PICKER");
+
+                    fromMaterialTimePicker.addOnPositiveButtonClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            fromTimeMinutes = fromMaterialTimePicker.getMinute();
+                            fromTimeHours = fromMaterialTimePicker.getHour();
+                            generateView();
+                        }
+                    });
+                }
+            }
+        });
+
+        toTimeButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(isTimeSwitchChecked) {
+                    MaterialTimePicker toMaterialTimePicker = new MaterialTimePicker.Builder()
+                            .setTimeFormat(TimeFormat.CLOCK_12H)
+                            .setHour(toTimeHours)
+                            .setMinute(toTimeMinutes)
+                            .setTitleText("Select a to time")
+                            .build();
+                    toMaterialTimePicker.show(getSupportFragmentManager(), "FROM_MATERIAL_TIME_PICKER");
+
+                    toMaterialTimePicker.addOnPositiveButtonClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            toTimeMinutes = toMaterialTimePicker.getMinute();
+                            toTimeHours = toMaterialTimePicker.getHour();
+                            generateView();
+                        }
+                    });
+                }
+            }
+        });
 
         applyButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -72,12 +225,16 @@ public class FilteringActivity extends AppCompatActivity {
                 int numberOfImages = 18;
 
                 //Calculating fraction based on time range
-                leftThumbPosition = timeRangeSlider.getValues().get(0);
-                rightThumbPosition = timeRangeSlider.getValues().get(1);
-                float valueFrom = timeRangeSlider.getValueFrom();
-                float valueTo = timeRangeSlider.getValueTo();
-                double timeFraction = Math.abs(rightThumbPosition-leftThumbPosition)/Math.abs(valueTo-valueFrom);
-                if (!isTimeSwitchChecked) timeFraction=1;
+                long diff = (toDateInMillis-fromDateInMillis)/60000 + (toTimeHours-fromTimeHours)*60 + (toTimeMinutes-fromTimeMinutes);
+                long maxdiff = (finalDateInMillis-initialDateInMillis)/60000 + 1440;
+                if (diff<0) {
+                    Toast toast = Toast.makeText(getApplicationContext(),
+                            "Choose a \"From\" date and time before the \"To\" date and time",
+                            Toast.LENGTH_SHORT);
+                    toast.show();
+                    return;
+                }
+                double timeFraction = diff/maxdiff;
 
                 //Calculating fraction based on contributors selected
                 double contributorFraction = 0.0;
@@ -90,12 +247,16 @@ public class FilteringActivity extends AppCompatActivity {
                 imageGridActivityIntent.putExtra("filterApplied",isContributorSwitchChecked||isTimeSwitchChecked);
                 imageGridActivityIntent.putExtra("contributorSwitchIsChecked",isContributorSwitchChecked);
                 imageGridActivityIntent.putExtra("timeSwitchIsChecked",isTimeSwitchChecked);
-                imageGridActivityIntent.putExtra("leftThumbPosition",leftThumbPosition);
-                imageGridActivityIntent.putExtra("rightThumbPosition",rightThumbPosition);
-                numberOfImages = (int)(numberOfImages*timeFraction*contributorFraction);
+                numberOfImages = (int)(numberOfImages*contributorFraction*timeFraction);
                 if(numberOfImages<=2) numberOfImages+=3;
                 imageGridActivityIntent.putExtra("numberOfImagesToShow",numberOfImages);
+                imageGridActivityIntent.putExtra("fromDateInMillis", fromDateInMillis);
+                imageGridActivityIntent.putExtra("toDateInMillis",toDateInMillis);
                 imageGridActivityIntent.putExtra("selectedUsers",selectedUsers);
+                imageGridActivityIntent.putExtra("fromTimeHours",fromTimeHours);
+                imageGridActivityIntent.putExtra("fromTimeMinutes",fromTimeMinutes);
+                imageGridActivityIntent.putExtra("toTimeHours",toTimeHours);
+                imageGridActivityIntent.putExtra("toTimeMinutes",toTimeMinutes);
                 setResult(Activity.RESULT_OK, imageGridActivityIntent);
                 finish();
             }
@@ -198,28 +359,29 @@ public class FilteringActivity extends AppCompatActivity {
         // All the components needed to generate the view
         SwitchMaterial contributorSwitch = (SwitchMaterial) findViewById(R.id.contributorSwitch);
         SwitchMaterial timeSwitch = (SwitchMaterial) findViewById(R.id.timeSwitch);
-        RangeSlider timeRangeSlider = (RangeSlider) findViewById(R.id.timeRangeSlider);
-        LinearLayout timeDatesLinearLayout = (LinearLayout) findViewById(R.id.timeDatesLinearLayout);
         LinearLayout contributorsLinearLayout = (LinearLayout) findViewById(R.id.contributorsLinearLayout);
         AvatarView atharvAvatar = (AvatarView) findViewById(R.id.atharv);
         AvatarView jaiminAvatar = (AvatarView) findViewById(R.id.jaimin);
         AvatarView yadnikiAvatar = (AvatarView) findViewById(R.id.yadniki);
         AvatarView tonyAvatar = (AvatarView) findViewById(R.id.tony);
         AvatarView karanAvatar = (AvatarView) findViewById(R.id.karan);
+        LinearLayout fromAndToButtonsLayout = (LinearLayout) findViewById(R.id.fromAndToButtonsLayout);
 
         // Handling the switches and their functionality
         contributorSwitch.setChecked(isContributorSwitchChecked);
         timeSwitch.setChecked(isTimeSwitchChecked);
-        timeRangeSlider.setEnabled(isTimeSwitchChecked);
-        timeRangeSlider.setBackgroundColor(isTimeSwitchChecked?Color.parseColor("white"):Color.parseColor("lightgrey"));
-        timeDatesLinearLayout.setBackgroundColor(isTimeSwitchChecked?Color.parseColor("white"):Color.parseColor("lightgrey"));
         contributorsLinearLayout.setBackgroundColor(isContributorSwitchChecked?Color.parseColor("white"):Color.parseColor("lightgrey"));
+        fromAndToButtonsLayout.setBackgroundColor(isTimeSwitchChecked?Color.parseColor("white"):Color.parseColor("lightgrey"));
 
-        // Handle Slider Functionality
-        List<Float> rangeSliderThumbPositions = new ArrayList<>();
-        rangeSliderThumbPositions.add(leftThumbPosition);
-        rangeSliderThumbPositions.add(rightThumbPosition);
-        timeRangeSlider.setValues(rangeSliderThumbPositions);
+        // Handle Dates Functionality
+        Button fromDateButton = (Button) findViewById(R.id.fromDateButton);
+        Button toDateButton = (Button) findViewById(R.id.toDateButton);
+        Button fromTimeButton = (Button) findViewById(R.id.fromTimeButton);
+        Button toTimeButton = (Button) findViewById(R.id.toTimeButton);
+        fromDateButton.setText(fromDate);
+        toDateButton.setText(toDate);
+        fromTimeButton.setText(String.format("%02d:%02d %s", fromTimeHours%12, fromTimeMinutes, fromTimeHours<12?"AM":"PM"));
+        toTimeButton.setText(String.format("%02d:%02d %s", toTimeHours%12, toTimeMinutes, toTimeHours<12?"AM":"PM"));
 
         // Handle Contributors Functionality
         atharvAvatar.setAvatarBorderWidth(selectedUsers[0]?10:0);
@@ -230,4 +392,14 @@ public class FilteringActivity extends AppCompatActivity {
 
     }
 
+    public long getMillisFromDate(String date) {
+        Calendar cal = Calendar.getInstance();
+        SimpleDateFormat sdf = new SimpleDateFormat("MMM dd, yyyy", Locale.ENGLISH);
+        try {
+            cal.setTime(sdf.parse(date));
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        return cal.getTimeInMillis();
+    }
 }

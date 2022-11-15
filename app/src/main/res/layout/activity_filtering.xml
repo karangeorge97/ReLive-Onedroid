@@ -189,41 +189,72 @@
                 android:text="Time"
                 android:id="@+id/timeSwitch"/>
 
-            <com.google.android.material.slider.RangeSlider
-                android:id="@+id/timeRangeSlider"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:contentDescription="@string/slider_content_description"
-                app:values="@array/slider_initial_range_values"
-                android:valueFrom="0"
-                android:valueTo="24"
-                android:stepSize="1.0"
-                />
-
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:id="@+id/timeDatesLinearLayout">
+                android:orientation="vertical"
+                android:id="@+id/fromAndToButtonsLayout">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
 
                 <TextView
-                    android:id="@+id/fromDate"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="10/23/2022"/>
+                    android:text="From:" />
 
                 <Space
                     android:layout_width="0dp"
                     android:layout_height="0dp"
                     android:layout_weight="1" />
 
-                <TextView
-                    android:id="@+id/toDate"
+                <Button
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="10/24/2022"/>
+                    android:text="Date"
+                    android:layout_marginRight="5dp"
+                    android:id="@+id/fromDateButton"/>
+
+                <Button
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Time"
+                    android:id="@+id/fromTimeButton"/>
 
             </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="To:" />
+
+                <Space
+                    android:layout_width="0dp"
+                    android:layout_height="0dp"
+                    android:layout_weight="1" />
+
+                <Button
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Date"
+                    android:layout_marginRight="5dp"
+                    android:id="@+id/toDateButton"/>
+
+                <Button
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Time"
+                    android:id="@+id/toTimeButton"/>
+
+            </LinearLayout>
+
+            </LinearLayout>
+
         </LinearLayout>
 
         <Button
@@ -235,9 +266,5 @@
             />
 
     </LinearLayout>
-
-
-
-
 
 </RelativeLayout>
