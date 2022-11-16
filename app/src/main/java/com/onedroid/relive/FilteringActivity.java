@@ -234,7 +234,8 @@ public class FilteringActivity extends AppCompatActivity {
                     toast.show();
                     return;
                 }
-                double timeFraction = diff/maxdiff;
+                //Cast to double int division was always returning 0 meaning the numberOfimages in was always 3
+                double timeFraction = (double) diff/maxdiff;
 
                 //Calculating fraction based on contributors selected
                 double contributorFraction = 0.0;
@@ -247,8 +248,11 @@ public class FilteringActivity extends AppCompatActivity {
                 imageGridActivityIntent.putExtra("filterApplied",isContributorSwitchChecked||isTimeSwitchChecked);
                 imageGridActivityIntent.putExtra("contributorSwitchIsChecked",isContributorSwitchChecked);
                 imageGridActivityIntent.putExtra("timeSwitchIsChecked",isTimeSwitchChecked);
-                numberOfImages = (int)(numberOfImages*contributorFraction*timeFraction);
-                if(numberOfImages<=2) numberOfImages+=3;
+               //Added this to indicate if no filters
+                if(isContributorSwitchChecked||isTimeSwitchChecked) {
+                    numberOfImages = (int) (numberOfImages * contributorFraction * timeFraction);
+                    if (numberOfImages <= 2) numberOfImages += 3;
+                }
                 imageGridActivityIntent.putExtra("numberOfImagesToShow",numberOfImages);
                 imageGridActivityIntent.putExtra("fromDateInMillis", fromDateInMillis);
                 imageGridActivityIntent.putExtra("toDateInMillis",toDateInMillis);
