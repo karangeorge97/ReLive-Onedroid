@@ -44,12 +44,6 @@ public class CreateEvent extends AppCompatActivity {
     AccountService mService;
     boolean mBound = false;
 
-    EditText eventName = (EditText) findViewById(R.id.eventName);
-    Button createEvent = (Button) findViewById(R.id.createEvent);
-    Button startDateButton = (Button) findViewById(R.id.start_date);
-    Button endDateButton = (Button) findViewById(R.id.end_date);
-    Button shareButton = (Button) findViewById(R.id.shareButton);
-
     String fromDate;
     String toDate;
     long initialDateInMillis;
@@ -63,6 +57,12 @@ public class CreateEvent extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_create_event);
+
+        EditText eventName = (EditText) findViewById(R.id.eventName);
+        Button createEvent = (Button) findViewById(R.id.createEvent);
+        Button startDateButton = (Button) findViewById(R.id.start_date);
+        Button endDateButton = (Button) findViewById(R.id.end_date);
+        Button shareButton = (Button) findViewById(R.id.shareButton);
 
         fromDateInMillis = getIntent().getLongExtra("fromDateInMillis",0);
         initialDateInMillis = getIntent().getLongExtra("initialDateInMillis",0);
@@ -78,7 +78,7 @@ public class CreateEvent extends AppCompatActivity {
         bindService(intent, connection, Context.BIND_AUTO_CREATE);
         setContentView(binding.getRoot());
 
-//        generateView();
+        generateView();
 
         createEvent.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -108,7 +108,7 @@ public class CreateEvent extends AppCompatActivity {
                         .build();
 
                 MaterialDatePicker fromMaterialDatePicker = materialDateBuilder
-                        .setTitleText("Select a from date")
+                        .setTitleText("Select a Start Date")
                         .setCalendarConstraints(calendarConstraints)
                         .setSelection(fromDateInMillis)
                         .build();
@@ -120,7 +120,7 @@ public class CreateEvent extends AppCompatActivity {
                         fromDate = fromMaterialDatePicker.getHeaderText();
                         startDateButton.setText(fromDate);
                         fromDateInMillis = getMillisFromDate(fromDate);
-//                        generateView();
+                        generateView();
                     }
                 });
             }
@@ -141,7 +141,7 @@ public class CreateEvent extends AppCompatActivity {
                         .build();
 
                 MaterialDatePicker toMaterialDatePicker = materialDateBuilder
-                        .setTitleText("Select a to date")
+                        .setTitleText("Select an End Date")
                         .setCalendarConstraints(calendarConstraints)
                         .setSelection(toDateInMillis)
                         .build();
@@ -205,6 +205,7 @@ public class CreateEvent extends AppCompatActivity {
     }
 
     private void generateView() {
+
         LinearLayout headerLL = (LinearLayout) findViewById(R.id.headerLL);
         LinearLayout eventNameLL =(LinearLayout) findViewById(R.id.EventNameLL);
         RelativeLayout FromToRL = (RelativeLayout) findViewById(R.id.FromToRL);
