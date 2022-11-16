@@ -23,8 +23,12 @@ import com.onedroid.relive.databinding.ActivityImageGridBinding;
 import com.onedroid.relive.service.AccountService;
 
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
+import java.util.Locale;
 
 public class ImageGridActivity extends AppCompatActivity {
 
@@ -38,9 +42,15 @@ public class ImageGridActivity extends AppCompatActivity {
     private final int FILTER_ACTIVITY_CODE = 1;
     boolean contributorSwitchIsChecked = false;
     boolean timeSwitchIsChecked = false;
-    float leftThumbPosition = 0.0f;
-    float rightThumbPosition = 100.0f;
     boolean[] selectedUsers = new boolean[5];
+    String initialDate;
+    String finalDate;
+    long fromDateInMillis;
+    long toDateInMillis;
+    int fromTimeHours = 0;
+    int fromTimeMinutes = 0;
+    int toTimeHours = 23;
+    int toTimeMinutes = 59;
 
     List<Integer> images_selected = new ArrayList<>();
 
@@ -90,8 +100,6 @@ public class ImageGridActivity extends AppCompatActivity {
 
         gridView = findViewById(R.id.gridView);
 
-
-
         ImageView topPhotoOne = findViewById(R.id.topPhoto1);
         topPhotoOne.setImageResource(images_selected.get(0));
         ImageView topPhotoTwo = findViewById(R.id.topPhoto2);
@@ -117,16 +125,22 @@ public class ImageGridActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Intent filterActivityIntent = new Intent(ImageGridActivity.this,FilteringActivity.class);
-                String fromDate = mService.getEvent(getIntent().getStringExtra("eventName")).getFromDate();
-                String toDate = mService.getEvent(getIntent().getStringExtra("eventName")).getToDate();
+                initialDate = mService.getEvent(getIntent().getStringExtra("eventName")).getFromDate();
+                finalDate = mService.getEvent(getIntent().getStringExtra("eventName")).getToDate();
+                if (fromDateInMillis == 0) fromDateInMillis = convertDateToTimeInMillis(initialDate);
+                if (toDateInMillis == 0) toDateInMillis = convertDateToTimeInMillis(finalDate);
                 filterActivityIntent.putExtra("eventName",getIntent().getStringExtra("eventName"));
                 filterActivityIntent.putExtra("contributorSwitchIsChecked", contributorSwitchIsChecked);
                 filterActivityIntent.putExtra("timeSwitchIsChecked", timeSwitchIsChecked);
-                filterActivityIntent.putExtra("leftThumbPosition",leftThumbPosition);
-                filterActivityIntent.putExtra("rightThumbPosition",rightThumbPosition);
                 filterActivityIntent.putExtra("selectedUsers",selectedUsers);
-                filterActivityIntent.putExtra("fromDate",fromDate);
-                filterActivityIntent.putExtra("toDate",toDate);
+                filterActivityIntent.putExtra("initialDateInMillis",convertDateToTimeInMillis(initialDate));
+                filterActivityIntent.putExtra("finalDateInMillis",convertDateToTimeInMillis(finalDate));
+                filterActivityIntent.putExtra("fromDateInMillis", fromDateInMillis);
+                filterActivityIntent.putExtra("toDateInMillis", toDateInMillis);
+                filterActivityIntent.putExtra("fromTimeHours", fromTimeHours);
+                filterActivityIntent.putExtra("fromTimeMinutes",fromTimeMinutes);
+                filterActivityIntent.putExtra("toTimeHours", toTimeHours);
+                filterActivityIntent.putExtra("toTimeMinutes", toTimeMinutes);
                 startActivityForResult(filterActivityIntent,FILTER_ACTIVITY_CODE);
             }
         });
@@ -165,11 +179,16 @@ public class ImageGridActivity extends AppCompatActivity {
             contributorSwitchIsChecked = data.getBooleanExtra("contributorSwitchIsChecked", false);
             timeSwitchIsChecked = data.getBooleanExtra("timeSwitchIsChecked", false);
             int numberOfImagesToShow = data.getIntExtra("numberOfImagesToShow", images_selected.size());
-            leftThumbPosition = data.getFloatExtra("leftThumbPosition", 0.0f);
-            rightThumbPosition = data.getFloatExtra("rightThumbPosition", 100.0f);
             selectedUsers = data.getBooleanArrayExtra("selectedUsers");
+            fromTimeHours = data.getIntExtra("fromTimeHours",0);
+            toTimeHours = data.getIntExtra("toTimeHours",23);
+            fromTimeMinutes = data.getIntExtra("fromTimeMinutes", 0);
+            toTimeMinutes = data.getIntExtra("toTimeMinutes",59);
+            fromDateInMillis = data.getLongExtra("fromDateInMillis",0);
+            toDateInMillis = data.getLongExtra("toDateInMillis",0);
             new_images_selected = images_selected.subList(0, numberOfImagesToShow);
             TextView filteredNumberOfPhotosText = (TextView) findViewById(R.id.filteredNumberOfPhotosText);
+
             if (filterApplied) {
                 filteredNumberOfPhotosText.setText(numberOfImagesToShow + "/18");
             } else {
@@ -281,5 +300,16 @@ public class ImageGridActivity extends AppCompatActivity {
         else {
             filter.setImageResource(R.drawable.ic_filter_off_icon);
         }
+    }
+
+    private long convertDateToTimeInMillis(String date) {
+        Calendar cal = Calendar.getInstance();
+        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy", Locale.ENGLISH);
+        try {
+            cal.setTime(sdf.parse(date));
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        return cal.getTimeInMillis();
     }
 }
