@@ -236,6 +236,7 @@ public class FilteringActivity extends AppCompatActivity {
                 }
                 //Cast to double int division was always returning 0 meaning the numberOfimages in was always 3
                 double timeFraction = (double) diff/maxdiff;
+                if(!isTimeSwitchChecked || timeFraction==0) timeFraction = 1;
 
                 //Calculating fraction based on contributors selected
                 double contributorFraction = 0.0;
