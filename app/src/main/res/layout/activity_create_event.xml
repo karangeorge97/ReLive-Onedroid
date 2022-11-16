@@ -33,7 +33,7 @@
         android:background="@drawable/customborder">
 
         <EditText
-            android:id="@+id/plain_text_input"
+            android:id="@+id/eventName"
             android:text="Event Name"
             android:layout_height="wrap_content"
             android:layout_width="match_parent"
@@ -96,7 +96,7 @@
             android:onClick="[OPEN DATEPICKER]"
             android:id="@+id/start_date"
             android:text="[widget value]"
-            android:layout_marginHorizontal="25dp"
+            android:layout_marginHorizontal="20dp"
             />
 <!--        text should be the date from the start_datepicker widget-->
         <Button
@@ -107,7 +107,7 @@
             android:layout_alignParentRight="true"
             android:id="@+id/end_date"
             android:text="[widget value]"
-            android:layout_marginHorizontal="25dp"
+            android:layout_marginHorizontal="20dp"
             />
     </RelativeLayout>
 
@@ -116,6 +116,7 @@
         android:layout_height="wrap_content"
         android:layout_margin="16dp">
         <Button
+            android:id="@+id/shareButton"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="25dp"
@@ -123,22 +124,21 @@
     </LinearLayout>
 
 
-    <LinearLayout
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         android:orientation="horizontal"
-        android:layout_margin="@dimen/text_margin"
-        android:background="@drawable/customborder">
+        android:layout_margin="@dimen/text_margin">
 
         <Button
-            android:id="@+id/button"
-            android:layout_width="wrap_content"
+            android:id="@+id/createEvent"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_gravity="center"
+            android:layout_gravity="center|bottom"
             android:layout_margin="10dp"
-            android:layout_weight="1"
+            android:layout_alignParentBottom="true"
             android:onClick="[main activity]"
             android:text="Create Event" />
 
-    </LinearLayout>
+    </RelativeLayout>
 </LinearLayout>
