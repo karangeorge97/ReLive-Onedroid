@@ -11,6 +11,9 @@ import android.os.IBinder;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
+import android.widget.TextView;
 
 import com.google.android.material.datepicker.CalendarConstraints;
 import com.google.android.material.datepicker.CompositeDateValidator;
@@ -22,6 +25,8 @@ import com.onedroid.relive.databinding.ActivityCreateEventBinding;
 import com.onedroid.relive.databinding.ActivityMainBinding;
 import com.onedroid.relive.model.Event;
 import com.onedroid.relive.service.AccountService;
+
+import org.w3c.dom.Text;
 
 import java.text.DateFormat;
 import java.text.ParseException;
@@ -73,7 +78,7 @@ public class CreateEvent extends AppCompatActivity {
         bindService(intent, connection, Context.BIND_AUTO_CREATE);
         setContentView(binding.getRoot());
 
-        generateView();
+//        generateView();
 
         createEvent.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -113,8 +118,9 @@ public class CreateEvent extends AppCompatActivity {
                     @Override
                     public void onPositiveButtonClick(Object selection) {
                         fromDate = fromMaterialDatePicker.getHeaderText();
+                        startDateButton.setText(fromDate);
                         fromDateInMillis = getMillisFromDate(fromDate);
-                        generateView();
+//                        generateView();
                     }
                 });
             }
@@ -145,6 +151,7 @@ public class CreateEvent extends AppCompatActivity {
                     @Override
                     public void onPositiveButtonClick(Object selection) {
                         toDate = toMaterialDatePicker.getHeaderText();
+                        endDateButton.setText("toDate");
                         toDateInMillis = getMillisFromDate(toDate);
                         generateView();
                     }
@@ -195,11 +202,17 @@ public class CreateEvent extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        if(mBound);
     }
 
     private void generateView() {
-        return;
+        LinearLayout headerLL = (LinearLayout) findViewById(R.id.headerLL);
+        LinearLayout eventNameLL =(LinearLayout) findViewById(R.id.EventNameLL);
+        RelativeLayout FromToRL = (RelativeLayout) findViewById(R.id.FromToRL);
+        TextView FromText = (TextView) findViewById(R.id.FromText);
+        TextView ToText = (TextView) findViewById(R.id.ToText);
+        RelativeLayout dateButtonsRL = (RelativeLayout) findViewById(R.id.dateButtonsRL);
+        LinearLayout shareButtonLL = (LinearLayout) findViewById(R.id.shareButtonLL);
+        RelativeLayout CreateEventRL = (RelativeLayout) findViewById(R.id.CreateEventRL);
     }
 
     public long getMillisFromDate(String date) {
