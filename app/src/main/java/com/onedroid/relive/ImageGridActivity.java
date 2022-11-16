@@ -27,6 +27,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Collections;
 import java.util.List;
 import java.util.Locale;
 
@@ -78,7 +79,7 @@ public class ImageGridActivity extends AppCompatActivity {
         TextView topLabel = (TextView) findViewById(R.id.eventName);
         topLabel.setText(getIntent().getStringExtra("eventName"));
 
-        for(int i =1 ; i<21 ; i++)
+        for(int i =1 ; i<19 ; i++)
         {
             images_grad.add(getResources().getIdentifier("m" + i +"_grad", "drawable", getPackageName()));
             images_bir.add(getResources().getIdentifier("m" + i +"_bir", "drawable", getPackageName()));
@@ -102,8 +103,22 @@ public class ImageGridActivity extends AppCompatActivity {
 
         ImageView topPhotoOne = findViewById(R.id.topPhoto1);
         topPhotoOne.setImageResource(images_selected.get(0));
+        topPhotoOne.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                int selectedImage = images_selected.get(0);
+                startActivity(new Intent(ImageGridActivity.this,ClickedItemActivity.class).putExtra("image",selectedImage));
+            }
+        });
         ImageView topPhotoTwo = findViewById(R.id.topPhoto2);
         topPhotoTwo.setImageResource(images_selected.get(1));
+        topPhotoTwo.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                int selectedImage = images_selected.get(1);
+                startActivity(new Intent(ImageGridActivity.this,ClickedItemActivity.class).putExtra("image",selectedImage));
+            }
+        });
         customAdapter = new CustomAdapter(images_selected, this);
         gridView.setAdapter(customAdapter);
 
@@ -150,7 +165,26 @@ public class ImageGridActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
 
-                imageChooser();
+                // create an instance of the
+                // intent of the type image
+                Intent i = new Intent();
+                i.setType("image/*");
+                i.setAction(Intent.ACTION_GET_CONTENT);
+
+                // pass the constant to compare it
+                // with the returned requestCode
+                startActivityForResult(Intent.createChooser(i, "Select Picture"), 200);
+            }
+        });
+
+        FloatingActionButton sortPhoto = findViewById(R.id.sortPhoto);
+        sortPhoto.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Collections.reverse(images_selected);
+                customAdapter = new CustomAdapter(images_selected, ImageGridActivity.this);
+                gridView.setAdapter(customAdapter);
+                customAdapter.notifyDataSetChanged();
             }
         });
 
@@ -158,18 +192,6 @@ public class ImageGridActivity extends AppCompatActivity {
 
     }
 
-    void imageChooser() {
-
-        // create an instance of the
-        // intent of the type image
-        Intent i = new Intent();
-        i.setType("image/*");
-        i.setAction(Intent.ACTION_GET_CONTENT);
-
-        // pass the constant to compare it
-        // with the returned requestCode
-        startActivityForResult(Intent.createChooser(i, "Select Picture"), 200);
-    }
 
     public void onActivityResult (int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -210,6 +232,7 @@ public class ImageGridActivity extends AppCompatActivity {
                     new_images_selected.add(R.drawable.m3_lal);
                     break;
             }
+
         }
         customAdapter = new CustomAdapter(new_images_selected, this);
         gridView.setAdapter(customAdapter);
