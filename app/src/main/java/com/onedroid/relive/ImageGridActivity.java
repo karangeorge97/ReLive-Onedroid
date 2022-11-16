@@ -78,7 +78,7 @@ public class ImageGridActivity extends AppCompatActivity {
         TextView topLabel = (TextView) findViewById(R.id.eventName);
         topLabel.setText(getIntent().getStringExtra("eventName"));
 
-        for(int i =1 ; i<21 ; i++)
+        for(int i =1 ; i<19 ; i++)
         {
             images_grad.add(getResources().getIdentifier("m" + i +"_grad", "drawable", getPackageName()));
             images_bir.add(getResources().getIdentifier("m" + i +"_bir", "drawable", getPackageName()));
