@@ -235,6 +235,7 @@ public class FilteringActivity extends AppCompatActivity {
                     return;
                 }
                 double timeFraction = diff/maxdiff;
+                if(!isTimeSwitchChecked || timeFraction==0) timeFraction = 1;
 
                 //Calculating fraction based on contributors selected
                 double contributorFraction = 0.0;
