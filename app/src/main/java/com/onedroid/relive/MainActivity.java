@@ -70,6 +70,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             //Logout button ends user session
             case R.id.createEvent:
                 Intent createEventActivity = new Intent(getApplicationContext(), CreateEvent.class);
+                createEventActivity.putExtra("userName", getIntent().getStringExtra("username"));
                 startActivity(createEventActivity);
                 break;
             case R.id.joinevent:
