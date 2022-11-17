@@ -2,6 +2,7 @@ package com.onedroid.relive;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.Activity;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
@@ -14,6 +15,7 @@ import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.android.material.datepicker.CalendarConstraints;
 import com.google.android.material.datepicker.CompositeDateValidator;
@@ -25,8 +27,6 @@ import com.onedroid.relive.databinding.ActivityCreateEventBinding;
 import com.onedroid.relive.databinding.ActivityMainBinding;
 import com.onedroid.relive.model.Event;
 import com.onedroid.relive.service.AccountService;
-
-import org.w3c.dom.Text;
 
 import java.text.DateFormat;
 import java.text.ParseException;
@@ -83,7 +83,14 @@ public class CreateEvent extends AppCompatActivity {
         createEvent.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                // TODO: fill in name, fromDate, toDate from widget values
+                long diff = (toDateInMillis-fromDateInMillis)/60000;
+                if (diff<0) {
+                    Toast toast = Toast.makeText(getApplicationContext(),
+                            "Choose a \"From\" date and time before the \"To\" date and time",
+                            Toast.LENGTH_SHORT);
+                    toast.show();
+                    return;
+                }
                 Event event = new Event(String.valueOf(eventName.getText()),fromDate, toDate);
                 try {
                     mService.addEvent(event);
@@ -162,7 +169,9 @@ public class CreateEvent extends AppCompatActivity {
         shareButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                // TODO: switch to share activity
+                Intent shareActivity = new Intent();
+
+
             }
         });
 
