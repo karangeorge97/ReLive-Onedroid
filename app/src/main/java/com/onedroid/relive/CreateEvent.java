@@ -97,6 +97,8 @@ public class CreateEvent extends AppCompatActivity {
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
+                Intent intent = new Intent(getBaseContext(), MainActivity.class);
+                startActivity(intent);
             }
         });
 
@@ -169,8 +171,8 @@ public class CreateEvent extends AppCompatActivity {
         shareButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent shareActivity = new Intent();
-
+                Intent intent = new Intent(getBaseContext(), ShareEvent.class);
+                startActivity(intent);
 
             }
         });
