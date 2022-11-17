@@ -2,6 +2,7 @@ package com.onedroid.relive;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.Activity;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
@@ -22,8 +23,13 @@ import com.onedroid.relive.databinding.ActivityImageGridBinding;
 import com.onedroid.relive.service.AccountService;
 
 
-import java.util.Arrays;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Collections;
 import java.util.List;
+import java.util.Locale;
 
 public class ImageGridActivity extends AppCompatActivity {
 
@@ -33,31 +39,30 @@ public class ImageGridActivity extends AppCompatActivity {
     CustomAdapter customAdapter;
 
     GridView gridView;
-   List<Integer> images_selected;
+    boolean filterApplied = false;
+    private final int FILTER_ACTIVITY_CODE = 1;
+    boolean contributorSwitchIsChecked = false;
+    boolean timeSwitchIsChecked = false;
+    boolean[] selectedUsers = new boolean[5];
+    String initialDate;
+    String finalDate;
+    long fromDateInMillis;
+    long toDateInMillis;
+    int fromTimeHours = 0;
+    int fromTimeMinutes = 0;
+    int toTimeHours = 23;
+    int toTimeMinutes = 59;
 
-   List<Integer>images_grad = Arrays.asList(R.drawable.m1_grad,R.drawable.m2_grad,R.drawable.m3_grad,R.drawable.m4_grad,
-            R.drawable.m5_grad,R.drawable.m6_grad,R.drawable.m7_grad, R.drawable.m8_grad,
-            R.drawable.m9_grad, R.drawable.m10_grad, R.drawable.m11_grad, R.drawable.m12_grad,
-            R.drawable.m13_grad, R.drawable.m14_grad, R.drawable.m15_grad, R.drawable.m16_grad,
-            R.drawable.m17_grad, R.drawable.m18_grad, R.drawable.m19_grad, R.drawable.m20_grad, R.drawable.m21_grad);
+    List<Integer> images_selected = new ArrayList<>();
 
-    List<Integer> images_bir = Arrays.asList(R.drawable.m1_bir, R.drawable.m2_bir, R.drawable.m3_bir, R.drawable.m4_bir,
-            R.drawable.m5_bir, R.drawable.m6_bir, R.drawable.m7_bir, R.drawable.m8_bir, R.drawable.m9_bir,
-            R.drawable.m10_bir, R.drawable.m11_bir, R.drawable.m12_bir, R.drawable.m13_bir, R.drawable.m14_bir,
-            R.drawable.m15_bir, R.drawable.m16_bir, R.drawable.m17_bir, R.drawable.m18_bir, R.drawable.m19_bir,
-            R.drawable.m20_bir, R.drawable.m21_bir);
+    List<Integer>images_grad = new ArrayList<>();
 
-    List<Integer>images_hal = Arrays.asList(R.drawable.m1_hal, R.drawable.m2_hal, R.drawable.m3_hal, R.drawable.m4_hal,
-            R.drawable.m5_hal, R.drawable.m16_hal, R.drawable.m7_hal, R.drawable.m8_hal, R.drawable.m9_hal,
-            R.drawable.m10_hal, R.drawable.m11_hal, R.drawable.m12_hal, R.drawable.m13_hal, R.drawable.m14_hal,
-            R.drawable.m15_hal, R.drawable.m16_hal, R.drawable.m17_hal, R.drawable.m18_hal, R.drawable.m19_hal,
-            R.drawable.m20_hal, R.drawable.m21_hal);
+    List<Integer> images_bir= new ArrayList<>();
 
-    List<Integer>images_lal = Arrays.asList(R.drawable.m1_lal, R.drawable.m2_lal, R.drawable.m3_lal, R.drawable.m4_lal,
-            R.drawable.m5_lal, R.drawable.m6_lal, R.drawable.m7_lal, R.drawable.m8_lal, R.drawable.m9_lal,
-            R.drawable.m10_lal, R.drawable.m11_lal, R.drawable.m12_lal, R.drawable.m13_lal, R.drawable.m14_lal,
-            R.drawable.m15_lal, R.drawable.m16_lal, R.drawable.m17_lal, R.drawable.m18_lal, R.drawable.m19_lal,
-            R.drawable.m20_lal, R.drawable.m21_lal);
+    List<Integer>images_hal= new ArrayList<>();
+
+    List<Integer>images_lal= new ArrayList<>();
+
 
 
     @Override
@@ -71,7 +76,16 @@ public class ImageGridActivity extends AppCompatActivity {
         bindService(intent, connection, Context.BIND_AUTO_CREATE);
         setContentView(binding.getRoot());
 
-        gridView = findViewById(R.id.gridView);
+        TextView topLabel = (TextView) findViewById(R.id.eventName);
+        topLabel.setText(getIntent().getStringExtra("eventName"));
+
+        for(int i =1 ; i<19 ; i++)
+        {
+            images_grad.add(getResources().getIdentifier("m" + i +"_grad", "drawable", getPackageName()));
+            images_bir.add(getResources().getIdentifier("m" + i +"_bir", "drawable", getPackageName()));
+            images_hal.add(getResources().getIdentifier("m" + i +"_hal", "drawable", getPackageName()));
+            images_lal.add(getResources().getIdentifier("m" + i +"_lal", "drawable", getPackageName()));
+        }
 
         switch(getIntent().getStringExtra("eventName"))
         {
@@ -85,12 +99,26 @@ public class ImageGridActivity extends AppCompatActivity {
                 break;
         }
 
-
+        gridView = findViewById(R.id.gridView);
 
         ImageView topPhotoOne = findViewById(R.id.topPhoto1);
         topPhotoOne.setImageResource(images_selected.get(0));
+        topPhotoOne.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                int selectedImage = images_selected.get(0);
+                startActivity(new Intent(ImageGridActivity.this,ClickedItemActivity.class).putExtra("image",selectedImage));
+            }
+        });
         ImageView topPhotoTwo = findViewById(R.id.topPhoto2);
         topPhotoTwo.setImageResource(images_selected.get(1));
+        topPhotoTwo.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                int selectedImage = images_selected.get(1);
+                startActivity(new Intent(ImageGridActivity.this,ClickedItemActivity.class).putExtra("image",selectedImage));
+            }
+        });
         customAdapter = new CustomAdapter(images_selected, this);
         gridView.setAdapter(customAdapter);
 
@@ -103,12 +131,32 @@ public class ImageGridActivity extends AppCompatActivity {
         });
 
         FloatingActionButton filter = findViewById(R.id.filter);
+        if (filterApplied) {
+            filter.setImageResource(R.drawable.ic_filter_filtering_icon);
+        } else {
+            filter.setImageResource(R.drawable.ic_filter_off_icon);
+        }
         filter.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                filter.setImageResource(R.drawable.ic_filter_filtering_icon);
-                startActivity(new Intent(ImageGridActivity.this,FilteringActivity.class).putExtra("eventName",getIntent().getStringExtra("eventName")));
-
+                Intent filterActivityIntent = new Intent(ImageGridActivity.this,FilteringActivity.class);
+                initialDate = mService.getEvent(getIntent().getStringExtra("eventName")).getFromDate();
+                finalDate = mService.getEvent(getIntent().getStringExtra("eventName")).getToDate();
+                if (fromDateInMillis == 0) fromDateInMillis = convertDateToTimeInMillis(initialDate);
+                if (toDateInMillis == 0) toDateInMillis = convertDateToTimeInMillis(finalDate);
+                filterActivityIntent.putExtra("eventName",getIntent().getStringExtra("eventName"));
+                filterActivityIntent.putExtra("contributorSwitchIsChecked", contributorSwitchIsChecked);
+                filterActivityIntent.putExtra("timeSwitchIsChecked", timeSwitchIsChecked);
+                filterActivityIntent.putExtra("selectedUsers",selectedUsers);
+                filterActivityIntent.putExtra("initialDateInMillis",convertDateToTimeInMillis(initialDate));
+                filterActivityIntent.putExtra("finalDateInMillis",convertDateToTimeInMillis(finalDate));
+                filterActivityIntent.putExtra("fromDateInMillis", fromDateInMillis);
+                filterActivityIntent.putExtra("toDateInMillis", toDateInMillis);
+                filterActivityIntent.putExtra("fromTimeHours", fromTimeHours);
+                filterActivityIntent.putExtra("fromTimeMinutes",fromTimeMinutes);
+                filterActivityIntent.putExtra("toTimeHours", toTimeHours);
+                filterActivityIntent.putExtra("toTimeMinutes", toTimeMinutes);
+                startActivityForResult(filterActivityIntent,FILTER_ACTIVITY_CODE);
             }
         });
 
@@ -117,11 +165,79 @@ public class ImageGridActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
 
+                // create an instance of the
+                // intent of the type image
+                Intent i = new Intent();
+                i.setType("image/*");
+                i.setAction(Intent.ACTION_GET_CONTENT);
+
+                // pass the constant to compare it
+                // with the returned requestCode
+                startActivityForResult(Intent.createChooser(i, "Select Picture"), 200);
+            }
+        });
+
+        FloatingActionButton sortPhoto = findViewById(R.id.sortPhoto);
+        sortPhoto.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Collections.reverse(images_selected);
+                customAdapter = new CustomAdapter(images_selected, ImageGridActivity.this);
+                gridView.setAdapter(customAdapter);
+                customAdapter.notifyDataSetChanged();
             }
         });
 
 
 
+    }
+
+
+    public void onActivityResult (int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        List<Integer> new_images_selected = images_selected;
+        if (resultCode==Activity.RESULT_OK && requestCode == FILTER_ACTIVITY_CODE) {
+            filterApplied = data.getBooleanExtra("filterApplied", false);
+            contributorSwitchIsChecked = data.getBooleanExtra("contributorSwitchIsChecked", false);
+            timeSwitchIsChecked = data.getBooleanExtra("timeSwitchIsChecked", false);
+            int numberOfImagesToShow = data.getIntExtra("numberOfImagesToShow", images_selected.size());
+            selectedUsers = data.getBooleanArrayExtra("selectedUsers");
+            fromTimeHours = data.getIntExtra("fromTimeHours",0);
+            toTimeHours = data.getIntExtra("toTimeHours",23);
+            fromTimeMinutes = data.getIntExtra("fromTimeMinutes", 0);
+            toTimeMinutes = data.getIntExtra("toTimeMinutes",59);
+            fromDateInMillis = data.getLongExtra("fromDateInMillis",0);
+            toDateInMillis = data.getLongExtra("toDateInMillis",0);
+            new_images_selected = images_selected.subList(0, numberOfImagesToShow);
+            TextView filteredNumberOfPhotosText = (TextView) findViewById(R.id.filteredNumberOfPhotosText);
+
+            if (filterApplied) {
+                filteredNumberOfPhotosText.setText(numberOfImagesToShow + "/18");
+            } else {
+                filteredNumberOfPhotosText.setText("");
+            }
+        }
+        else if (requestCode==200) {
+            switch (getIntent().getStringExtra("eventName")) {
+                case "Graduation":
+                    new_images_selected.add(R.drawable.m3_grad);
+                    break;
+                case "Halloween":
+                    new_images_selected.add(R.drawable.m3_hal);
+                    break;
+                case "Birthday":
+                    new_images_selected.add(R.drawable.m3_bir);
+                    break;
+                case "Lakers Game":
+                    new_images_selected.add(R.drawable.m3_lal);
+                    break;
+            }
+
+        }
+        customAdapter = new CustomAdapter(new_images_selected, this);
+        gridView.setAdapter(customAdapter);
+        customAdapter.notifyDataSetChanged();
+        generateInitialView();
     }
 
 
@@ -178,7 +294,6 @@ public class ImageGridActivity extends AppCompatActivity {
             AccountService.AccountBinder binder = (AccountService.AccountBinder) service;
             mService = binder.getService();
             mBound = true;
-            generateInitialView();
         }
 
         /**
@@ -195,15 +310,29 @@ public class ImageGridActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        if(mBound) generateInitialView();
+        if (mBound) generateInitialView();
     }
 
-    private void  generateInitialView()
-    {
+    private void generateInitialView() {
         TextView topLabel = (TextView) findViewById(R.id.eventName);
         topLabel.setText(getIntent().getStringExtra("eventName"));
-
+        FloatingActionButton filter = findViewById(R.id.filter);
+        if (filterApplied) {
+            filter.setImageResource(R.drawable.ic_filter_filtering_icon);
+        }
+        else {
+            filter.setImageResource(R.drawable.ic_filter_off_icon);
+        }
     }
 
-
+    private long convertDateToTimeInMillis(String date) {
+        Calendar cal = Calendar.getInstance();
+        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy", Locale.ENGLISH);
+        try {
+            cal.setTime(sdf.parse(date));
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        return cal.getTimeInMillis();
+    }
 }
