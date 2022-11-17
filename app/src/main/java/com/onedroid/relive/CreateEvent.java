@@ -65,11 +65,11 @@ public class CreateEvent extends AppCompatActivity {
         Button shareButton = (Button) findViewById(R.id.shareButton);
 
         long currTime = System.currentTimeMillis();
-        long curPlusOne = currTime + 86400000;
-        fromDateInMillis = getIntent().getLongExtra("fromDateInMillis", 0);
-        initialDateInMillis = getIntent().getLongExtra("initialDateInMillis",currTime);
-        toDateInMillis = getIntent().getLongExtra("toDateInMillis",0);
-        finalDateInMillis = getIntent().getLongExtra("finalDateInMillis",curPlusOne);
+        long curPlusMonth = System.currentTimeMillis() + 30L * 86400000;
+        fromDateInMillis = getIntent().getLongExtra("fromDateInMillis", currTime);
+//        initialDateInMillis = getIntent().getLongExtra("initialDateInMillis",currTime);
+        toDateInMillis = getIntent().getLongExtra("toDateInMillis",curPlusMonth);
+//        finalDateInMillis = getIntent().getLongExtra("finalDateInMillis",curPlusOne);
         DateFormat df = new SimpleDateFormat("MMM dd, yyyy");
         fromDate = df.format(new Date(fromDateInMillis));
         toDate = df.format(new Date(toDateInMillis));
@@ -107,20 +107,19 @@ public class CreateEvent extends AppCompatActivity {
         startDateButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                CalendarConstraints.Builder calendarConstraintsBuilder = new CalendarConstraints.Builder();
-                CalendarConstraints.DateValidator dateValidatorMin = DateValidatorPointForward.from(initialDateInMillis-86400000);
-                CalendarConstraints.DateValidator dateValidatorMax = DateValidatorPointBackward.before(finalDateInMillis);
-                ArrayList<CalendarConstraints.DateValidator> listValidators = new ArrayList<>();
-                listValidators.add(dateValidatorMin);
-                listValidators.add(dateValidatorMax);
-                CalendarConstraints.DateValidator validators = CompositeDateValidator.allOf(listValidators);
-                CalendarConstraints calendarConstraints = calendarConstraintsBuilder
-                        .setValidator(validators)
-                        .build();
+//                CalendarConstraints.Builder calendarConstraintsBuilder = new CalendarConstraints.Builder();
+////                CalendarConstraints.DateValidator dateValidatorMin = DateValidatorPointForward.from(initialDateInMillis-86400000);
+//                CalendarConstraints.DateValidator dateValidatorMax = DateValidatorPointBackward.before(toDateInMillis);
+//                ArrayList<CalendarConstraints.DateValidator> listValidators = new ArrayList<>();
+////                listValidators.add(dateValidatorMin);
+//                listValidators.add(dateValidatorMax);
+//                CalendarConstraints.DateValidator validators = CompositeDateValidator.allOf(listValidators);
+//                CalendarConstraints calendarConstraints = calendarConstraintsBuilder
+//                        .setValidator(validators)
+//                        .build();
 
                 MaterialDatePicker fromMaterialDatePicker = materialDateBuilder
                         .setTitleText("Select a Start Date")
-                        .setCalendarConstraints(calendarConstraints)
                         .setSelection(fromDateInMillis)
                         .build();
                 fromMaterialDatePicker.show(getSupportFragmentManager(), "FROM_MATERIAL_DATE_PICKER");
@@ -141,11 +140,11 @@ public class CreateEvent extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 CalendarConstraints.Builder calendarConstraintsBuilder = new CalendarConstraints.Builder();
-                CalendarConstraints.DateValidator dateValidatorMin = DateValidatorPointForward.from(initialDateInMillis - 86400000);
-                CalendarConstraints.DateValidator dateValidatorMax = DateValidatorPointBackward.before(finalDateInMillis);
+                CalendarConstraints.DateValidator dateValidatorMin = DateValidatorPointForward.from(fromDateInMillis);
+//                CalendarConstraints.DateValidator dateValidatorMax = DateValidatorPointBackward.before(finalDateInMillis);
                 ArrayList<CalendarConstraints.DateValidator> listValidators = new ArrayList<>();
                 listValidators.add(dateValidatorMin);
-                listValidators.add(dateValidatorMax);
+//                listValidators.add(dateValidatorMax);
                 CalendarConstraints.DateValidator validators = CompositeDateValidator.allOf(listValidators);
                 CalendarConstraints calendarConstraints = calendarConstraintsBuilder
                         .setValidator(validators)
@@ -153,8 +152,8 @@ public class CreateEvent extends AppCompatActivity {
 
                 MaterialDatePicker toMaterialDatePicker = materialDateBuilder
                         .setTitleText("Select an End Date")
+                        .setSelection(fromDateInMillis)
                         .setCalendarConstraints(calendarConstraints)
-                        .setSelection(toDateInMillis)
                         .build();
                 toMaterialDatePicker.show(getSupportFragmentManager(), "TO_MATERIAL_DATE_PICKER");
 
