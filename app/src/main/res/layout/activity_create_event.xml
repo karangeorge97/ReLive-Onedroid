@@ -39,7 +39,7 @@
             android:layout_height="wrap_content"
             android:inputType="text"
             android:minHeight="48dp"
-            android:text="Event Name"
+            android:hint="Event Name"
             android:autofillHints="" />
     </LinearLayout>
 
@@ -72,13 +72,12 @@
         android:background="@drawable/customborder">
 
         <Button
+            android:id="@+id/start_date"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:clickable="true"
-            android:id="@+id/start_date"
-            android:text="Click me!"
             android:layout_marginHorizontal="20dp"
-            />
+            android:clickable="true"
+            android:text="Click me!" />
 <!--        text should be the date from the start_datepicker widget-->
         <Button
             android:layout_width="wrap_content"

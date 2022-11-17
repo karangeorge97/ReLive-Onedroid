@@ -2,6 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/sharEventParent"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
@@ -9,19 +10,15 @@
     android:layout_margin="@dimen/fab_margin">
 
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:layout_margin="@dimen/text_margin">
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Add Guests"
             android:textIsSelectable="false"
-            android:textSize="30dp" />
-    </LinearLayout>
+            android:textSize="30dp"
+            android:layout_margin="@dimen/text_margin"/>
+
 
 <!-- text box to add user with add button -->
 
@@ -30,10 +27,12 @@
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         android:layout_margin="@dimen/text_margin"
-        android:background="@drawable/customborder">
+        android:background="@drawable/customborder"
+        android:id="@+id/invitees"
+        >
 
         <EditText
-            android:text="Username"
+            android:hint="Username"
             android:id="@+id/editTextBox"
             android:layout_height="wrap_content"
             android:layout_width="0dp"
@@ -49,23 +48,20 @@
             android:id="@+id/addButton"
             android:text="Add"
             android:layout_toEndOf="@+id/add_user_input"/>
-    </LinearLayout>
 
+    </LinearLayout>
     <LinearLayout
+        android:id="@+id/shareRows"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_margin="@dimen/text_margin"
+        android:background="@drawable/customborder"
+    >
 
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="25dp"
-            android:id="@+id/participant_list"
-            android:text=""
-            android:textSize="18dp" />
 
     </LinearLayout>
 
-<!-- List of currently added guests -->
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -82,9 +78,7 @@
             android:layout_alignParentBottom="true"
             android:layout_weight="1"
             android:text="Done" />
-<!--        on click go back to create_event screen -->
-<!--        will share screen be accessible once the event already exists
-or only while being created?-->
+
 
     </RelativeLayout>
 </LinearLayout>

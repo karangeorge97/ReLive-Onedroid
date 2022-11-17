@@ -57,12 +57,18 @@ public class CreateEvent extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_create_event);
+        binding = ActivityCreateEventBinding.inflate(getLayoutInflater());
+        Intent intent = new Intent(this, AccountService.class);
+        intent.putExtra("username", getIntent().getStringExtra("username"));
+        bindService(intent, connection, Context.BIND_AUTO_CREATE);
+        setContentView(binding.getRoot());
 
         EditText eventName = (EditText) findViewById(R.id.eventName);
         Button createEvent = (Button) findViewById(R.id.createEvent);
         Button startDateButton = (Button) findViewById(R.id.start_date);
         Button endDateButton = (Button) findViewById(R.id.end_date);
         Button shareButton = (Button) findViewById(R.id.shareButton);
+
 
         long currTime = System.currentTimeMillis();
         long curPlusMonth = System.currentTimeMillis() + 30L * 86400000;
@@ -74,13 +80,8 @@ public class CreateEvent extends AppCompatActivity {
         fromDate = df.format(new Date(fromDateInMillis));
         toDate = df.format(new Date(toDateInMillis));
 
-//        binding = ActivityCreateEventBinding.inflate(getLayoutInflater());
-//        Intent intent = new Intent(this, AccountService.class);
-//        intent.putExtra("username", getIntent().getStringExtra("username"));
-//        bindService(intent, connection, Context.BIND_AUTO_CREATE);
-//        setContentView(binding.getRoot());
 
-        generateView();
+
 
         createEvent.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -130,7 +131,6 @@ public class CreateEvent extends AppCompatActivity {
                         fromDate = fromMaterialDatePicker.getHeaderText();
                         startDateButton.setText(fromDate);
                         fromDateInMillis = getMillisFromDate(fromDate);
-                        generateView();
                     }
                 });
             }
@@ -163,7 +163,6 @@ public class CreateEvent extends AppCompatActivity {
                         toDate = toMaterialDatePicker.getHeaderText();
                         endDateButton.setText(toDate);
                         toDateInMillis = getMillisFromDate(toDate);
-                        generateView();
                     }
                 });
             }
@@ -216,17 +215,7 @@ public class CreateEvent extends AppCompatActivity {
         super.onResume();
     }
 
-    private void generateView() {
 
-        LinearLayout headerLL = (LinearLayout) findViewById(R.id.headerLL);
-        LinearLayout eventNameLL =(LinearLayout) findViewById(R.id.EventNameLL);
-        RelativeLayout FromToRL = (RelativeLayout) findViewById(R.id.FromToRL);
-        TextView FromText = (TextView) findViewById(R.id.FromText);
-        TextView ToText = (TextView) findViewById(R.id.ToText);
-        RelativeLayout dateButtonsRL = (RelativeLayout) findViewById(R.id.dateButtonsRL);
-        LinearLayout shareButtonLL = (LinearLayout) findViewById(R.id.shareButtonLL);
-        RelativeLayout CreateEventRL = (RelativeLayout) findViewById(R.id.CreateEventRL);
-    }
 
     public long getMillisFromDate(String date) {
         Calendar cal = Calendar.getInstance();

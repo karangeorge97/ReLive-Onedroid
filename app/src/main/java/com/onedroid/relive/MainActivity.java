@@ -128,7 +128,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         final LinearLayout recentEvents = (LinearLayout) findViewById(R.id.recentEvents);
 
 
-//       Initialise new box of cities to be populated
+//       Initialise new box of events to be populated
         final LinearLayout newEventList = new LinearLayout(getApplicationContext());
 
         LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
@@ -188,18 +188,5 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
 
 
-    private static  class HolderView{
-        private final TextView eventName;
-        private final TextView fromDate;
-        private final TextView toDate;
-        private final ImageView image;
-
-        public HolderView(View view){
-            eventName = view.findViewById(R.id.eventName);
-            fromDate = view.findViewById(R.id.fromDate);
-            toDate = view.findViewById(R.id.toDate);
-            image = view.findViewById(R.id.eventDisplay);
-        }
-    }
 
 }

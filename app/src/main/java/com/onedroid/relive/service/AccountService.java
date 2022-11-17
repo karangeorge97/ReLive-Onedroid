@@ -108,7 +108,7 @@ public class AccountService extends Service {
 
         ContentValues content = new ContentValues();
         content.put("events", jsonString);
-        db.updateData(content, "Test");
+        db.updateData(content,  this.username);
     }
 
     /**
@@ -120,7 +120,7 @@ public class AccountService extends Service {
 
         ContentValues content = new ContentValues();
         content.put("invites", jsonString);
-        db.updateData(content, "Test");
+        db.updateData(content, this.username);
     }
 
     /**

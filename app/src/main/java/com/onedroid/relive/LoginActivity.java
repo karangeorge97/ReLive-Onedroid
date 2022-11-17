@@ -34,8 +34,11 @@ public class LoginActivity extends AppCompatActivity {
 
 
         try {
-            authHandler.createUser("Test", "Test");
-            authHandler.createUser("", "");
+            authHandler.createUser("Karan", "");
+            authHandler.createUser("Yadniki", "");
+            authHandler.createUser("Tony", "");
+            authHandler.createUser("Atharv", "");
+            authHandler.createUser("Jaiman", "");
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -70,7 +73,7 @@ public class LoginActivity extends AppCompatActivity {
                     intent.putExtra("username", username);
                     startActivity(intent);
                 } catch (Exception e) {
-                    Toast.makeText(LoginActivity.this, "Incorrect Details", Toast.LENGTH_LONG).show();
+                    Toast.makeText(LoginActivity.this, "Incorrect Details", Toast.LENGTH_SHORT).show();
                 }
             }
         });

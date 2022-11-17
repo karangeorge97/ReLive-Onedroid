@@ -101,24 +101,36 @@ public class ImageGridActivity extends AppCompatActivity {
 
         gridView = findViewById(R.id.gridView);
 
-        ImageView topPhotoOne = findViewById(R.id.topPhoto1);
-        topPhotoOne.setImageResource(images_selected.get(0));
-        topPhotoOne.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                int selectedImage = images_selected.get(0);
-                startActivity(new Intent(ImageGridActivity.this,ClickedItemActivity.class).putExtra("image",selectedImage));
-            }
-        });
-        ImageView topPhotoTwo = findViewById(R.id.topPhoto2);
-        topPhotoTwo.setImageResource(images_selected.get(1));
-        topPhotoTwo.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                int selectedImage = images_selected.get(1);
-                startActivity(new Intent(ImageGridActivity.this,ClickedItemActivity.class).putExtra("image",selectedImage));
-            }
-        });
+
+        if(images_selected.size()>=3) {
+            ImageView topPhotoOne = findViewById(R.id.topPhoto1);
+            topPhotoOne.setImageResource(images_selected.get(0));
+            topPhotoOne.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    int selectedImage = images_selected.get(0);
+                    startActivity(new Intent(ImageGridActivity.this, ClickedItemActivity.class).putExtra("image", selectedImage));
+                }
+            });
+            ImageView topPhotoTwo = findViewById(R.id.topPhoto2);
+            topPhotoTwo.setImageResource(images_selected.get(1));
+            topPhotoTwo.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    int selectedImage = images_selected.get(1);
+                    startActivity(new Intent(ImageGridActivity.this, ClickedItemActivity.class).putExtra("image", selectedImage));
+                }
+            });
+            ImageView topPhotoThree = findViewById(R.id.topPhoto3);
+            topPhotoThree.setImageResource(images_selected.get(2));
+            topPhotoThree.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    int selectedImage = images_selected.get(2);
+                    startActivity(new Intent(ImageGridActivity.this, ClickedItemActivity.class).putExtra("image", selectedImage));
+                }
+            });
+        }
         customAdapter = new CustomAdapter(images_selected, this);
         gridView.setAdapter(customAdapter);
 
