@@ -64,19 +64,21 @@ public class CreateEvent extends AppCompatActivity {
         Button endDateButton = (Button) findViewById(R.id.end_date);
         Button shareButton = (Button) findViewById(R.id.shareButton);
 
-        fromDateInMillis = getIntent().getLongExtra("fromDateInMillis",0);
-        initialDateInMillis = getIntent().getLongExtra("initialDateInMillis",0);
+        long currTime = System.currentTimeMillis();
+        long curPlusOne = currTime + 86400000;
+        fromDateInMillis = getIntent().getLongExtra("fromDateInMillis", 0);
+        initialDateInMillis = getIntent().getLongExtra("initialDateInMillis",currTime);
         toDateInMillis = getIntent().getLongExtra("toDateInMillis",0);
-        finalDateInMillis = getIntent().getLongExtra("finalDateInMillis",0);
+        finalDateInMillis = getIntent().getLongExtra("finalDateInMillis",curPlusOne);
         DateFormat df = new SimpleDateFormat("MMM dd, yyyy");
         fromDate = df.format(new Date(fromDateInMillis));
         toDate = df.format(new Date(toDateInMillis));
 
-        binding = ActivityCreateEventBinding.inflate(getLayoutInflater());
-        Intent intent = new Intent(this, AccountService.class);
-        intent.putExtra("username", getIntent().getStringExtra("username"));
-        bindService(intent, connection, Context.BIND_AUTO_CREATE);
-        setContentView(binding.getRoot());
+//        binding = ActivityCreateEventBinding.inflate(getLayoutInflater());
+//        Intent intent = new Intent(this, AccountService.class);
+//        intent.putExtra("username", getIntent().getStringExtra("username"));
+//        bindService(intent, connection, Context.BIND_AUTO_CREATE);
+//        setContentView(binding.getRoot());
 
         generateView();
 
@@ -160,7 +162,7 @@ public class CreateEvent extends AppCompatActivity {
                     @Override
                     public void onPositiveButtonClick(Object selection) {
                         toDate = toMaterialDatePicker.getHeaderText();
-                        endDateButton.setText("toDate");
+                        endDateButton.setText(toDate);
                         toDateInMillis = getMillisFromDate(toDate);
                         generateView();
                     }
