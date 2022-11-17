@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/sharEventParent"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".ShareEvent"
+    android:layout_margin="@dimen/fab_margin">
+
+
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Add Guests"
+            android:textIsSelectable="false"
+            android:textSize="30dp"
+            android:layout_margin="@dimen/text_margin"/>
+
+
+<!-- text box to add user with add button -->
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_margin="@dimen/text_margin"
+        android:background="@drawable/customborder"
+        android:id="@+id/invitees"
+        >
+
+        <EditText
+            android:hint="Username"
+            android:id="@+id/editTextBox"
+            android:layout_height="wrap_content"
+            android:layout_width="0dp"
+            android:layout_weight="0.7"
+            android:inputType="text"/>
+
+        <Button
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.3"
+            android:layout_marginHorizontal="10dp"
+            android:layout_alignParentRight="true"
+            android:id="@+id/addButton"
+            android:text="Add"
+            android:layout_toEndOf="@+id/add_user_input"/>
+
+    </LinearLayout>
+    <LinearLayout
+        android:id="@+id/shareRows"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_margin="@dimen/text_margin"
+        android:background="@drawable/customborder"
+    >
+
+
+    </LinearLayout>
+
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_margin="@dimen/text_margin">
+
+        <Button
+            android:id="@+id/doneButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center|bottom"
+            android:layout_margin="10dp"
+            android:layout_alignParentBottom="true"
+            android:layout_weight="1"
+            android:text="Done" />
+
+
+    </RelativeLayout>
+</LinearLayout>

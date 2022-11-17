@@ -41,6 +41,9 @@
             android:name=".CreateEvent"
             android:exported="false" />
         <activity
+            android:name=".ShareEvent"
+            android:exported="false" />
+        <activity
             android:name=".SearchEvent"
             android:exported="true" />
         <activity

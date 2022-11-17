@@ -120,7 +120,7 @@ public class JoinEvent extends AppCompatActivity implements ServiceConnection{
                         mService.removeInvite(invite);
                         mService.addEvent(invite);
                         ((ViewGroup)view.getParent().getParent()).removeView((ViewGroup)view.getParent());
-                        Toast.makeText(JoinEvent.this,"Successfully Joined "+ invite.getName(), Toast.LENGTH_LONG).show();
+                        Toast.makeText(JoinEvent.this,"Successfully Joined "+ invite.getName(), Toast.LENGTH_SHORT).show();
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
@@ -138,7 +138,7 @@ public class JoinEvent extends AppCompatActivity implements ServiceConnection{
                     try {
                         mService.removeInvite(invite);
                         ((ViewGroup)view.getParent().getParent()).removeView((ViewGroup)view.getParent());
-                        Toast.makeText(JoinEvent.this,"Declined to join "+ invite.getName(), Toast.LENGTH_LONG).show();
+                        Toast.makeText(JoinEvent.this,"Declined to join "+ invite.getName(), Toast.LENGTH_SHORT).show();
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
