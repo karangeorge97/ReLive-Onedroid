@@ -39,6 +39,7 @@ public class LoginActivity extends AppCompatActivity {
             authHandler.createUser("Tony", "");
             authHandler.createUser("Atharv", "");
             authHandler.createUser("Jaiman", "");
+            authHandler.createUser("", "");
         } catch (Exception e) {
             e.printStackTrace();
         }
