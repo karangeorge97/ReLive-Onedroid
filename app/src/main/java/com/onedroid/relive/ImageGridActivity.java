@@ -53,6 +53,7 @@ public class ImageGridActivity extends AppCompatActivity {
     int fromTimeMinutes = 0;
     int toTimeHours = 23;
     int toTimeMinutes = 59;
+    boolean ascendingSortedImages = true;
 
     List<Integer> images_selected = new ArrayList<>();
 
@@ -198,6 +199,19 @@ public class ImageGridActivity extends AppCompatActivity {
                 customAdapter = new CustomAdapter(images_selected, ImageGridActivity.this);
                 gridView.setAdapter(customAdapter);
                 customAdapter.notifyDataSetChanged();
+                Toast toast;
+                if(ascendingSortedImages) {
+                    toast = Toast.makeText(getApplicationContext(),
+                            "Images sorted by date (ascending)",
+                            Toast.LENGTH_SHORT);
+                }
+                else {
+                    toast = Toast.makeText(getApplicationContext(),
+                            "Images sorted by date (descending)",
+                            Toast.LENGTH_SHORT);
+                }
+                toast.show();
+                ascendingSortedImages = !ascendingSortedImages;
             }
         });
 
