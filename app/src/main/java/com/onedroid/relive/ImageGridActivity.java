@@ -17,6 +17,7 @@ import android.widget.BaseAdapter;
 import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.onedroid.relive.databinding.ActivityImageGridBinding;
@@ -229,7 +230,7 @@ public class ImageGridActivity extends AppCompatActivity {
                 filteredNumberOfPhotosText.setText("");
             }
         }
-        else if (requestCode==200) {
+        else if (requestCode==200 && data!=null) {
             switch (getIntent().getStringExtra("eventName")) {
                 case "Graduation":
                     new_images_selected.add(R.drawable.m3_grad);
@@ -244,7 +245,10 @@ public class ImageGridActivity extends AppCompatActivity {
                     new_images_selected.add(R.drawable.m3_lal);
                     break;
             }
-
+            Toast toast = Toast.makeText(getApplicationContext(),
+                    "Image uploaded successfully",
+                    Toast.LENGTH_SHORT);
+            toast.show();
         }
         customAdapter = new CustomAdapter(new_images_selected, this);
         gridView.setAdapter(customAdapter);
