@@ -93,12 +93,13 @@
         android:layout_height="wrap_content"
         android:layout_margin="16dp"
         android:id="@+id/shareButtonLL">
-        <Button
+        <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
             android:id="@+id/shareButton"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="25dp"
-            android:text="Add Guests" />
+            android:text="Add Guests"
+            app:icon="@drawable/ic_baseline_person_add_alt_1_24"/>
     </LinearLayout>
 
 
