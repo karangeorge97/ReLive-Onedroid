@@ -32,9 +32,12 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collections;
+import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Set;
+import java.util.concurrent.ThreadLocalRandom;
 
 public class ImageGridActivity extends AppCompatActivity {
 
@@ -47,6 +50,7 @@ public class ImageGridActivity extends AppCompatActivity {
     boolean filterApplied = false;
     private final int FILTER_ACTIVITY_CODE = 1;
     private final int SHARE_EVENT_CODE = 4;
+    private final int CLICKED_EVENT_CODE = 5;
     boolean contributorSwitchIsChecked = false;
     boolean timeSwitchIsChecked = false;
     boolean[] selectedUsers = new boolean[5];
@@ -60,16 +64,19 @@ public class ImageGridActivity extends AppCompatActivity {
     int toTimeMinutes = 59;
     boolean ascendingSortedImages = true;
     int numberOfImagesToShow = 18;
+    
+    
 
-    List<Integer> images_selected = new ArrayList<>();
 
-    List<Integer>images_grad = new ArrayList<>();
+    List<LinkedHashMap<Integer,Integer>> images_selected = new ArrayList<>();
 
-    List<Integer> images_bir= new ArrayList<>();
+    List<LinkedHashMap<Integer,Integer>>images_grad = new ArrayList<>();
 
-    List<Integer>images_hal= new ArrayList<>();
+    List<LinkedHashMap<Integer,Integer>> images_bir= new ArrayList<>();
 
-    List<Integer>images_lal= new ArrayList<>();
+    List<LinkedHashMap<Integer,Integer>>images_hal= new ArrayList<>();
+
+    List<LinkedHashMap<Integer,Integer>>images_lal= new ArrayList<>();
 
 
 
@@ -89,12 +96,27 @@ public class ImageGridActivity extends AppCompatActivity {
         TextView topLabel = (TextView) findViewById(R.id.eventName);
         topLabel.setText(getIntent().getStringExtra("eventName"));
 
+
         for(int i =1 ; i<19 ; i++)
         {
-            images_grad.add(getResources().getIdentifier("m" + i +"_grad", "drawable", getPackageName()));
-            images_bir.add(getResources().getIdentifier("m" + i +"_bir", "drawable", getPackageName()));
-            images_hal.add(getResources().getIdentifier("m" + i +"_hal", "drawable", getPackageName()));
-            images_lal.add(getResources().getIdentifier("m" + i +"_lal", "drawable", getPackageName()));
+            final int idx = i;
+            images_grad.add(
+                    new LinkedHashMap<Integer,Integer>(){{
+                    put(getResources().getIdentifier("m" + idx +"_grad", "drawable", getPackageName()),(int) ThreadLocalRandom.current().nextInt(0, 5+1));
+                    }});
+            images_bir.add(
+                    new LinkedHashMap<Integer,Integer>(){{
+                        put(getResources().getIdentifier("m" + idx +"_bir", "drawable", getPackageName()),(int) ThreadLocalRandom.current().nextInt(0, 5+1));
+                    }});
+            images_hal.add(
+                    new LinkedHashMap<Integer,Integer>(){{
+                        put(getResources().getIdentifier("m" + idx +"_hal", "drawable", getPackageName()),(int) ThreadLocalRandom.current().nextInt(0, 5+1));
+                    }});
+            images_lal.add(
+                    new LinkedHashMap<Integer,Integer>(){{
+                        put(getResources().getIdentifier("m" + idx +"_lal", "drawable", getPackageName()),(int) ThreadLocalRandom.current().nextInt(0, 5+1));
+                    }});
+
         }
 
         switch(getIntent().getStringExtra("eventName"))
@@ -114,30 +136,42 @@ public class ImageGridActivity extends AppCompatActivity {
 
         if(images_selected.size()>=3) {
             ImageView topPhotoOne = findViewById(R.id.topPhoto1);
-            topPhotoOne.setImageResource(images_selected.get(0));
+            topPhotoOne.setImageResource((Integer) images_selected.get(0).keySet().toArray()[0]);
             topPhotoOne.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    int selectedImage = images_selected.get(0);
-                    startActivity(new Intent(ImageGridActivity.this, ClickedItemActivity.class).putExtra("image", selectedImage));
+                    int selectedImage = (Integer) images_selected.get(0).keySet().toArray()[0];
+                    Intent clickedItemIntent = new Intent(ImageGridActivity.this , ClickedItemActivity.class);
+                    clickedItemIntent.putExtra("index",0);
+                    clickedItemIntent.putExtra("image",selectedImage);
+                    clickedItemIntent.putExtra("likes",(Integer) images_selected.get(0).values().toArray()[0]);
+                    startActivityForResult(clickedItemIntent,CLICKED_EVENT_CODE);
                 }
             });
             ImageView topPhotoTwo = findViewById(R.id.topPhoto2);
-            topPhotoTwo.setImageResource(images_selected.get(1));
+            topPhotoTwo.setImageResource((Integer) images_selected.get(1).keySet().toArray()[0]);
             topPhotoTwo.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    int selectedImage = images_selected.get(1);
-                    startActivity(new Intent(ImageGridActivity.this, ClickedItemActivity.class).putExtra("image", selectedImage));
+                    int selectedImage = (Integer) images_selected.get(1).keySet().toArray()[0];
+                    Intent clickedItemIntent = new Intent(ImageGridActivity.this , ClickedItemActivity.class);
+                    clickedItemIntent.putExtra("index",1);
+                    clickedItemIntent.putExtra("image",selectedImage);
+                    clickedItemIntent.putExtra("likes",(Integer) images_selected.get(1).values().toArray()[0]);
+                    startActivityForResult(clickedItemIntent,CLICKED_EVENT_CODE);
                 }
             });
             ImageView topPhotoThree = findViewById(R.id.topPhoto3);
-            topPhotoThree.setImageResource(images_selected.get(2));
+            topPhotoThree.setImageResource((Integer) images_selected.get(2).keySet().toArray()[0]);
             topPhotoThree.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    int selectedImage = images_selected.get(2);
-                    startActivity(new Intent(ImageGridActivity.this, ClickedItemActivity.class).putExtra("image", selectedImage));
+                    int selectedImage = (Integer) images_selected.get(2).keySet().toArray()[0];
+                    Intent clickedItemIntent = new Intent(ImageGridActivity.this , ClickedItemActivity.class);
+                    clickedItemIntent.putExtra("index",2);
+                    clickedItemIntent.putExtra("image",selectedImage);
+                    clickedItemIntent.putExtra("likes",(Integer) images_selected.get(2).values().toArray()[0]);
+                    startActivityForResult(clickedItemIntent,CLICKED_EVENT_CODE);
                 }
             });
         }
@@ -150,8 +184,12 @@ public class ImageGridActivity extends AppCompatActivity {
         gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                int selectedImage = images_selected.get(i);
-                startActivity(new Intent(ImageGridActivity.this,ClickedItemActivity.class).putExtra("image",selectedImage));
+                int selectedImage = (Integer) images_selected.get(i).keySet().toArray()[0];
+                Intent clickedItemIntent = new Intent(ImageGridActivity.this , ClickedItemActivity.class);
+                clickedItemIntent.putExtra("index",i);
+                clickedItemIntent.putExtra("image",selectedImage);
+                clickedItemIntent.putExtra("likes",(Integer) images_selected.get(i).values().toArray()[0]);
+                startActivityForResult(clickedItemIntent,CLICKED_EVENT_CODE);
             }
         });
 
@@ -255,7 +293,7 @@ public class ImageGridActivity extends AppCompatActivity {
 
     public void onActivityResult (int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        List<Integer> new_images_selected = images_selected;
+        List<LinkedHashMap<Integer,Integer>> new_images_selected = images_selected;
         if (resultCode==Activity.RESULT_OK && requestCode == FILTER_ACTIVITY_CODE) {
             filterApplied = data.getBooleanExtra("filterApplied", false);
             contributorSwitchIsChecked = data.getBooleanExtra("contributorSwitchIsChecked", false);
@@ -275,16 +313,24 @@ public class ImageGridActivity extends AppCompatActivity {
         else if (requestCode==200 && data!=null) {
             switch (getIntent().getStringExtra("eventName")) {
                 case "Graduation":
-                    new_images_selected.add(R.drawable.m3_grad);
+                    new_images_selected.add(new LinkedHashMap<Integer,Integer>(){{
+                        put(R.drawable.m3_grad,0);
+                    }});
                     break;
                 case "Halloween":
-                    new_images_selected.add(R.drawable.m3_hal);
+                    new_images_selected.add(new LinkedHashMap<Integer,Integer>(){{
+                        put(R.drawable.m3_hal,0);
+                    }});
                     break;
                 case "Birthday":
-                    new_images_selected.add(R.drawable.m3_bir);
+                    new_images_selected.add(new LinkedHashMap<Integer,Integer>(){{
+                        put(R.drawable.m3_bir,0);
+                    }});
                     break;
                 case "Lakers Game":
-                    new_images_selected.add(R.drawable.m3_lal);
+                    new_images_selected.add(new LinkedHashMap<Integer,Integer>(){{
+                        put(R.drawable.m3_lal,0);
+                    }});
                     break;
             }
             Toast toast = Toast.makeText(getApplicationContext(),
@@ -313,6 +359,19 @@ public class ImageGridActivity extends AppCompatActivity {
                 }
             }
         }
+        else if (requestCode==CLICKED_EVENT_CODE && data!=null)
+        {
+            int selectedImageIndex = data.getIntExtra("imageIndex",0);
+            int resourceId = data.getIntExtra("image",0);
+            int likes = data.getIntExtra("likes",0);
+            LinkedHashMap<Integer,Integer> img = new LinkedHashMap<Integer,Integer>(){{
+                put(resourceId,likes);
+            }};
+            new_images_selected.remove(selectedImageIndex);
+            new_images_selected.add(selectedImageIndex,img);
+
+        }
+
         customAdapter = new CustomAdapter(new_images_selected, this);
         gridView.setAdapter(customAdapter);
         customAdapter.notifyDataSetChanged();
@@ -322,11 +381,11 @@ public class ImageGridActivity extends AppCompatActivity {
 
     public class CustomAdapter extends BaseAdapter {
 
-        private List<Integer> imagesPhoto;
+        private List<LinkedHashMap<Integer,Integer>> imagesPhoto;
         private Context context;
         private LayoutInflater layoutInflater;
 
-        public CustomAdapter(List<Integer> imagesPhoto, Context context) {
+        public CustomAdapter(List<LinkedHashMap<Integer,Integer>> imagesPhoto, Context context) {
             this.imagesPhoto = imagesPhoto;
             this.context = context;
             this.layoutInflater = (LayoutInflater) context.getSystemService(LAYOUT_INFLATER_SERVICE);
@@ -354,7 +413,7 @@ public class ImageGridActivity extends AppCompatActivity {
 
             }
             ImageView imageView = view.findViewById(R.id.imageView);
-            imageView.setImageResource(imagesPhoto.get(i));
+            imageView.setImageResource((Integer) imagesPhoto.get(i).keySet().toArray()[0]);
             return view;
         }
     }

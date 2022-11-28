@@ -2,6 +2,7 @@ package com.onedroid.relive;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.Activity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -19,6 +20,8 @@ public class ClickedItemActivity extends AppCompatActivity {
     ImageView imageView;
     ExtendedFloatingActionButton upvote;
     int likes;
+    int imageIndex;
+    int image;
     boolean liked = false;
 
     @Override
@@ -28,7 +31,11 @@ public class ClickedItemActivity extends AppCompatActivity {
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-        likes = (int) ThreadLocalRandom.current().nextInt(0, 5+1);
+        likes = getIntent().getIntExtra("likes",0);
+        imageIndex = getIntent().getIntExtra("index",0);
+        image = getIntent().getIntExtra("image",0);
+
+
 
         imageView = findViewById(R.id.imageView);
         upvote = findViewById(R.id.upvote);
@@ -36,8 +43,7 @@ public class ClickedItemActivity extends AppCompatActivity {
         upvote.setIconResource(R.drawable.ic_heart_thin_icon);
 
         if (getIntent().getExtras() != null) {
-            int selectedImage = getIntent().getIntExtra("image", 0);
-            imageView.setImageResource(selectedImage);
+            imageView.setImageResource(image);
 
         }
 
@@ -69,6 +75,17 @@ public class ClickedItemActivity extends AppCompatActivity {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void onBackPressed() {
+        Intent imageGridActivitityIntent = new Intent();
+        imageGridActivitityIntent.putExtra("imageIndex",imageIndex);
+        imageGridActivitityIntent.putExtra("image",image);
+        imageGridActivitityIntent.putExtra("likes",likes);
+        setResult(Activity.RESULT_OK, imageGridActivitityIntent);
+        finish();
+
     }
 
     public boolean onCreateOptionsMenu(Menu menu) {
