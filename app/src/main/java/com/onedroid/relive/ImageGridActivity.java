@@ -10,6 +10,8 @@ import android.content.ServiceConnection;
 import android.os.Bundle;
 import android.os.IBinder;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
@@ -75,6 +77,8 @@ public class ImageGridActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_image_grid);
+
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         binding = ActivityImageGridBinding.inflate(getLayoutInflater());
         Intent intent = new Intent(this, AccountService.class);
@@ -232,6 +236,21 @@ public class ImageGridActivity extends AppCompatActivity {
                 ascendingSortedImages = !ascendingSortedImages;
             }
         });
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                finish();
+                return true;
+        }
+
+        return super.onOptionsItemSelected(item);
+    }
+
+    public boolean onCreateOptionsMenu(Menu menu) {
+        return true;
     }
 
     public void onActivityResult (int requestCode, int resultCode, Intent data) {
