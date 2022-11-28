@@ -29,19 +29,11 @@
         android:inputType="textPassword" />
 
     <Button
-        android:id="@+id/btnLogin"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Login"
-        android:layout_below="@id/password"
-        android:layout_margin="@dimen/fab_margin"
-        />
-    <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
         android:id="@+id/signup"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Sign Up"
-        android:layout_below="@id/btnLogin"
+        android:layout_below="@id/password"
         android:layout_margin="@dimen/fab_margin"
         />
 </RelativeLayout>

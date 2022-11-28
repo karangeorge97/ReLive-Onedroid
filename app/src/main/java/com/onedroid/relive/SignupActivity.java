@@ -9,18 +9,16 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton;
 import com.onedroid.relive.handlers.AuthHandler;
 import com.onedroid.relive.service.AccountService;
 
 /**
  * Activity class for Login.
  */
-public class LoginActivity extends AppCompatActivity {
+public class SignupActivity extends AppCompatActivity {
     EditText usernameInput, passwordInput;
-    Button loginButton;
+    Button signupButton;
     AuthHandler authHandler;
-    ExtendedFloatingActionButton signupButton;
 
     /**
      * Overrides onCreate.
@@ -31,31 +29,16 @@ public class LoginActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_login);
+        setContentView(R.layout.activity_signup);
         authHandler = new AuthHandler(this);
 
 
-        try {
-            authHandler.createUser("Karan", "");
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
 
         authHandler = new AuthHandler(this);
 
         usernameInput = (EditText) findViewById(R.id.username);
         passwordInput = (EditText) findViewById(R.id.password);
-        loginButton = (Button) findViewById(R.id.btnLogin);
-        signupButton = (ExtendedFloatingActionButton) findViewById(R.id.signup);
-
-
-        signupButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent signupIntent = new Intent(getApplicationContext(),SignupActivity.class);
-                startActivity(signupIntent);
-            }
-        });
+        signupButton = (Button) findViewById(R.id.signup);
 
 
         /*
@@ -63,7 +46,7 @@ public class LoginActivity extends AppCompatActivity {
          * Will move to the main activity if authenticated
          * Displays a message if the validation fails
          */
-        loginButton.setOnClickListener(new View.OnClickListener() {
+        signupButton.setOnClickListener(new View.OnClickListener() {
             /**
              * Override onClick.
              * Authenticate user based on username and password and start activity
@@ -75,13 +58,10 @@ public class LoginActivity extends AppCompatActivity {
                 String password = passwordInput.getText().toString();
 
                 try {
-                    authHandler.authenticateUser(username, password);
-
-                    Intent intent = new Intent(getApplicationContext(), MainActivity.class);
-                    intent.putExtra("username", username);
-                    startActivity(intent);
+                    authHandler.createUser(username, password);
+                    finish();
                 } catch (Exception e) {
-                    Toast.makeText(LoginActivity.this, "Incorrect Details", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(SignupActivity.this, "Username taken please try with a different one", Toast.LENGTH_SHORT).show();
                 }
             }
         });
