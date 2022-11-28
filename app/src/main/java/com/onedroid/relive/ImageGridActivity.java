@@ -17,6 +17,7 @@ import android.widget.BaseAdapter;
 import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.onedroid.relive.databinding.ActivityImageGridBinding;
@@ -52,6 +53,7 @@ public class ImageGridActivity extends AppCompatActivity {
     int fromTimeMinutes = 0;
     int toTimeHours = 23;
     int toTimeMinutes = 59;
+    boolean ascendingSortedImages = true;
     int numberOfImagesToShow = 18;
 
     List<Integer> images_selected = new ArrayList<>();
@@ -102,24 +104,36 @@ public class ImageGridActivity extends AppCompatActivity {
 
         gridView = findViewById(R.id.gridView);
 
-        ImageView topPhotoOne = findViewById(R.id.topPhoto1);
-        topPhotoOne.setImageResource(images_selected.get(0));
-        topPhotoOne.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                int selectedImage = images_selected.get(0);
-                startActivity(new Intent(ImageGridActivity.this,ClickedItemActivity.class).putExtra("image",selectedImage));
-            }
-        });
-        ImageView topPhotoTwo = findViewById(R.id.topPhoto2);
-        topPhotoTwo.setImageResource(images_selected.get(1));
-        topPhotoTwo.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                int selectedImage = images_selected.get(1);
-                startActivity(new Intent(ImageGridActivity.this,ClickedItemActivity.class).putExtra("image",selectedImage));
-            }
-        });
+
+        if(images_selected.size()>=3) {
+            ImageView topPhotoOne = findViewById(R.id.topPhoto1);
+            topPhotoOne.setImageResource(images_selected.get(0));
+            topPhotoOne.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    int selectedImage = images_selected.get(0);
+                    startActivity(new Intent(ImageGridActivity.this, ClickedItemActivity.class).putExtra("image", selectedImage));
+                }
+            });
+            ImageView topPhotoTwo = findViewById(R.id.topPhoto2);
+            topPhotoTwo.setImageResource(images_selected.get(1));
+            topPhotoTwo.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    int selectedImage = images_selected.get(1);
+                    startActivity(new Intent(ImageGridActivity.this, ClickedItemActivity.class).putExtra("image", selectedImage));
+                }
+            });
+            ImageView topPhotoThree = findViewById(R.id.topPhoto3);
+            topPhotoThree.setImageResource(images_selected.get(2));
+            topPhotoThree.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    int selectedImage = images_selected.get(2);
+                    startActivity(new Intent(ImageGridActivity.this, ClickedItemActivity.class).putExtra("image", selectedImage));
+                }
+            });
+        }
         customAdapter = new CustomAdapter(images_selected, this);
         gridView.setAdapter(customAdapter);
         TextView filteredNumberOfPhotosText = (TextView) findViewById(R.id.filteredNumberOfPhotosText);
@@ -189,6 +203,19 @@ public class ImageGridActivity extends AppCompatActivity {
                 customAdapter = new CustomAdapter(images_selected, ImageGridActivity.this);
                 gridView.setAdapter(customAdapter);
                 customAdapter.notifyDataSetChanged();
+                Toast toast;
+                if(ascendingSortedImages) {
+                    toast = Toast.makeText(getApplicationContext(),
+                            "Images sorted by date (ascending)",
+                            Toast.LENGTH_SHORT);
+                }
+                else {
+                    toast = Toast.makeText(getApplicationContext(),
+                            "Images sorted by date (descending)",
+                            Toast.LENGTH_SHORT);
+                }
+                toast.show();
+                ascendingSortedImages = !ascendingSortedImages;
             }
         });
     }
@@ -212,7 +239,7 @@ public class ImageGridActivity extends AppCompatActivity {
             TextView filteredNumberOfPhotosText = (TextView) findViewById(R.id.filteredNumberOfPhotosText);
             filteredNumberOfPhotosText.setText(numberOfImagesToShow + "/18");
         }
-        else if (requestCode==200) {
+        else if (requestCode==200 && data!=null) {
             switch (getIntent().getStringExtra("eventName")) {
                 case "Graduation":
                     new_images_selected.add(R.drawable.m3_grad);
@@ -227,7 +254,10 @@ public class ImageGridActivity extends AppCompatActivity {
                     new_images_selected.add(R.drawable.m3_lal);
                     break;
             }
-
+            Toast toast = Toast.makeText(getApplicationContext(),
+                    "Image uploaded successfully",
+                    Toast.LENGTH_SHORT);
+            toast.show();
         }
         customAdapter = new CustomAdapter(new_images_selected, this);
         gridView.setAdapter(customAdapter);

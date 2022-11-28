@@ -35,7 +35,6 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_gravity="right"
-
             android:layout_weight="1"
             android:src="@drawable/ic_baseline_person_add_alt_1_24" />
 
@@ -46,14 +45,17 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:background="@drawable/customborder">
+        android:background="@drawable/customborder"
+        >
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Top Photos"
-            android:textSize="20dp"
-            android:textColor="@color/black"
-            android:layout_marginLeft="0dp"
+            android:fontFamily="sans-serif"
+            android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+            android:textIsSelectable="false"
+            android:textSize="20sp"
+            android:typeface="serif"
+            android:text="Top Photos "
             />
         <ImageView
             android:id="@+id/topPhoto1"
@@ -75,13 +77,23 @@
             android:scaleType="fitXY"
             />
         <ImageView
+            android:id="@+id/topPhoto3"
+            android:layout_width="150dp"
+            android:layout_height="100dp"
+            android:layout_gravity="center"
+            android:layout_weight="1"
+            android:layout_marginLeft="4dp"
+            android:layout_marginTop="20dp"
+            android:scaleType="fitXY"
+            />
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/shareTopPhotos"
+            android:layout_gravity="center_vertical"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:src="@drawable/ic_share_icon"
-            android:layout_gravity="center"
-            android:layout_weight="1"
-            android:layout_margin="@dimen/fab_margin"
-            />
+            android:layout_margin="@dimen/fab_margin"/>
+
 
     </LinearLayout>
 

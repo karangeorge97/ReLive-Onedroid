@@ -17,6 +17,7 @@ public class ClickedItemActivity extends AppCompatActivity {
     ImageView imageView;
     ExtendedFloatingActionButton upvote;
     int likes;
+    boolean liked = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,8 +40,17 @@ public class ClickedItemActivity extends AppCompatActivity {
         upvote.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                upvote.setIconResource(R.drawable.ic_heart_icon);
-                upvote.setText(String.valueOf(likes+1) + " Likes");
+                if(!liked) {
+                    upvote.setIconResource(R.drawable.ic_heart_icon);
+                    likes++;
+                    upvote.setText(String.valueOf(likes) + " Likes");
+                }
+                else {
+                    upvote.setIconResource(R.drawable.ic_heart_thin_icon);
+                    likes--;
+                    upvote.setText(String.valueOf(likes) + " Likes");
+                }
+                liked = !liked;
             }
         });
         //set values;
