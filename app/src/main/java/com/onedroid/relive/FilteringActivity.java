@@ -249,6 +249,7 @@ public class FilteringActivity extends AppCompatActivity {
                 imageGridActivityIntent.putExtra("filterApplied",isContributorSwitchChecked||isTimeSwitchChecked);
                 imageGridActivityIntent.putExtra("contributorSwitchIsChecked",isContributorSwitchChecked);
                 imageGridActivityIntent.putExtra("timeSwitchIsChecked",isTimeSwitchChecked);
+
                //Added this to indicate if no filters
                 if(isContributorSwitchChecked||isTimeSwitchChecked) {
                     numberOfImages = (int) (numberOfImages * contributorFraction * timeFraction);

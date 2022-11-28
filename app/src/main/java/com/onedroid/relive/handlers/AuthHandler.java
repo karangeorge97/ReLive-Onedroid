@@ -9,8 +9,9 @@ import com.google.gson.Gson;
 import com.onedroid.relive.data.Database;
 import com.onedroid.relive.model.Event;
 
+import java.util.ArrayList;
 import java.util.HashSet;
-
+import java.util.UUID;
 
 
 /**
@@ -46,7 +47,10 @@ public class AuthHandler {
         user.put(Database.KEY_USERNAME, username);
         user.put(Database.KEY_PASSWORD, password);
         user.put(Database.KEY_EVENTS, getEmptyEvents());
-        user.put(Database.KEY_INVITES, getEventInvites());
+        if(username.equals("Karan"))
+            user.put(Database.KEY_INVITES, getEventInvites());
+        else
+            user.put(Database.KEY_INVITES, getEmptyEvents());
         boolean created = db.insertData(user);
 
         if(!created) {
@@ -87,12 +91,12 @@ public class AuthHandler {
     private String getEventInvites() {
         Gson gson = new Gson();
         HashSet<Event> invites = new HashSet<>();
-        invites.add(new Event("Graduation","12/11/2022","21/11/2022"));
-        invites.add(new Event("Halloween","16/11/2022","21/11/2022"));
-        invites.add(new Event("Karan Birthday","14/11/2022","21/11/2022"));
-        invites.add(new Event("Yadniki Birthday","14/11/2022","21/11/2022"));
-        invites.add(new Event("Jaiman Birthday","14/11/2022","21/11/2022"));
-        invites.add(new Event("Athrav Birthday","14/11/2022","21/11/2022"));
+        ArrayList<String> attendees = new ArrayList<>();
+        invites.add(new Event(UUID.randomUUID(), "Graduation","12/11/2022","21/11/2022",attendees));
+        invites.add(new Event(UUID.randomUUID(), "Halloween","16/11/2022","21/11/2022",attendees));
+        invites.add(new Event(UUID.randomUUID(), "Birthday","14/11/2022","21/11/2022",attendees));
+        invites.add(new Event(UUID.randomUUID(), "Lakers Game","14/11/2022","21/11/2022",attendees));
+
 
         return gson.toJson(invites);
     }

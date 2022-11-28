@@ -12,19 +12,14 @@ import android.os.IBinder;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.material.datepicker.CalendarConstraints;
 import com.google.android.material.datepicker.CompositeDateValidator;
-import com.google.android.material.datepicker.DateValidatorPointBackward;
 import com.google.android.material.datepicker.DateValidatorPointForward;
 import com.google.android.material.datepicker.MaterialDatePicker;
 import com.google.android.material.datepicker.MaterialPickerOnPositiveButtonClickListener;
 import com.onedroid.relive.databinding.ActivityCreateEventBinding;
-import com.onedroid.relive.databinding.ActivityMainBinding;
 import com.onedroid.relive.model.Event;
 import com.onedroid.relive.service.AccountService;
 
@@ -34,8 +29,8 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.List;
 import java.util.Locale;
+import java.util.UUID;
 
 public class CreateEvent extends AppCompatActivity {
 
@@ -46,10 +41,11 @@ public class CreateEvent extends AppCompatActivity {
 
     String fromDate;
     String toDate;
-    long initialDateInMillis;
-    long finalDateInMillis;
     long fromDateInMillis;
     long toDateInMillis;
+
+    private final int SHARE_ACTIVITY_CODE = 2;
+    private ArrayList<String> invitedUsers = new ArrayList<>();
 
     MaterialDatePicker.Builder materialDateBuilder = MaterialDatePicker.Builder.datePicker();
 
@@ -73,9 +69,7 @@ public class CreateEvent extends AppCompatActivity {
         long currTime = System.currentTimeMillis();
         long curPlusMonth = System.currentTimeMillis() + 30L * 86400000;
         fromDateInMillis = getIntent().getLongExtra("fromDateInMillis", currTime);
-//        initialDateInMillis = getIntent().getLongExtra("initialDateInMillis",currTime);
         toDateInMillis = getIntent().getLongExtra("toDateInMillis",curPlusMonth);
-//        finalDateInMillis = getIntent().getLongExtra("finalDateInMillis",curPlusOne);
         DateFormat df = new SimpleDateFormat("MMM dd, yyyy");
         fromDate = df.format(new Date(fromDateInMillis));
         toDate = df.format(new Date(toDateInMillis));
@@ -86,38 +80,51 @@ public class CreateEvent extends AppCompatActivity {
         createEvent.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                long diff = (toDateInMillis-fromDateInMillis)/60000;
-                if (diff<0) {
-                    Toast toast = Toast.makeText(getApplicationContext(),
-                            "Choose a \"From\" date and time before the \"To\" date and time",
-                            Toast.LENGTH_SHORT);
-                    toast.show();
-                    return;
+                if(!eventName.getText().toString().isEmpty()) {
+                    long diff = (toDateInMillis - fromDateInMillis) / 60000;
+                    if (diff < 0) {
+                        Toast toast = Toast.makeText(getApplicationContext(),
+                                "Choose a \"From\" date and time before the \"To\" date and time",
+                                Toast.LENGTH_SHORT);
+                        toast.show();
+                        return;
+                    }
+
+                    //List of invited users from the share event activity
+                    UUID eventId = UUID.randomUUID();
+                    Event event = new Event(eventId, String.valueOf(eventName.getText()), fromDate, toDate, invitedUsers);
+                    try {
+                        mService.addEvent(event);
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+
+                    if(!invitedUsers.isEmpty())
+                    {
+                        for(String user : invitedUsers) {
+                            try {
+                                mService.addInvite(event,user);
+                            } catch (Exception e) {
+                                e.printStackTrace();
+                            }
+                        }
+                    }
+                    Intent intent = new Intent(getBaseContext(), MainActivity.class);
+                    startActivity(intent);
                 }
-                Event event = new Event(String.valueOf(eventName.getText()),fromDate, toDate);
-                try {
-                    mService.addEvent(event);
-                } catch (Exception e) {
-                    e.printStackTrace();
+                else
+                {
+                    Toast.makeText(getApplicationContext(),
+                            "Event name cannot be empty",
+                            Toast.LENGTH_SHORT).show();
                 }
-                Intent intent = new Intent(getBaseContext(), MainActivity.class);
-                startActivity(intent);
             }
         });
 
         startDateButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-//                CalendarConstraints.Builder calendarConstraintsBuilder = new CalendarConstraints.Builder();
-////                CalendarConstraints.DateValidator dateValidatorMin = DateValidatorPointForward.from(initialDateInMillis-86400000);
-//                CalendarConstraints.DateValidator dateValidatorMax = DateValidatorPointBackward.before(toDateInMillis);
-//                ArrayList<CalendarConstraints.DateValidator> listValidators = new ArrayList<>();
-////                listValidators.add(dateValidatorMin);
-//                listValidators.add(dateValidatorMax);
-//                CalendarConstraints.DateValidator validators = CompositeDateValidator.allOf(listValidators);
-//                CalendarConstraints calendarConstraints = calendarConstraintsBuilder
-//                        .setValidator(validators)
-//                        .build();
+
 
                 MaterialDatePicker fromMaterialDatePicker = materialDateBuilder
                         .setTitleText("Select a Start Date")
@@ -141,10 +148,8 @@ public class CreateEvent extends AppCompatActivity {
             public void onClick(View view) {
                 CalendarConstraints.Builder calendarConstraintsBuilder = new CalendarConstraints.Builder();
                 CalendarConstraints.DateValidator dateValidatorMin = DateValidatorPointForward.from(fromDateInMillis);
-//                CalendarConstraints.DateValidator dateValidatorMax = DateValidatorPointBackward.before(finalDateInMillis);
                 ArrayList<CalendarConstraints.DateValidator> listValidators = new ArrayList<>();
                 listValidators.add(dateValidatorMin);
-//                listValidators.add(dateValidatorMax);
                 CalendarConstraints.DateValidator validators = CompositeDateValidator.allOf(listValidators);
                 CalendarConstraints calendarConstraints = calendarConstraintsBuilder
                         .setValidator(validators)
@@ -171,15 +176,21 @@ public class CreateEvent extends AppCompatActivity {
         shareButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(getBaseContext(), ShareEvent.class);
-                startActivity(intent);
+                Intent shareActivityIntent = new Intent(CreateEvent.this,ShareEvent.class);
+                shareActivityIntent.putStringArrayListExtra("attendees",new ArrayList<String>());
+                startActivityForResult(shareActivityIntent,SHARE_ACTIVITY_CODE);
 
             }
         });
 
     }
 
-
+    public void onActivityResult (int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (resultCode == Activity.RESULT_OK && requestCode == SHARE_ACTIVITY_CODE) {
+            invitedUsers = data.getStringArrayListExtra("attendees");
+        }
+    }
 
     /**
      * Initialize ServiceConnection.

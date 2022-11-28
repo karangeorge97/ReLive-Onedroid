@@ -75,6 +75,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 break;
             case R.id.joinevent:
                 Intent joinEventActivity = new Intent(getApplicationContext(), JoinEvent.class);
+                joinEventActivity.putExtra("userName", getIntent().getStringExtra("username"));
                 startActivity(joinEventActivity);
                 break;
 

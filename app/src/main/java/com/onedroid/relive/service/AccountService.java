@@ -13,10 +13,11 @@ import com.onedroid.relive.data.Database;
 import com.onedroid.relive.model.Event;
 
 import java.lang.reflect.Type;
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
-
+import java.util.UUID;
 
 
 /**
@@ -71,6 +72,29 @@ public class AccountService extends Service {
         throw new IllegalArgumentException("No such event");
     }
 
+    public ArrayList<String> getEventAttendees(String eventName)
+    {
+        ArrayList<String> attendees = new ArrayList<>();
+        Cursor cursor = db.readAttendees();
+        if(cursor.moveToFirst()) {
+            do {
+                String eventString = cursor.getString(2);
+                Gson gson = new Gson();
+                Type setType = new TypeToken<HashSet<Event>>() {
+                }.getType();
+                Set<Event> events = gson.fromJson(eventString, setType);
+
+                for (Event e : events) {
+                    if (e.getName().equals(eventName)) {
+                        attendees.add(cursor.getString(0));
+                    }
+                }
+
+            } while (cursor.moveToNext());
+        }
+        return attendees;
+    }
+
     /**
      * retrieves Events that were added to user's account
      * @return set
@@ -89,15 +113,30 @@ public class AccountService extends Service {
         updateEventDB();
     }
 
-    public void addInvite(Event invite) throws Exception {
-        if(invites.contains(invite)) throw new Exception("User already Invited");
-        invites.add(invite);
-        updateInvitesDB();
+
+    public void addInvite(Event invite,String username) throws Exception {
+       //Reads the invites for the user
+        Cursor cursor = db.readData(username);
+        cursor.moveToFirst();
+
+        String eventString = cursor.getString(2);
+        Gson gson = new Gson();
+        Type setType = new TypeToken<HashSet<Event>>(){}.getType();
+        Set<Event> events = gson.fromJson(eventString, setType);
+
+        String inviteString = cursor.getString(3);
+        gson = new Gson();
+        setType = new TypeToken<HashSet<Event>>(){}.getType();
+        Set<Event> invites = gson.fromJson(inviteString, setType);
+        if(!invites.contains(invite) && !events.contains(invite)) {
+            invites.add(invite);
+            updateInvitesDB(invites, username);
+        }
     }
     public void removeInvite(Event invite) throws Exception {
         if(!(invites.contains(invite))) throw new Exception("User has not been invited to event");
         invites.remove(invite);
-        updateInvitesDB();
+        updateInvitesDB(invites , username);
     }
     /**
      * Utility to update Events  of User.
@@ -114,13 +153,13 @@ public class AccountService extends Service {
     /**
      * Utility to update Invites  of User.
      */
-    private void updateInvitesDB() {
+    private void updateInvitesDB(Set<Event> invites , String username) {
         Gson gson = new Gson();
-        String jsonString = gson.toJson(this.invites);
+        String jsonString = gson.toJson(invites);
 
         ContentValues content = new ContentValues();
         content.put("invites", jsonString);
-        db.updateData(content, this.username);
+        db.updateData(content, username);
     }
 
     /**
