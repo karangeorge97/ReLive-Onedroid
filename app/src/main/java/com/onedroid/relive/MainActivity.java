@@ -52,32 +52,16 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         bindService(intent, connection, Context.BIND_AUTO_CREATE);
         setContentView(binding.getRoot());
 
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-
         Button createEvent = findViewById(R.id.createEvent);
         Button joinEvent = findViewById(R.id.joinevent);
         FloatingActionButton searchEvent = findViewById(R.id.searchevent);
-
+        Button logoutButton = findViewById(R.id.logoutButton);
 
         createEvent.setOnClickListener(this);
         joinEvent.setOnClickListener(this);
         searchEvent.setOnClickListener(this);
+        logoutButton.setOnClickListener(this);
 
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case android.R.id.home:
-                finish();
-                return true;
-        }
-
-        return super.onOptionsItemSelected(item);
-    }
-
-    public boolean onCreateOptionsMenu(Menu menu) {
-        return true;
     }
 
     @Override
@@ -100,6 +84,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 Intent searchEventActivity = new Intent(getApplicationContext(), SearchEvent.class);
                 searchEventActivity.putExtra("userName", getIntent().getStringExtra("username"));
                 startActivity(searchEventActivity);
+                break;
+            case R.id.logoutButton:
+                finish();
                 break;
         }
 
