@@ -6,7 +6,9 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     tools:context=".CreateEvent"
-    android:layout_margin="@dimen/fab_margin">
+    android:layout_margin="@dimen/fab_margin"
+    android:background="@drawable/customborder"
+    >
 
 
     <LinearLayout
@@ -14,14 +16,15 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:layout_margin="@dimen/text_margin">
+        android:layout_margin="@dimen/text_margin"
+        >
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Create Event"
             android:textIsSelectable="false"
-            android:textSize="30dp" />
+            android:textSize="30sp" />
 
     </LinearLayout>
 
@@ -31,7 +34,7 @@
         android:id="@+id/EventNameLL"
         android:orientation="horizontal"
         android:layout_margin="@dimen/text_margin"
-        android:background="@drawable/customborder">
+        >
 
         <EditText
             android:id="@+id/eventName"
@@ -51,16 +54,11 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/FromText"
-        android:text="From:"
-        android:layout_marginHorizontal="50dp"/>
+        android:text="Event Dates"
+        android:textSize="20sp"
+        android:layout_margin="@dimen/text_margin"
+    />
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/ToText"
-        android:text="To:"
-        android:layout_alignParentRight="true"
-        android:layout_marginHorizontal="125dp"/>
     </RelativeLayout>
 
     <RelativeLayout
@@ -69,7 +67,7 @@
         android:id="@+id/dateButtonsRL"
         android:orientation="horizontal"
         android:layout_margin="@dimen/text_margin"
-        android:background="@drawable/customborder">
+   >
 
         <Button
             android:id="@+id/start_date"
@@ -77,7 +75,7 @@
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="20dp"
             android:clickable="true"
-            android:text="Click me!" />
+            android:text="From" />
 <!--        text should be the date from the start_datepicker widget-->
         <Button
             android:layout_width="wrap_content"
@@ -85,7 +83,7 @@
             android:clickable="true"
             android:layout_alignParentRight="true"
             android:id="@+id/end_date"
-            android:text="Click me!"
+            android:text="To"
             android:layout_marginHorizontal="20dp"
             />
     </RelativeLayout>

@@ -12,6 +12,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.LinearLayoutCompat;
@@ -30,7 +31,7 @@ public class ShareEvent extends AppCompatActivity {
     EditText usernameBox;
     Button addButton;
     Button doneButton;
-    List<String> usernames = new ArrayList<>();
+    ArrayList<String> usernames;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,14 +41,21 @@ public class ShareEvent extends AppCompatActivity {
          usernameBox = (EditText) findViewById(R.id.editTextBox);
          addButton = (Button) findViewById(R.id.addButton);
          doneButton = (Button) findViewById(R.id.doneButton);
+         usernames = getIntent().getStringArrayListExtra("attendees");
 
 
         addButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                usernames.add(usernameBox.getText().toString());
-                usernameBox.setText("");
-                generateInviteRow();
+                if(!(usernames.contains(usernameBox.getText().toString()))) {
+                    usernames.add(usernameBox.getText().toString());
+                    usernameBox.setText("");
+                    generateInviteRow();
+                }
+                else
+                {
+                    Toast.makeText(ShareEvent.this,"User is already a part of the event", Toast.LENGTH_SHORT).show();
+                }
 
             }
         });
@@ -55,10 +63,15 @@ public class ShareEvent extends AppCompatActivity {
         doneButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                ShareEvent.super.onBackPressed();
+                Intent createEventActivityIntent = new Intent();
+                createEventActivityIntent.putStringArrayListExtra("attendees",usernames);
+                setResult(Activity.RESULT_OK, createEventActivityIntent);
+                finish();
 
             }
         });
+
+        generateInviteRow();
     }
 
     @Override

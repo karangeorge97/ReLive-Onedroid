@@ -92,9 +92,9 @@ public class Database extends SQLiteOpenHelper {
         return db.query(TABLE, null, KEY_USERNAME + "=?", new String[]{selection}, null, null, null);
     }
 
-    public Cursor readInvites(String selection) {
+    public Cursor readAttendees() {
         SQLiteDatabase db = getInstance(null).getWritableDatabase();
-        return db.query(TABLE, null, KEY_USERNAME + "=?", new String[]{selection}, null, null, null);
+        return db.query(TABLE, null, null, null, null, null, null);
     }
 
     /**

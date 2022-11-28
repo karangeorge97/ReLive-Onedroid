@@ -21,6 +21,7 @@ import android.widget.Toast;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.onedroid.relive.databinding.ActivityImageGridBinding;
+import com.onedroid.relive.model.Event;
 import com.onedroid.relive.service.AccountService;
 
 
@@ -31,6 +32,7 @@ import java.util.Calendar;
 import java.util.Collections;
 import java.util.List;
 import java.util.Locale;
+import java.util.Set;
 
 public class ImageGridActivity extends AppCompatActivity {
 
@@ -42,6 +44,7 @@ public class ImageGridActivity extends AppCompatActivity {
     GridView gridView;
     boolean filterApplied = false;
     private final int FILTER_ACTIVITY_CODE = 1;
+    private final int SHARE_EVENT_CODE = 4;
     boolean contributorSwitchIsChecked = false;
     boolean timeSwitchIsChecked = false;
     boolean[] selectedUsers = new boolean[5];
@@ -195,6 +198,17 @@ public class ImageGridActivity extends AppCompatActivity {
             }
         });
 
+        FloatingActionButton shareEvent = findViewById(R.id.shareEvent);
+        shareEvent.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent shareEventActivityIntent = new Intent(ImageGridActivity.this,ShareEvent.class);
+                ArrayList<String> attendees = mService.getEventAttendees(getIntent().getStringExtra("eventName"));
+                shareEventActivityIntent.putStringArrayListExtra("attendees", attendees);
+                startActivityForResult(shareEventActivityIntent , SHARE_EVENT_CODE);
+
+            }
+        });
         FloatingActionButton sortPhoto = findViewById(R.id.sortPhoto);
         sortPhoto.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -258,6 +272,27 @@ public class ImageGridActivity extends AppCompatActivity {
                     "Image uploaded successfully",
                     Toast.LENGTH_SHORT);
             toast.show();
+        }
+
+        else if (requestCode==SHARE_EVENT_CODE && data!=null) {
+            ArrayList<String> invitedUsers = data.getStringArrayListExtra("attendees");
+            if(!invitedUsers.isEmpty())
+            {
+                for(String user : invitedUsers) {
+                    try {
+                        if(!user.equals(getIntent().getStringExtra("userName"))) {
+                            Event event = mService.getEvent(getIntent().getStringExtra("eventName"));
+                            mService.addInvite(event, user);
+                        }
+
+                    } catch (Exception e) {
+                        Toast toast = Toast.makeText(getApplicationContext(),
+                                e.getMessage(),
+                                Toast.LENGTH_SHORT);
+                        toast.show();
+                    }
+                }
+            }
         }
         customAdapter = new CustomAdapter(new_images_selected, this);
         gridView.setAdapter(customAdapter);

@@ -22,6 +22,8 @@ import com.google.android.material.floatingactionbutton.ExtendedFloatingActionBu
 import com.onedroid.relive.model.Event;
 import com.onedroid.relive.service.AccountService;
 
+import java.util.ArrayList;
+
 public class JoinEvent extends AppCompatActivity implements ServiceConnection{
 
     AccountService mService;
@@ -118,6 +120,7 @@ public class JoinEvent extends AppCompatActivity implements ServiceConnection{
                 public void onClick(View view) {
                     try {
                         mService.removeInvite(invite);
+                        invite.addAttendee(getIntent().getStringExtra("userName"));
                         mService.addEvent(invite);
                         ((ViewGroup)view.getParent().getParent()).removeView((ViewGroup)view.getParent());
                         Toast.makeText(JoinEvent.this,"Successfully Joined "+ invite.getName(), Toast.LENGTH_SHORT).show();
