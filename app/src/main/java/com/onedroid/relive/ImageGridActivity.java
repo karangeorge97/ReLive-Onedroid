@@ -54,6 +54,7 @@ public class ImageGridActivity extends AppCompatActivity {
     int toTimeHours = 23;
     int toTimeMinutes = 59;
     boolean ascendingSortedImages = true;
+    int numberOfImagesToShow = 18;
 
     List<Integer> images_selected = new ArrayList<>();
 
@@ -135,6 +136,9 @@ public class ImageGridActivity extends AppCompatActivity {
         }
         customAdapter = new CustomAdapter(images_selected, this);
         gridView.setAdapter(customAdapter);
+        TextView filteredNumberOfPhotosText = (TextView) findViewById(R.id.filteredNumberOfPhotosText);
+        numberOfImagesToShow = images_selected.size();
+        filteredNumberOfPhotosText.setText(numberOfImagesToShow + "/18");
 
         gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -214,11 +218,7 @@ public class ImageGridActivity extends AppCompatActivity {
                 ascendingSortedImages = !ascendingSortedImages;
             }
         });
-
-
-
     }
-
 
     public void onActivityResult (int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -227,7 +227,7 @@ public class ImageGridActivity extends AppCompatActivity {
             filterApplied = data.getBooleanExtra("filterApplied", false);
             contributorSwitchIsChecked = data.getBooleanExtra("contributorSwitchIsChecked", false);
             timeSwitchIsChecked = data.getBooleanExtra("timeSwitchIsChecked", false);
-            int numberOfImagesToShow = data.getIntExtra("numberOfImagesToShow", images_selected.size());
+            numberOfImagesToShow = data.getIntExtra("numberOfImagesToShow", images_selected.size());
             selectedUsers = data.getBooleanArrayExtra("selectedUsers");
             fromTimeHours = data.getIntExtra("fromTimeHours",0);
             toTimeHours = data.getIntExtra("toTimeHours",23);
@@ -237,12 +237,7 @@ public class ImageGridActivity extends AppCompatActivity {
             toDateInMillis = data.getLongExtra("toDateInMillis",0);
             new_images_selected = images_selected.subList(0, numberOfImagesToShow);
             TextView filteredNumberOfPhotosText = (TextView) findViewById(R.id.filteredNumberOfPhotosText);
-
-            if (filterApplied) {
-                filteredNumberOfPhotosText.setText(numberOfImagesToShow + "/18");
-            } else {
-                filteredNumberOfPhotosText.setText("");
-            }
+            filteredNumberOfPhotosText.setText(numberOfImagesToShow + "/18");
         }
         else if (requestCode==200 && data!=null) {
             switch (getIntent().getStringExtra("eventName")) {
