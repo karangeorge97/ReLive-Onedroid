@@ -10,6 +10,8 @@ import android.content.ServiceConnection;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.os.IBinder;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -35,11 +37,25 @@ public class JoinEvent extends AppCompatActivity implements ServiceConnection{
         setContentView(R.layout.activity_join_event);
         Intent intent = new Intent(this, AccountService.class);
 
-        bindService(intent, connection, Context.BIND_AUTO_CREATE);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
+        bindService(intent, connection, Context.BIND_AUTO_CREATE);
     }
 
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                finish();
+                return true;
+        }
 
+        return super.onOptionsItemSelected(item);
+    }
+
+    public boolean onCreateOptionsMenu(Menu menu) {
+        return true;
+    }
 
     @Override
     protected void onResume() {

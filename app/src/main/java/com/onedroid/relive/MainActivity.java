@@ -11,6 +11,8 @@ import com.google.android.material.card.MaterialCardView;
 import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton;
 import androidx.appcompat.app.AppCompatActivity;
 import android.os.IBinder;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -50,6 +52,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         bindService(intent, connection, Context.BIND_AUTO_CREATE);
         setContentView(binding.getRoot());
 
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         Button createEvent = findViewById(R.id.createEvent);
         Button joinEvent = findViewById(R.id.joinevent);
@@ -62,6 +65,20 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     }
 
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                finish();
+                return true;
+        }
+
+        return super.onOptionsItemSelected(item);
+    }
+
+    public boolean onCreateOptionsMenu(Menu menu) {
+        return true;
+    }
 
     @Override
     public void onClick(View view) {

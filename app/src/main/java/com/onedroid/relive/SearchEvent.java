@@ -12,6 +12,8 @@ import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.os.IBinder;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.DatePicker;
@@ -61,6 +63,7 @@ public class SearchEvent extends AppCompatActivity implements AdapterView.OnItem
         bindService(intent, connection, Context.BIND_AUTO_CREATE);
         setContentView(binding.getRoot());
 
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         // Search By Event
         searchView = findViewById(R.id.eventListSearchView);
@@ -135,6 +138,20 @@ public class SearchEvent extends AppCompatActivity implements AdapterView.OnItem
 
     }
 
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                finish();
+                return true;
+        }
+
+        return super.onOptionsItemSelected(item);
+    }
+
+    public boolean onCreateOptionsMenu(Menu menu) {
+        return true;
+    }
 
     @Override
     protected void onResume() {
