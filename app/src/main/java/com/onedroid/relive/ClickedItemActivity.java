@@ -34,13 +34,19 @@ public class ClickedItemActivity extends AppCompatActivity {
         likes = getIntent().getIntExtra("likes",0);
         imageIndex = getIntent().getIntExtra("index",0);
         image = getIntent().getIntExtra("image",0);
+        liked = getIntent().getBooleanExtra("liked",false);
 
 
 
         imageView = findViewById(R.id.imageView);
         upvote = findViewById(R.id.upvote);
         upvote.setText(String.valueOf(likes) + " Likes");
-        upvote.setIconResource(R.drawable.ic_heart_thin_icon);
+        if(!liked) {
+            upvote.setIconResource(R.drawable.ic_heart_thin_icon);
+        }
+        else
+            upvote.setIconResource(R.drawable.ic_heart_icon);
+
 
         if (getIntent().getExtras() != null) {
             imageView.setImageResource(image);
@@ -70,6 +76,12 @@ public class ClickedItemActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case android.R.id.home:
+                Intent imageGridActivitityIntent = new Intent();
+                imageGridActivitityIntent.putExtra("imageIndex",imageIndex);
+                imageGridActivitityIntent.putExtra("image",image);
+                imageGridActivitityIntent.putExtra("likes",likes);
+                imageGridActivitityIntent.putExtra("liked",liked);
+                setResult(Activity.RESULT_OK, imageGridActivitityIntent);
                 finish();
                 return true;
         }
@@ -83,6 +95,7 @@ public class ClickedItemActivity extends AppCompatActivity {
         imageGridActivitityIntent.putExtra("imageIndex",imageIndex);
         imageGridActivitityIntent.putExtra("image",image);
         imageGridActivitityIntent.putExtra("likes",likes);
+        imageGridActivitityIntent.putExtra("liked",liked);
         setResult(Activity.RESULT_OK, imageGridActivitityIntent);
         finish();
 
