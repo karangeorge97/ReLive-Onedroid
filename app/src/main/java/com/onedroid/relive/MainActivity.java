@@ -40,6 +40,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private ActivityMainBinding binding;
     AccountService mService;
     boolean mBound = false;
+    Button joinEvent;
 
 
     @Override
@@ -53,7 +54,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         setContentView(binding.getRoot());
 
         Button createEvent = findViewById(R.id.createEvent);
-        Button joinEvent = findViewById(R.id.joinevent);
+        joinEvent = findViewById(R.id.joinevent);
         FloatingActionButton searchEvent = findViewById(R.id.searchevent);
         Button logoutButton = findViewById(R.id.logoutButton);
 
@@ -107,6 +108,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             AccountService.AccountBinder binder = (AccountService.AccountBinder) service;
             mService = binder.getService();
             mBound = true;
+            joinEvent.setText("Join Event " + "(" + mService.getInvites().size()+")");
             generateEvents();
         }
 
@@ -124,7 +126,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     @Override
     protected void onResume() {
         super.onResume();
-        if(mBound) generateEvents();
+        if(mBound)
+        {
+            joinEvent.setText("Join Event " + "(" + mService.getInvites().size()+")");
+            generateEvents();
+
+        }
     }
 
 
