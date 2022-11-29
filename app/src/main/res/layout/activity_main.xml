@@ -9,6 +9,23 @@
     android:layout_margin="@dimen/fab_margin">
 
     <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_marginTop="@dimen/activity_vertical_margin"
+        >
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Welcome User!"
+            android:gravity="center"
+            android:textSize="25sp"
+            android:id="@+id/userWelcomeTextBox"/>
+
+    </LinearLayout>
+
+    <LinearLayout
         android:id="@+id/recentEvents"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

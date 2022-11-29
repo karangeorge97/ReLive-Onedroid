@@ -48,13 +48,16 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         binding = ActivityMainBinding.inflate(getLayoutInflater());
         Intent intent = new Intent(this, AccountService.class);
-        intent.putExtra("username", getIntent().getStringExtra("username"));
+        String username = getIntent().getStringExtra("username");
+        intent.putExtra("username", username);
         bindService(intent, connection, Context.BIND_AUTO_CREATE);
         setContentView(binding.getRoot());
 
         Button createEvent = findViewById(R.id.createEvent);
         Button joinEvent = findViewById(R.id.joinevent);
         FloatingActionButton searchEvent = findViewById(R.id.searchevent);
+        TextView userWelcomeTextBox = findViewById(R.id.userWelcomeTextBox);
+        userWelcomeTextBox.setText("Welcome " + username + "!");
 
         createEvent.setOnClickListener(this);
         joinEvent.setOnClickListener(this);
