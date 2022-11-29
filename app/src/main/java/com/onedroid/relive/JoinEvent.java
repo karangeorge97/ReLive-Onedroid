@@ -130,7 +130,7 @@ public class JoinEvent extends AppCompatActivity implements ServiceConnection{
             inviteButton.setIcon(icon);
 
             FloatingActionButton accept = (FloatingActionButton) view.getChildAt(1);
-            accept.setImageResource(R.drawable.ic_baseline_check_24);
+            accept.setImageResource(R.drawable.ic_approved_accept_icon__1_);
             accept.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
@@ -150,7 +150,7 @@ public class JoinEvent extends AppCompatActivity implements ServiceConnection{
 
 
             FloatingActionButton decline = (FloatingActionButton) view.getChildAt(2);
-            decline.setImageResource(R.drawable.ic_close_icon);
+            decline.setImageResource(R.drawable.ic_close_round_line_icon);
             decline.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {

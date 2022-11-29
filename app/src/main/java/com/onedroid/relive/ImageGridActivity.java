@@ -24,6 +24,7 @@ import android.widget.Toast;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.onedroid.relive.databinding.ActivityImageGridBinding;
 import com.onedroid.relive.model.Event;
+import com.onedroid.relive.model.Image;
 import com.onedroid.relive.service.AccountService;
 
 
@@ -32,9 +33,13 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collections;
+import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 import java.util.Set;
+import java.util.concurrent.ThreadLocalRandom;
 
 public class ImageGridActivity extends AppCompatActivity {
 
@@ -47,6 +52,7 @@ public class ImageGridActivity extends AppCompatActivity {
     boolean filterApplied = false;
     private final int FILTER_ACTIVITY_CODE = 1;
     private final int SHARE_EVENT_CODE = 4;
+    private final int CLICKED_EVENT_CODE = 5;
     boolean contributorSwitchIsChecked = false;
     boolean timeSwitchIsChecked = false;
     boolean[] selectedUsers = new boolean[5];
@@ -60,16 +66,21 @@ public class ImageGridActivity extends AppCompatActivity {
     int toTimeMinutes = 59;
     boolean ascendingSortedImages = true;
     int numberOfImagesToShow = 18;
+    
+    
 
-    List<Integer> images_selected = new ArrayList<>();
 
-    List<Integer>images_grad = new ArrayList<>();
+    List<Image> images_selected = new ArrayList<>();
 
-    List<Integer> images_bir= new ArrayList<>();
+    List<Image>images_grad = new ArrayList<>();
 
-    List<Integer>images_hal= new ArrayList<>();
+    List<Image> images_bir= new ArrayList<>();
 
-    List<Integer>images_lal= new ArrayList<>();
+    List<Image> images_hal= new ArrayList<>();
+
+    List<Image> images_lal= new ArrayList<>();
+
+    HashMap<String , Boolean> attendeesMap = new HashMap<>();
 
 
 
@@ -89,12 +100,23 @@ public class ImageGridActivity extends AppCompatActivity {
         TextView topLabel = (TextView) findViewById(R.id.eventName);
         topLabel.setText(getIntent().getStringExtra("eventName"));
 
+
         for(int i =1 ; i<19 ; i++)
         {
-            images_grad.add(getResources().getIdentifier("m" + i +"_grad", "drawable", getPackageName()));
-            images_bir.add(getResources().getIdentifier("m" + i +"_bir", "drawable", getPackageName()));
-            images_hal.add(getResources().getIdentifier("m" + i +"_hal", "drawable", getPackageName()));
-            images_lal.add(getResources().getIdentifier("m" + i +"_lal", "drawable", getPackageName()));
+
+            images_grad.add(
+                    new Image(getResources().getIdentifier("m" + i +"_grad", "drawable", getPackageName()),(int) ThreadLocalRandom.current().nextInt(0, 5+1),attendeesMap)
+            );
+            images_bir.add(
+                    new Image(getResources().getIdentifier("m" + i +"_bir", "drawable", getPackageName()),(int) ThreadLocalRandom.current().nextInt(0, 5+1),attendeesMap)
+            );
+            images_lal.add(
+                    new Image(getResources().getIdentifier("m" + i +"_lal", "drawable", getPackageName()),(int) ThreadLocalRandom.current().nextInt(0, 5+1),attendeesMap)
+            );
+            images_hal.add(
+                    new Image(getResources().getIdentifier("m" + i +"_hal", "drawable", getPackageName()),(int) ThreadLocalRandom.current().nextInt(0, 5+1),attendeesMap)
+            );
+
         }
 
         switch(getIntent().getStringExtra("eventName"))
@@ -114,30 +136,45 @@ public class ImageGridActivity extends AppCompatActivity {
 
         if(images_selected.size()>=3) {
             ImageView topPhotoOne = findViewById(R.id.topPhoto1);
-            topPhotoOne.setImageResource(images_selected.get(0));
+            topPhotoOne.setImageResource( images_selected.get(0).getResouceId());
             topPhotoOne.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    int selectedImage = images_selected.get(0);
-                    startActivity(new Intent(ImageGridActivity.this, ClickedItemActivity.class).putExtra("image", selectedImage));
+                    int selectedImage =  images_selected.get(0).getResouceId();
+                    Intent clickedItemIntent = new Intent(ImageGridActivity.this , ClickedItemActivity.class);
+                    clickedItemIntent.putExtra("index",0);
+                    clickedItemIntent.putExtra("image",selectedImage);
+                    clickedItemIntent.putExtra("likes",(Integer) images_selected.get(0).getLikes());
+                    clickedItemIntent.putExtra("liked",images_selected.get(0).getLiked().get(getIntent().getStringExtra("userName")));
+                    startActivityForResult(clickedItemIntent,CLICKED_EVENT_CODE);
                 }
             });
             ImageView topPhotoTwo = findViewById(R.id.topPhoto2);
-            topPhotoTwo.setImageResource(images_selected.get(1));
+            topPhotoTwo.setImageResource((Integer) images_selected.get(1).getResouceId());
             topPhotoTwo.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    int selectedImage = images_selected.get(1);
-                    startActivity(new Intent(ImageGridActivity.this, ClickedItemActivity.class).putExtra("image", selectedImage));
+                    int selectedImage = (Integer) images_selected.get(1).getResouceId();
+                    Intent clickedItemIntent = new Intent(ImageGridActivity.this , ClickedItemActivity.class);
+                    clickedItemIntent.putExtra("index",1);
+                    clickedItemIntent.putExtra("image",selectedImage);
+                    clickedItemIntent.putExtra("likes", images_selected.get(1).getLikes());
+                    clickedItemIntent.putExtra("liked",images_selected.get(1).getLiked().get(getIntent().getStringExtra("userName")));
+                    startActivityForResult(clickedItemIntent,CLICKED_EVENT_CODE);
                 }
             });
             ImageView topPhotoThree = findViewById(R.id.topPhoto3);
-            topPhotoThree.setImageResource(images_selected.get(2));
+            topPhotoThree.setImageResource((Integer) images_selected.get(2).getResouceId());
             topPhotoThree.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    int selectedImage = images_selected.get(2);
-                    startActivity(new Intent(ImageGridActivity.this, ClickedItemActivity.class).putExtra("image", selectedImage));
+                    int selectedImage = (Integer) images_selected.get(2).getResouceId();
+                    Intent clickedItemIntent = new Intent(ImageGridActivity.this , ClickedItemActivity.class);
+                    clickedItemIntent.putExtra("index",2);
+                    clickedItemIntent.putExtra("image",selectedImage);
+                    clickedItemIntent.putExtra("likes",(Integer) images_selected.get(2).getResouceId());
+                    clickedItemIntent.putExtra("liked",images_selected.get(2).getLiked().get(getIntent().getStringExtra("userName")));
+                    startActivityForResult(clickedItemIntent,CLICKED_EVENT_CODE);
                 }
             });
         }
@@ -150,8 +187,13 @@ public class ImageGridActivity extends AppCompatActivity {
         gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                int selectedImage = images_selected.get(i);
-                startActivity(new Intent(ImageGridActivity.this,ClickedItemActivity.class).putExtra("image",selectedImage));
+                int selectedImage = (Integer) images_selected.get(i).getResouceId();
+                Intent clickedItemIntent = new Intent(ImageGridActivity.this , ClickedItemActivity.class);
+                clickedItemIntent.putExtra("index",i);
+                clickedItemIntent.putExtra("image",selectedImage);
+                clickedItemIntent.putExtra("likes", images_selected.get(i).getLikes());
+                clickedItemIntent.putExtra("liked",images_selected.get(i).getLiked().get(getIntent().getStringExtra("userName")));
+                startActivityForResult(clickedItemIntent,CLICKED_EVENT_CODE);
             }
         });
 
@@ -255,7 +297,7 @@ public class ImageGridActivity extends AppCompatActivity {
 
     public void onActivityResult (int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        List<Integer> new_images_selected = images_selected;
+        List<Image> new_images_selected = images_selected;
         if (resultCode==Activity.RESULT_OK && requestCode == FILTER_ACTIVITY_CODE) {
             filterApplied = data.getBooleanExtra("filterApplied", false);
             contributorSwitchIsChecked = data.getBooleanExtra("contributorSwitchIsChecked", false);
@@ -275,16 +317,16 @@ public class ImageGridActivity extends AppCompatActivity {
         else if (requestCode==200 && data!=null) {
             switch (getIntent().getStringExtra("eventName")) {
                 case "Graduation":
-                    new_images_selected.add(R.drawable.m3_grad);
+                    new_images_selected.add(0,new Image(R.drawable.m13_grad,0,attendeesMap));
                     break;
                 case "Halloween":
-                    new_images_selected.add(R.drawable.m3_hal);
+                    new_images_selected.add(0,new Image(R.drawable.m13_hal,0,attendeesMap));
                     break;
                 case "Birthday":
-                    new_images_selected.add(R.drawable.m3_bir);
+                    new_images_selected.add(0,new Image(R.drawable.m13_bir,0,attendeesMap));
                     break;
                 case "Lakers Game":
-                    new_images_selected.add(R.drawable.m3_lal);
+                    new_images_selected.add(0,new Image(R.drawable.m13_lal,0,attendeesMap));
                     break;
             }
             Toast toast = Toast.makeText(getApplicationContext(),
@@ -313,6 +355,25 @@ public class ImageGridActivity extends AppCompatActivity {
                 }
             }
         }
+        else if (requestCode==CLICKED_EVENT_CODE && data!=null)
+        {
+            int selectedImageIndex = data.getIntExtra("imageIndex",0);
+            int resourceId = data.getIntExtra("image",0);
+            int likes = data.getIntExtra("likes",0);
+            boolean liked = data.getBooleanExtra("liked",false);
+            HashMap<String,Boolean> map = new HashMap<>();
+            for(Map.Entry<String,Boolean> entry :  new_images_selected.get(selectedImageIndex).getLiked().entrySet())
+            {
+                map.put(entry.getKey(),entry.getValue());
+            }
+            map.put(getIntent().getStringExtra("userName"),liked);
+            Image img = new Image(resourceId,likes,map);
+            new_images_selected.remove(selectedImageIndex);
+            new_images_selected.add(selectedImageIndex,img);
+
+
+        }
+
         customAdapter = new CustomAdapter(new_images_selected, this);
         gridView.setAdapter(customAdapter);
         customAdapter.notifyDataSetChanged();
@@ -322,11 +383,11 @@ public class ImageGridActivity extends AppCompatActivity {
 
     public class CustomAdapter extends BaseAdapter {
 
-        private List<Integer> imagesPhoto;
+        private List<Image> imagesPhoto;
         private Context context;
         private LayoutInflater layoutInflater;
 
-        public CustomAdapter(List<Integer> imagesPhoto, Context context) {
+        public CustomAdapter(List<Image> imagesPhoto, Context context) {
             this.imagesPhoto = imagesPhoto;
             this.context = context;
             this.layoutInflater = (LayoutInflater) context.getSystemService(LAYOUT_INFLATER_SERVICE);
@@ -354,7 +415,7 @@ public class ImageGridActivity extends AppCompatActivity {
 
             }
             ImageView imageView = view.findViewById(R.id.imageView);
-            imageView.setImageResource(imagesPhoto.get(i));
+            imageView.setImageResource((Integer) imagesPhoto.get(i).getResouceId());
             return view;
         }
     }
@@ -373,6 +434,11 @@ public class ImageGridActivity extends AppCompatActivity {
             AccountService.AccountBinder binder = (AccountService.AccountBinder) service;
             mService = binder.getService();
             mBound = true;
+            ArrayList<String> attendees = mService.getEventAttendees(getIntent().getStringExtra("eventName"));
+            for(String attendee : attendees)
+            {
+                attendeesMap.put(attendee,false);
+            }
         }
 
         /**
