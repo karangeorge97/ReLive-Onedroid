@@ -49,20 +49,20 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         binding = ActivityMainBinding.inflate(getLayoutInflater());
         Intent intent = new Intent(this, AccountService.class);
-        intent.putExtra("username", getIntent().getStringExtra("username"));
+        String username = getIntent().getStringExtra("username");
+        intent.putExtra("username", username);
         bindService(intent, connection, Context.BIND_AUTO_CREATE);
         setContentView(binding.getRoot());
 
         Button createEvent = findViewById(R.id.createEvent);
         joinEvent = findViewById(R.id.joinevent);
         FloatingActionButton searchEvent = findViewById(R.id.searchevent);
-        Button logoutButton = findViewById(R.id.logoutButton);
+        TextView userWelcomeTextBox = findViewById(R.id.userWelcomeTextBox);
+        userWelcomeTextBox.setText("Welcome " + username + "!");
 
         createEvent.setOnClickListener(this);
         joinEvent.setOnClickListener(this);
         searchEvent.setOnClickListener(this);
-        logoutButton.setOnClickListener(this);
-
     }
 
     @Override
@@ -86,11 +86,25 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 searchEventActivity.putExtra("userName", getIntent().getStringExtra("username"));
                 startActivity(searchEventActivity);
                 break;
-            case R.id.logoutButton:
-                finish();
-                break;
         }
 
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.main_activity_menu, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem menuItem) {
+        switch (menuItem.getItemId()) {
+            case android.R.id.home:
+            case R.id.action_bar_logout_button:
+                finish();
+                return true;
+        }
+        return true;
     }
 
     /**
