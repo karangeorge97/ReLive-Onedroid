@@ -85,7 +85,8 @@ public class CreateEvent extends AppCompatActivity {
         createEvent.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if(!eventName.getText().toString().isEmpty()) {
+                String eventNameStr = eventName.getText().toString();
+                if(!eventNameStr.isEmpty()) {
                     long diff = (toDateInMillis - fromDateInMillis) / 60000;
                     if (diff < 0) {
                         Toast toast = Toast.makeText(getApplicationContext(),
@@ -93,6 +94,22 @@ public class CreateEvent extends AppCompatActivity {
                                 Toast.LENGTH_SHORT);
                         toast.show();
                         return;
+                    } else {
+                        for (Event other : mService.getEvents()) {
+                            if (other.getName().equals(eventNameStr)) {
+                                try {
+                                    if (df.parse(other.getToDate()).after(df.parse(fromDate)) || df.parse(other.getFromDate()).before(df.parse(toDate))) {
+                                        Toast toast = Toast.makeText(getApplicationContext(),
+                                                "Another event already exists with the same name and dates",
+                                                Toast.LENGTH_LONG);
+                                        toast.show();
+                                        return;
+                                    }
+                                } catch (ParseException e) {
+                                    e.printStackTrace();
+                                }
+                            }
+                        }
                     }
 
                     //List of invited users from the share event activity
@@ -104,11 +121,10 @@ public class CreateEvent extends AppCompatActivity {
                         e.printStackTrace();
                     }
 
-                    if(!invitedUsers.isEmpty())
-                    {
-                        for(String user : invitedUsers) {
+                    if(!invitedUsers.isEmpty()) {
+                        for (String user : invitedUsers) {
                             try {
-                                mService.addInvite(event,user);
+                                mService.addInvite(event, user);
                             } catch (Exception e) {
                                 e.printStackTrace();
                             }
