@@ -139,6 +139,7 @@
             android:layout_height="wrap_content"
             android:layout_margin="20dp"
             android:layout_alignParentBottom="true"
+            android:layout_alignParentRight="true"
             app:maxImageSize="67.5dp"
             android:alpha="0.8"
             app:shapeAppearanceOverlay="@style/fab_3_rounded"
