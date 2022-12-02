@@ -49,7 +49,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         binding = ActivityMainBinding.inflate(getLayoutInflater());
         Intent intent = new Intent(this, AccountService.class);
-        String username = getIntent().getStringExtra("username");
+        String username = getIntent().getStringExtra("username")!=null?getIntent().getStringExtra("username"):"";
         intent.putExtra("username", username);
         bindService(intent, connection, Context.BIND_AUTO_CREATE);
         setContentView(binding.getRoot());
