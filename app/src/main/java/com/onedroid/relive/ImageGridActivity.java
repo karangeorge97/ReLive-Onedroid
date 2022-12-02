@@ -66,8 +66,8 @@ public class ImageGridActivity extends AppCompatActivity {
     int toTimeMinutes = 59;
     boolean ascendingSortedImages = true;
     int numberOfImagesToShow = 18;
-    
-    
+
+
 
 
     List<Image> images_selected = new ArrayList<>();
@@ -182,7 +182,7 @@ public class ImageGridActivity extends AppCompatActivity {
         gridView.setAdapter(customAdapter);
         TextView filteredNumberOfPhotosText = (TextView) findViewById(R.id.filteredNumberOfPhotosText);
         numberOfImagesToShow = images_selected.size();
-        filteredNumberOfPhotosText.setText(numberOfImagesToShow + "/" + images_selected.size());
+        filteredNumberOfPhotosText.setText(numberOfImagesToShow + "/18");
 
         gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -312,7 +312,7 @@ public class ImageGridActivity extends AppCompatActivity {
             toDateInMillis = data.getLongExtra("toDateInMillis",0);
             new_images_selected = images_selected.subList(0, numberOfImagesToShow);
             TextView filteredNumberOfPhotosText = (TextView) findViewById(R.id.filteredNumberOfPhotosText);
-            filteredNumberOfPhotosText.setText(numberOfImagesToShow + "/" + images_selected.size());
+            filteredNumberOfPhotosText.setText(numberOfImagesToShow + "/18");
         }
         else if (requestCode==200 && data!=null) {
             switch (getIntent().getStringExtra("eventName")) {
@@ -329,9 +329,6 @@ public class ImageGridActivity extends AppCompatActivity {
                     new_images_selected.add(0,new Image(R.drawable.m13_lal,0,attendeesMap));
                     break;
             }
-            TextView filteredNumberOfPhotosText = (TextView) findViewById(R.id.filteredNumberOfPhotosText);
-            filteredNumberOfPhotosText.setText(new_images_selected.size() + "/" + new_images_selected.size());
-            filterApplied = false;
             Toast toast = Toast.makeText(getApplicationContext(),
                     "Image uploaded successfully",
                     Toast.LENGTH_SHORT);
@@ -470,15 +467,6 @@ public class ImageGridActivity extends AppCompatActivity {
         }
         else {
             filter.setImageResource(R.drawable.ic_filter_off_icon);
-            contributorSwitchIsChecked = false;
-            timeSwitchIsChecked = false;
-            selectedUsers = new boolean[5];
-            fromDateInMillis = convertDateToTimeInMillis(initialDate);
-            toDateInMillis = convertDateToTimeInMillis(finalDate);
-            fromTimeHours = 0;
-            fromTimeMinutes = 0;
-            toTimeHours = 23;
-            toTimeMinutes = 59;
         }
     }
 
