@@ -182,7 +182,7 @@ public class ImageGridActivity extends AppCompatActivity {
         gridView.setAdapter(customAdapter);
         TextView filteredNumberOfPhotosText = (TextView) findViewById(R.id.filteredNumberOfPhotosText);
         numberOfImagesToShow = images_selected.size();
-        filteredNumberOfPhotosText.setText(numberOfImagesToShow + "/18");
+        filteredNumberOfPhotosText.setText(numberOfImagesToShow + "/" + images_selected.size());
 
         gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -223,6 +223,7 @@ public class ImageGridActivity extends AppCompatActivity {
                 filterActivityIntent.putExtra("fromTimeMinutes",fromTimeMinutes);
                 filterActivityIntent.putExtra("toTimeHours", toTimeHours);
                 filterActivityIntent.putExtra("toTimeMinutes", toTimeMinutes);
+                filterActivityIntent.putExtra("totalNumberOfImages",images_selected.size());
                 startActivityForResult(filterActivityIntent,FILTER_ACTIVITY_CODE);
             }
         });
@@ -312,7 +313,7 @@ public class ImageGridActivity extends AppCompatActivity {
             toDateInMillis = data.getLongExtra("toDateInMillis",0);
             new_images_selected = images_selected.subList(0, numberOfImagesToShow);
             TextView filteredNumberOfPhotosText = (TextView) findViewById(R.id.filteredNumberOfPhotosText);
-            filteredNumberOfPhotosText.setText(numberOfImagesToShow + "/18");
+            filteredNumberOfPhotosText.setText(numberOfImagesToShow + "/" + images_selected.size());
         }
         else if (requestCode==200 && data!=null) {
             switch (getIntent().getStringExtra("eventName")) {
@@ -329,6 +330,12 @@ public class ImageGridActivity extends AppCompatActivity {
                     new_images_selected.add(0,new Image(R.drawable.m13_lal,0,attendeesMap));
                     break;
             }
+            TextView filteredNumberOfPhotosText = (TextView) findViewById(R.id.filteredNumberOfPhotosText);
+            filteredNumberOfPhotosText.setText(new_images_selected.size() + "/" + new_images_selected.size());
+            filterApplied = false;
+            contributorSwitchIsChecked = false;
+            timeSwitchIsChecked = false;
+            selectedUsers = new boolean[5];
             Toast toast = Toast.makeText(getApplicationContext(),
                     "Image uploaded successfully",
                     Toast.LENGTH_SHORT);
