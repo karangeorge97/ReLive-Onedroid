@@ -17,6 +17,8 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.google.android.material.badge.BadgeDrawable;
+import com.google.android.material.badge.BadgeUtils;
 import com.google.android.material.datepicker.CalendarConstraints;
 import com.google.android.material.datepicker.CompositeDateValidator;
 import com.google.android.material.datepicker.DateValidatorPointForward;
@@ -200,7 +202,7 @@ public class CreateEvent extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Intent shareActivityIntent = new Intent(CreateEvent.this,ShareEvent.class);
-                shareActivityIntent.putStringArrayListExtra("attendees",new ArrayList<String>());
+                shareActivityIntent.putStringArrayListExtra("attendees",invitedUsers);
                 startActivityForResult(shareActivityIntent,SHARE_ACTIVITY_CODE);
 
             }
@@ -227,6 +229,21 @@ public class CreateEvent extends AppCompatActivity {
         super.onActivityResult(requestCode, resultCode, data);
         if (resultCode == Activity.RESULT_OK && requestCode == SHARE_ACTIVITY_CODE) {
             invitedUsers = data.getStringArrayListExtra("attendees");
+            String users ="";
+            for(int i=0;i<invitedUsers.size()-1;i++)
+                users+=invitedUsers.get(i)+" and ";
+            users+=" "+invitedUsers.get(invitedUsers.size()-1);
+            Toast.makeText(getApplicationContext(),
+                    "Invited "+ users +" to the event",
+                    Toast.LENGTH_LONG).show();
+            Button shareButton = (Button) findViewById(R.id.shareButton);
+            BadgeDrawable badgeDrawable =  BadgeDrawable.create(CreateEvent.this);
+            badgeDrawable.setNumber(invitedUsers.size());
+            badgeDrawable.setVisible(true);
+            BadgeUtils.attachBadgeDrawable(badgeDrawable,shareButton);
+
+
+
         }
     }
 

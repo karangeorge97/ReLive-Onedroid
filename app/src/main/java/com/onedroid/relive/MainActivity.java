@@ -1,5 +1,6 @@
 package com.onedroid.relive;
 
+
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
@@ -7,6 +8,8 @@ import android.content.ServiceConnection;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 
+import com.google.android.material.badge.BadgeDrawable;
+import com.google.android.material.badge.BadgeUtils;
 import com.google.android.material.card.MaterialCardView;
 import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton;
 import androidx.appcompat.app.AppCompatActivity;
@@ -128,7 +131,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             AccountService.AccountBinder binder = (AccountService.AccountBinder) service;
             mService = binder.getService();
             mBound = true;
-            joinEvent.setText("Join Event " + "(" + mService.getInvites().size()+")");
+            BadgeDrawable badgeDrawable =  BadgeDrawable.create(MainActivity.this);
+            badgeDrawable.setNumber(mService.getInvites().size());
+            badgeDrawable.setVisible(true);
+            BadgeUtils.attachBadgeDrawable(badgeDrawable,joinEvent);
+            joinEvent.setText("Join Event");
             generateEvents();
         }
 
@@ -148,7 +155,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         super.onResume();
         if(mBound)
         {
-            joinEvent.setText("Join Event " + "(" + mService.getInvites().size()+")");
+            BadgeDrawable badgeDrawable =  BadgeDrawable.create(MainActivity.this);
+            badgeDrawable.setNumber(mService.getInvites().size());
+            badgeDrawable.setVisible(true);
+            BadgeUtils.attachBadgeDrawable(badgeDrawable,joinEvent);
+            joinEvent.setText("Join Event ");
             generateEvents();
 
         }
