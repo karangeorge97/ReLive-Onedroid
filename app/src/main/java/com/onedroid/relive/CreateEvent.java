@@ -58,7 +58,8 @@ public class CreateEvent extends AppCompatActivity {
         setContentView(R.layout.activity_create_event);
         binding = ActivityCreateEventBinding.inflate(getLayoutInflater());
         Intent intent = new Intent(this, AccountService.class);
-        intent.putExtra("username", getIntent().getStringExtra("username"));
+        String username = getIntent().getStringExtra("userName");
+        intent.putExtra("username", username);
         bindService(intent, connection, Context.BIND_AUTO_CREATE);
         setContentView(binding.getRoot());
 
@@ -131,6 +132,7 @@ public class CreateEvent extends AppCompatActivity {
                         }
                     }
                     Intent intent = new Intent(getBaseContext(), MainActivity.class);
+                    intent.putExtra("username", username);
                     startActivity(intent);
                 }
                 else

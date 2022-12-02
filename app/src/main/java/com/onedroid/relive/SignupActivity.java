@@ -56,9 +56,26 @@ public class SignupActivity extends AppCompatActivity {
             public void onClick(View view) {
                 String username = usernameInput.getText().toString();
                 String password = passwordInput.getText().toString();
-
+                if (username.isEmpty()) {
+                    Toast toast = Toast.makeText(getApplicationContext(),
+                            "Username cannot be empty",
+                            Toast.LENGTH_SHORT);
+                    toast.show();
+                    return;
+                }
+                if (password.isEmpty()) {
+                    Toast toast = Toast.makeText(getApplicationContext(),
+                            "Password cannot be empty",
+                            Toast.LENGTH_SHORT);
+                    toast.show();
+                    return;
+                }
                 try {
                     authHandler.createUser(username, password);
+                    Toast toast = Toast.makeText(getApplicationContext(),
+                            "Sign Up Successful",
+                            Toast.LENGTH_SHORT);
+                    toast.show();
                     finish();
                 } catch (Exception e) {
                     Toast.makeText(SignupActivity.this, "Username taken please try with a different one", Toast.LENGTH_SHORT).show();

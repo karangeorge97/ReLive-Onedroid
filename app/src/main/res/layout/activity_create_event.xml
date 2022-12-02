@@ -46,47 +46,55 @@
             android:autofillHints="" />
     </LinearLayout>
 
-    <RelativeLayout
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/FromToRL">
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/FromText"
-        android:text="Event Dates"
-        android:textSize="20sp"
-        android:layout_margin="@dimen/text_margin"
-    />
+        android:background="@drawable/customborder"
+        android:orientation="vertical">
 
-    </RelativeLayout>
-
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/dateButtonsRL"
-        android:orientation="horizontal"
-        android:layout_margin="@dimen/text_margin"
-   >
-
-        <Button
-            android:id="@+id/start_date"
-            android:layout_width="wrap_content"
+        <RelativeLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginHorizontal="20dp"
-            android:clickable="true"
-            android:text="From" />
-<!--        text should be the date from the start_datepicker widget-->
-        <Button
-            android:layout_width="wrap_content"
+            android:id="@+id/FromToRL">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/FromText"
+                android:text="Event Dates:"
+                android:textSize="20sp"
+                android:layout_margin="@dimen/text_margin"
+                />
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:clickable="true"
-            android:layout_alignParentRight="true"
-            android:id="@+id/end_date"
-            android:text="To"
-            android:layout_marginHorizontal="20dp"
-            />
-    </RelativeLayout>
+            android:id="@+id/dateButtonsRL"
+            android:orientation="horizontal"
+            android:layout_margin="@dimen/text_margin"
+            >
+
+            <Button
+                android:id="@+id/start_date"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="20dp"
+                android:clickable="true"
+                android:text="From" />
+            <!--        text should be the date from the start_datepicker widget-->
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:clickable="true"
+                android:layout_alignParentRight="true"
+                android:id="@+id/end_date"
+                android:text="To"
+                android:layout_marginHorizontal="20dp"
+                />
+        </RelativeLayout>
+
+    </LinearLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -114,9 +122,12 @@
             android:id="@+id/createEvent"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_gravity="center|bottom"
-            android:layout_margin="10dp"
             android:layout_alignParentBottom="true"
+            android:layout_gravity="center|bottom"
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginEnd="10dp"
+            android:layout_marginBottom="10dp"
             android:text="Create Event" />
 
     </RelativeLayout>
