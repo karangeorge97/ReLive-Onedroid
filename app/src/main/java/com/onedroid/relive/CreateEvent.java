@@ -72,16 +72,16 @@ public class CreateEvent extends AppCompatActivity {
         Button shareButton = (Button) findViewById(R.id.shareButton);
 
 
-        long currTime = System.currentTimeMillis();
-        long curPlusMonth = System.currentTimeMillis() + 30L * 86400000;
-        fromDateInMillis = getIntent().getLongExtra("fromDateInMillis", currTime);
-        toDateInMillis = getIntent().getLongExtra("toDateInMillis",curPlusMonth);
+        long currFromTime = System.currentTimeMillis();
+        long currToTime = System.currentTimeMillis() + 1;
+        fromDateInMillis = getIntent().getLongExtra("fromDateInMillis", currFromTime);
+        toDateInMillis = getIntent().getLongExtra("toDateInMillis",currToTime);
         DateFormat df = new SimpleDateFormat("MMM dd, yyyy");
         fromDate = df.format(new Date(fromDateInMillis));
         toDate = df.format(new Date(toDateInMillis));
 
-
-
+        startDateButton.setText(fromDate);
+        endDateButton.setText(toDate);
 
         createEvent.setOnClickListener(new View.OnClickListener() {
             @Override
