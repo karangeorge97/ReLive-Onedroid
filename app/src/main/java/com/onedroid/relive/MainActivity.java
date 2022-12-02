@@ -27,6 +27,7 @@ import android.widget.RelativeLayout;
 import android.widget.Switch;
 import android.util.Log;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.appcompat.widget.LinearLayoutCompat;
 
@@ -101,7 +102,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         switch (menuItem.getItemId()) {
             case android.R.id.home:
             case R.id.action_bar_logout_button:
-                finish();
+                Intent intent = new Intent(getBaseContext(), LoginActivity.class);
+                Toast toast = Toast.makeText(getApplicationContext(),
+                        "Logout Successful",
+                        Toast.LENGTH_SHORT);
+                toast.show();
+                startActivity(intent);
                 return true;
         }
         return true;
