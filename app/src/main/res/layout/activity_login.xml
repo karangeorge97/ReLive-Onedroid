@@ -10,14 +10,21 @@
     android:background="@drawable/customborder"
     android:layout_gravity="center">
 
-
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Welcome to ReLive!"
+        android:layout_centerHorizontal="true"
+        android:textSize="25sp"
+        android:id="@+id/welcomeText"/>
 
     <EditText
         android:id="@+id/username"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="@dimen/text_margin"
-        android:hint="Enter User Name" />
+        android:hint="Enter User Name"
+        android:layout_below="@+id/welcomeText"/>
 
     <EditText
         android:id="@+id/password"
